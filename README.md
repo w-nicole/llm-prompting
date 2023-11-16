@@ -6,7 +6,7 @@ From 11/15/23: https://mit-satori.github.io/satori-ai-frameworks.html
 
 ```conda install pytorch```
 
-```pip install transformers```
+```pip install transformers pandas```
 
 ```conda create -n llm-prompting```
 
