@@ -38,6 +38,19 @@ end cite
 
 ```git clone https://github.com/Tiiiger/bert_score.git```
 
+### Models considered
+
+We consider the following models:
+
+- Flan-T5
+  - Small
+  - Base
+  - XL
+- Vicuna-7b
+- Mistral
+- Alpaca
+- Sheared LLaMA
+
 ```touch bert_score/__init__.py```
 
 
