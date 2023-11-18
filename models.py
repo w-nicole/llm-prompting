@@ -1,27 +1,32 @@
+import bert_score 
 
-#import bert_score.bert_score.scorer
-from transformers import AutoTokenizer, AutoModelForCausalLM, AutoModelForSeq2SeqLM
-    
+import torch
+from transformers import AutoModelForSeq2SeqLM, AutoModelForCausalLM, AutoTokenizer, AutoModel
+
+from config import * 
+
+def get_bert_scorer():
+
+    return bert_score.BERTScorer(model_type = BERT_SCORER_MODEL)
+
+
 def get_model_and_tokenizer(chosen_model):
+
+    tokenizer = AutoTokenizer.from_pretrained(MODEL_CHECKPOINTS[chosen_model])
     
-    model_checkpoints = {
-        "flan-t5" : "google/flan-t5-small",
-        "lamma2": "",
-        "vicuna": "lmsys/vicuna-13b-v1.1",
-        "alpaca": "chavinlo/alpaca-native"
-    }
-    
-    tokenizer = AutoTokenizer.from_pretrained(model_checkpoints[chosen_model])
-    
-    if chosen_model in ["flan-t5"]:
-        llm = AutoModelForSeq2SeqLM.from_pretrained(model_checkpoints[chosen_model])
-    elif chosen_model in ["vicuna", "alpaca"]:
-        llm = AutoModelForCausalLM.from_pretrained(model_checkpoints[chosen_model])
+    if chosen_model in ["flan-t5-small"]:
+        llm = AutoModelForSeq2SeqLM.from_pretrained(MODEL_CHECKPOINTS[chosen_model])
+    elif chosen_model in ["vicuna-7b", "openllama-3b-v2", "alpaca"]:
+        llm = AutoModelForCausalLM.from_pretrained(MODEL_CHECKPOINTS[chosen_model])
     else:
-        raise notImplementedError() 
+        raise NotImplementedError() 
         
     return llm, tokenizer
 
-# def get_scorer():
-#     model = bert_score.bert_score.scorer.BERTScorer(model_type = "microsoft/deberta-xlarge-mnli")
-#     return model
+if __name__ == "__main__":
+
+    llm, tokenizer = get_model_and_tokenizer("vicuna-7b")
+    get_bert_scorer()
+    print("okay i am here")
+
+
