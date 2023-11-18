@@ -38,6 +38,8 @@ end cite
 
 ```git clone https://github.com/Tiiiger/bert_score.git```
 
+```touch bert_score/__init__.py```
+
 ### Models considered
 
 We consider the following models:
@@ -50,9 +52,3 @@ We consider the following models:
 - Mistral
 - Alpaca
 - Sheared LLaMA
-
-```touch bert_score/__init__.py```
-
-
-
-- Added new line
