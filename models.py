@@ -1,5 +1,5 @@
 
-import bert_score.bert_score.scorer
+#import bert_score.bert_score.scorer
 from transformers import AutoTokenizer, AutoModelForCausalLM, AutoModelForSeq2SeqLM
     
 def get_model_and_tokenizer(chosen_model):
@@ -22,6 +22,6 @@ def get_model_and_tokenizer(chosen_model):
         
     return llm, tokenizer
 
-def get_scorer():
-    model = bert_score.bert_score.scorer.BERTScorer(model_type = "microsoft/deberta-xlarge-mnli")
-    return model
+# def get_scorer():
+#     model = bert_score.bert_score.scorer.BERTScorer(model_type = "microsoft/deberta-xlarge-mnli")
+#     return model

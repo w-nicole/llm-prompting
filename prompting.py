@@ -13,6 +13,7 @@ def get_model_response(question, ground_truth, llm, tokenizer):
     logits = get_logits(outputs["scores"])
     updated_rec = copy.deepcopy(rec)
     updated_rec["pred_answer"] = pred_ans
+    return updated_rec
     
 def get_logits(scores):
     all_scores = []
@@ -24,4 +25,4 @@ def get_logits(scores):
     
 def score_dataset(model, tokenizer, dataloader):
     for batch in dataloader:
-        get_model_response(question, ground_truth)
+        response = get_model_response(question, ground_truth)
