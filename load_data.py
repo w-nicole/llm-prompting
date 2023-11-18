@@ -3,6 +3,7 @@ import config
 import torch
 import pandas as pd
 import json
+import os
 
 from torch.utils.data import DataLoader
 
@@ -40,7 +41,7 @@ class SciQDataset(torch.utils.data.Dataset):
 
 class TriviaQADataset(torch.utils.data.Dataset):
     
-    def __init__(self):
+    def __init__(self, phase):
         phase_dict = {
             'train' : 'train',
             'val' : 'dev',
@@ -54,7 +55,8 @@ class TriviaQADataset(torch.utils.data.Dataset):
         return len(self.data)
         
     def __getitem__(self, idx):
-        return self.data['Question'], self.data['Answer']
+        entry = self.data[idx]
+        return entry['Question'], entry['Answer']['Value']
         
 def get_dataloader(dataset):
     return DataLoader(dataset, batch_size=config.BATCH_SIZE, shuffle=False)
