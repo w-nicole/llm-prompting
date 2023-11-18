@@ -40,6 +40,15 @@ end cite
 
 ```touch bert_score/__init__.py```
 
+### Models considered
 
+We consider the following models:
 
-- Added new line
+- Flan-T5
+  - Small
+  - Base
+  - XL
+- Vicuna-7b
+- Mistral
+- Alpaca
+- Sheared LLaMA
