@@ -17,56 +17,37 @@ class TruthfulQADataset(torch.utils.data.Dataset):
         return len(self.data)
         
     def __getitem__(self, idx):
-        print("to be changed")
-        a = z 
-
-        entry = self.phase_df.iloc[idx]
-        return entry['Question'], entry['Best Answer']
+        return self.data[idx]['Question'], self.data[idx]['Best Answer']
         
 class SciQDataset(torch.utils.data.Dataset):
     
-    def __init__(self, phase):
-        phase_dict = {
-            'train' : 'train',
-            'val' : 'valid',
-            'test' : 'test'
-        }
-        with open(os.path.join(config.SCIQ_FOLDER, f'{phase_dict[phase]}.json')) as f:
-            self.data = json.load(f)
+    def __init__(self, path):
+        self.data = read_json(path)
         
     def __len__(self):
         return len(self.data)
         
     def __getitem__(self, idx):
-        entry = self.data[idx]
-        return entry['question'], entry['correct_answer']
+        return self.data[idx]['question'], self.data[idx]['correct_answer']
 
 class TriviaQADataset(torch.utils.data.Dataset):
     
-    def __init__(self, phase):
-        phase_dict = {
-            'train' : 'train',
-            'val' : 'dev',
-            'test' : 'test-without-answers'
-        }
-        data_path = os.path.join(config.TRIVIA_QA_FOLDER, f'unfiltered-web-{phase_dict[phase]}.json')
-        with open(data_path) as f:
-            self.data = json.load(f)['Data']
+    def __init__(self, path):
+        self.data = read_json(path)
         
     def __len__(self):
         return len(self.data)
         
     def __getitem__(self, idx):
-        entry = self.data[idx]
-        return entry['Question'], entry['Answer']['Value']
+        return self.data[idx]['Question'], self.data[idx]['Answer']['Value']
         
 def get_dataloader(name, path):
 
-    if name not in dataset.keys():
+    datasets = {"truthfulqa": TruthfulQADataset, 
+               "sciq": SciQDataset, 
+               "triviaqa": TriviaQADataset}
+    
+    if name not in datasets.keys():
         raise Exception(f"{name} not supported. Please check implementation.")
     
-    dataset = {"truthfulqa": TruthfulQADataset, 
-               "sciq": SciQDataset, 
-               "triviaqa": TriviaQADataset}[name](path)
-    
-    return DataLoader(dataset, batch_size = BATCH_SIZE, shuffle = False)
+    return DataLoader(datasets[name](path), batch_size = BATCH_SIZE, shuffle = False)
