@@ -1,12 +1,14 @@
 import os
 import random
 import numpy as np
+from string import ascii_lowercase
 
 import torch
 
 SEED = 0 
 
-BATCH_SIZE = 2
+BATCH_SIZE = 4
+MAX_OUTPUT_LENGTH = 20
 
 DATASET_RAW_FOLDER = 'datasets/raw'
 TRUTHFUL_QA_RAW_PATH = os.path.join(DATASET_RAW_FOLDER, 'truthfulQA.csv')
@@ -24,6 +26,11 @@ MODEL_CHECKPOINTS = {'flan-t5-small' : 'model_weights/flan-t5/small',
                      'shearedllama-1.3b' :'model_weights/sheared_llama/1.3b',
                      'shearedllama-2.7b' :'model_weights/sheared_llama/2.7b',
                      'alpaca': ''}
+
+INTERVAL = 10
+OPTIONS = np.arange(0, 101, INTERVAL)
+ALPHABETS = [str.upper(c) for c in ascii_lowercase][:len(OPTIONS)]
+CONFIDENCE_OPTIONS = {f"({ALPHABETS[i]})" : OPTIONS[i] for i in range(len(ALPHABETS))}
 
 BERT_SCORER_MODEL = "microsoft/deberta-xlarge-mnli"
 

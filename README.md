@@ -52,3 +52,7 @@ We consider the following models:
 - Mistral
 - Alpaca
 - Sheared LLaMA
+
+
+### To install openai package
+```pip install openai```
