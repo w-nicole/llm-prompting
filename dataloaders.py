@@ -41,7 +41,7 @@ class TriviaQADataset(torch.utils.data.Dataset):
     def __getitem__(self, idx):
         return idx, self.data[idx]['Question'], self.data[idx]['Answer']['Value']
         
-def get_dataloader(name, path):
+def get_dataloader(name, path, batch_size = BATCH_SIZE):
 
     datasets = {"truthfulqa": TruthfulQADataset, 
                "sciq": SciQDataset, 
@@ -50,4 +50,4 @@ def get_dataloader(name, path):
     if name not in datasets.keys():
         raise Exception(f"{name} not supported. Please check implementation.")
     
-    return DataLoader(datasets[name](path), batch_size = BATCH_SIZE, shuffle = False)
+    return DataLoader(datasets[name](path), batch_size = batch_size, shuffle = False)

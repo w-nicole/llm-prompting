@@ -56,3 +56,7 @@ We consider the following models:
 
 ### To install openai package
 ```pip install openai```
+
+### To do
+- Add in ID for each dataset 
+- Save outputs to folder

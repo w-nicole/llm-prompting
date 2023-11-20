@@ -17,16 +17,11 @@ def get_response(dataloader, llm, tokenizer):
         # Unpack the batch 
         id_, qns, ans = batch 
 
-        # Format the according to template (TO BE DONE)
-        qns = baseline_template(qns)
+        # Get original question
+        qns_formatted = baseline_template(qns)
 
         # Get responses 
-        response, avg_prob = get_model_response(qns, llm, tokenizer, return_logits = True)
-
-        print(qns_response_conf)
-        print(conf_response)
-
-        a = z 
+        response, avg_prob = get_model_response(qns_formatted, llm, tokenizer, return_prob = True)
 
         # Get self evaluation
         qns_response = self_evaluate_template(qns, response)
@@ -44,13 +39,8 @@ def get_response(dataloader, llm, tokenizer):
         qns_ans_conf = confidence_MCQ_template(qns, ans)
         gt_ans_conf_response, _ = get_model_response(qns_ans_conf, llm, tokenizer)
 
-
-        # get_model_response(llm, tokenizer)
-        print(batch)    
-        print("here")
-        a = z 
-    
-    None
+        # Merge all the responses together
+        raise NotImplementedError("To merge all responses into a dict")
 
 if __name__ == "__main__":
 
@@ -58,8 +48,3 @@ if __name__ == "__main__":
     llm, tokenizer = get_model_and_tokenizer("flan-t5-small")
     dataloader = get_dataloader("truthfulqa", os.path.join(TRUTHFUL_QA_PROCESSED_PATH, "train.json"))
     outputs = get_response(dataloader, llm, tokenizer)
-    
-    
-
-    print("okay i am here")
-    

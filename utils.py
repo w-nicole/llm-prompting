@@ -1,6 +1,7 @@
 import os
 import copy
 import json 
+import numpy as np
 
 import torch
 
@@ -20,7 +21,7 @@ def write_json(data, path):
         json.dump(data, f, indent = 4)
 
 # For prompting
-def get_logits(scores, tokenizer):
+def get_avg_prob(scores, tokenizer):
 
     """
         Get average probability score for sentence 
@@ -33,41 +34,31 @@ def get_logits(scores, tokenizer):
     all_probabilities = []
 
     for b in range(bs):
+        
+        p_list = []
+
         for s in range(seq_length):
             p, index = torch.max(scores[b, s, :], dim = 0)
-            p = p.detach().cpu()
-            print(p, index, tokenizer.convert_ids_to_tokens([index]))
-            a = z
+            token = tokenizer.convert_ids_to_tokens([index])[0]
+            if token == tokenizer.eos_token:
+                break
 
-    #         a = z
+            p = p.detach().cpu().item()
+            p_list.append(p)
 
-    # print(len(scores))
-    # print(type(scores))
-    # print(scores[0].shape)
-
-    # bs, all_scores = scores[0].shape[0], []
+        avg_p = np.mean(p_list)
+        all_probabilities.append(avg_p)
     
-    # for pos in range(len(scores)):
-        
-    #     current_scores = torch.softmax(scores[[pos]], dim = -1)
+    return all_probabilities
 
-    #     for b in range(bs):
-        
-    #     current_scores = 
-    #     scores, pos = 
-    #     # max_score = max(current_scores[0]).detach().cpu().numpy().tolist()
-    #     # all_scores.append(max_score)
-
-    # return all_scores
-
-def get_model_response(inputs, llm, tokenizer, return_logits = False):
+def get_model_response(inputs, llm, tokenizer, return_prob = False):
 
     inputs = tokenizer(inputs, padding = True, truncation = True, return_tensors = "pt")
     outputs = llm.generate(**inputs, return_dict_in_generate = True, output_scores = True, max_new_tokens = MAX_OUTPUT_LENGTH)
     predictions = tokenizer.batch_decode(outputs["sequences"], skip_special_tokens = True)
 
-    logits = None
-    if return_logits: 
-        logits = get_logits(outputs["scores"], tokenizer)
+    prob = None
+    if return_prob: 
+        prob = get_avg_prob(outputs["scores"], tokenizer)
 
-    return predictions, logits
+    return predictions, prob

@@ -32,6 +32,8 @@ OPTIONS = np.arange(0, 101, INTERVAL)
 ALPHABETS = [str.upper(c) for c in ascii_lowercase][:len(OPTIONS)]
 CONFIDENCE_OPTIONS = {f"({ALPHABETS[i]})" : OPTIONS[i] for i in range(len(ALPHABETS))}
 
+N_DIVERSE_QUES = 10 
+
 BERT_SCORER_MODEL = "microsoft/deberta-xlarge-mnli"
 
 random.seed(SEED)
