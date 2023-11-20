@@ -21,7 +21,8 @@ SCIQ_PROCESSED_FOLDER = os.path.join(DATASET_PROCESSED_FOLDER, 'sciq')
 MODEL_CHECKPOINTS = {'flan-t5-small' : 'model_weights/flan-t5/small',
                      'vicuna-7b': 'model_weights/vicuna/7b',
                      'mistral':'',
-                     'shearedllama' :'',
+                     'shearedllama-1.3b' :'model_weights/sheared_llama/1.3b',
+                     'shearedllama-2.7b' :'model_weights/sheared_llama/2.7b',
                      'alpaca': ''}
 
 BERT_SCORER_MODEL = "microsoft/deberta-xlarge-mnli"
