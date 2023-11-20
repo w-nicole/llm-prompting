@@ -10,6 +10,7 @@ if __name__ == '__main__':
 
     # Process truthfulQA
     truthfulqa = pd.read_csv(TRUTHFUL_QA_RAW_PATH)
+    truthfulqa.loc[:, "id_"] = truthfulqa.index
     truthfulqa_counter = collections.Counter(truthfulqa.loc[:, "Category"])
     val_categories = ["Politics", "Finance", "Law"]
     test_categories = ["Confusion: People", "Superstitions", "Myths and Fairytales", "Religion"]
@@ -22,14 +23,23 @@ if __name__ == '__main__':
     truthfulqa_val = json.loads(truthfulqa_val.to_json(orient = "records"))
     truthfulqa_test = json.loads(truthfulqa_test.to_json(orient = "records"))
 
+    truthfulqa = truthfulqa_train + truthfulqa_val + truthfulqa_test
+
     # Process sciQ
     sciq_train = read_json(os.path.join(SCIQ_RAW_FOLDER, "train.json"))
     sciq_val = read_json(os.path.join(SCIQ_RAW_FOLDER, "valid.json"))
     sciq_test = read_json(os.path.join(SCIQ_RAW_FOLDER, "test.json"))
 
+    sciq_train = [{**r, **{"id_" : f"train_{i}"}} for i, r in enumerate(sciq_train)]
+    sciq_val = [{**r, **{"id_" : f"val_{i}"}} for i, r in enumerate(sciq_val)]
+    sciq_test = [{**r, **{"id_" : f"test_{i}"}} for i, r in enumerate(sciq_test)]
+
     sciq_train_small = sciq_train[:50]
     sciq_val_small = sciq_val[:50]
     sciq_test_small = sciq_test[:50]
+
+    sciq = sciq_train + sciq_val + sciq_test
+    sciq_small = sciq_train_small + sciq_val_small + sciq_test_small
 
     # Process triviaQA 
     # Note: we are reporting results for val and getting a subset of the train dataset as val 
@@ -43,6 +53,9 @@ if __name__ == '__main__':
     triviaqa_val_small = triviaqa_val[:50]
     triviaqa_test_small = triviaqa_test[:50]
     
+    triviaqa = triviaqa_train + triviaqa_val + triviaqa_test
+    triviaqa_small = triviaqa_train_small + triviaqa_val_small + triviaqa_test_small
+
     # Write the datasets to the processed folder
     if not os.path.exists(DATASET_PROCESSED_FOLDER): os.makedirs(DATASET_PROCESSED_FOLDER)
     if not os.path.exists(TRUTHFUL_QA_PROCESSED_PATH): os.makedirs(TRUTHFUL_QA_PROCESSED_PATH)
@@ -50,24 +63,29 @@ if __name__ == '__main__':
     if not os.path.exists(TRIVIA_QA_PROCESSED_FOLDER): os.makedirs(TRIVIA_QA_PROCESSED_FOLDER)
 
     # truthfulQA
+    write_json(truthfulqa, os.path.join(TRUTHFUL_QA_PROCESSED_PATH, "data.json"))
     write_json(truthfulqa_train, os.path.join(TRUTHFUL_QA_PROCESSED_PATH, "train.json"))
     write_json(truthfulqa_val, os.path.join(TRUTHFUL_QA_PROCESSED_PATH, "val.json"))
     write_json(truthfulqa_test, os.path.join(TRUTHFUL_QA_PROCESSED_PATH, "test.json"))
 
     # sciQ
+    write_json(sciq, os.path.join(SCIQ_PROCESSED_FOLDER, "data.json"))
     write_json(sciq_train, os.path.join(SCIQ_PROCESSED_FOLDER, "train.json"))
     write_json(sciq_val, os.path.join(SCIQ_PROCESSED_FOLDER, "val.json"))
     write_json(sciq_test, os.path.join(SCIQ_PROCESSED_FOLDER, "test.json"))
 
+    write_json(sciq_small, os.path.join(SCIQ_PROCESSED_FOLDER, "data_small.json"))
     write_json(sciq_train_small, os.path.join(SCIQ_PROCESSED_FOLDER, "train_small.json"))
     write_json(sciq_val_small, os.path.join(SCIQ_PROCESSED_FOLDER, "val_small.json"))
     write_json(sciq_test_small, os.path.join(SCIQ_PROCESSED_FOLDER, "test_small.json"))
 
     # triviaQA
+    write_json(triviaqa, os.path.join(TRIVIA_QA_PROCESSED_FOLDER, "data.json"))
     write_json(triviaqa_train, os.path.join(TRIVIA_QA_PROCESSED_FOLDER, "train.json"))
     write_json(triviaqa_val, os.path.join(TRIVIA_QA_PROCESSED_FOLDER, "val.json"))
     write_json(triviaqa_test, os.path.join(TRIVIA_QA_PROCESSED_FOLDER, "test.json"))
 
+    write_json(triviaqa_small, os.path.join(TRIVIA_QA_PROCESSED_FOLDER, "data_small.json"))
     write_json(triviaqa_train_small, os.path.join(TRIVIA_QA_PROCESSED_FOLDER, "train_small.json"))
     write_json(triviaqa_val_small, os.path.join(TRIVIA_QA_PROCESSED_FOLDER, "val_small.json"))
     write_json(triviaqa_test_small, os.path.join(TRIVIA_QA_PROCESSED_FOLDER, "test_small.json"))

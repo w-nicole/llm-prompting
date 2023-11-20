@@ -17,7 +17,7 @@ class TruthfulQADataset(torch.utils.data.Dataset):
         return len(self.data)
         
     def __getitem__(self, idx):
-        return idx, self.data[idx]['Question'], self.data[idx]['Best Answer']
+        return self.data[idx]['id_'], self.data[idx]['Question'], self.data[idx]['Best Answer']
         
 class SciQDataset(torch.utils.data.Dataset):
     
@@ -28,7 +28,7 @@ class SciQDataset(torch.utils.data.Dataset):
         return len(self.data)
         
     def __getitem__(self, idx):
-        return idx, self.data[idx]['question'], self.data[idx]['correct_answer']
+        return self.data[idx]['id_'], self.data[idx]['question'], self.data[idx]['correct_answer']
 
 class TriviaQADataset(torch.utils.data.Dataset):
     
@@ -39,7 +39,7 @@ class TriviaQADataset(torch.utils.data.Dataset):
         return len(self.data)
         
     def __getitem__(self, idx):
-        return idx, self.data[idx]['Question'], self.data[idx]['Answer']['Value']
+        return self.data[idx]["QuestionId"], self.data[idx]['Question'], self.data[idx]['Answer']['Value']
         
 def get_dataloader(name, path, batch_size = BATCH_SIZE):
 
