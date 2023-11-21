@@ -30,9 +30,9 @@ if __name__ == '__main__':
     sciq_val = read_json(os.path.join(SCIQ_RAW_FOLDER, "valid.json"))
     sciq_test = read_json(os.path.join(SCIQ_RAW_FOLDER, "test.json"))
 
-    sciq_train = [{**r, **{"id_" : f"train_{i}"}} for i, r in enumerate(sciq_train)]
-    sciq_val = [{**r, **{"id_" : f"val_{i}"}} for i, r in enumerate(sciq_val)]
-    sciq_test = [{**r, **{"id_" : f"test_{i}"}} for i, r in enumerate(sciq_test)]
+    sciq_train = [{**{"id_" : f"train_{i}"}, **r} for i, r in enumerate(sciq_train)]
+    sciq_val = [{**{"id_" : f"val_{i}"}, **r} for i, r in enumerate(sciq_val)]
+    sciq_test = [{**{"id_" : f"test_{i}"}, **r} for i, r in enumerate(sciq_test)]
 
     sciq_train_small = sciq_train[:50]
     sciq_val_small = sciq_val[:50]
@@ -46,6 +46,9 @@ if __name__ == '__main__':
     # Note: TO MAKE SURE THAT'S WHAT THE TIAN 2023 ET AL. PAPER IS DOING
     triviaqa_train = read_json(os.path.join(TRIVIA_QA_RAW_FOLDER, "unfiltered-web-train.json"))["Data"]
     triviaqa_test = read_json(os.path.join(TRIVIA_QA_RAW_FOLDER, "unfiltered-web-dev.json"))["Data"]
+    triviaqa_train = [{**{"id_" : r["QuestionId"]}, **r} for r in triviaqa_train]
+    triviaqa_test = [{**{"id_" : r["QuestionId"]}, **r} for r in triviaqa_test]
+
     triviaqa_val = triviaqa_train[: len(triviaqa_test)]
     triviaqa_train = triviaqa_train[len(triviaqa_test):]
 

@@ -59,3 +59,7 @@ We consider the following models:
 
 ### To do
 - Save outputs to folder
+
+### Steps
+```python process_datasets.py```
+```python prompting_for_diverse_questions.py```
