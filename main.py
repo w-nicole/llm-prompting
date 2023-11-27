@@ -95,6 +95,7 @@ def get_response(diverse_dataset, dataloader, llm, tokenizer, bert_scorer):
             all_results.append({"id_": id_[i],
                                 "original_question": qns[i], 
                                 "answer": ans[i], 
+                                "pred_abstain": abstain[i],
                                 "pred_ans" : pred_ans[i],
                                 "pred_correct": pred_correct[i],
                                 "self_eval": self_eval[i],
