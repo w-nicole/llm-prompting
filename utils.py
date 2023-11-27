@@ -404,12 +404,13 @@ def clean_confidence_MCQ_llama2(qns, ans, NL = False):
     for q, a in zip(qns, ans):
         
         a = list(set([r.replace(q, "").strip() for r in a.split("\n") if "Answer:" in r and "Proposed Answer" not in r]))
+        check = False
+        
         if len(a) == 0: 
             a = options_template["A)"]
         
         else:
             a = a[0]
-            check = False
 
             for k, v in options_template.items():
                 if k in a:
