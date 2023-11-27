@@ -101,26 +101,30 @@ def get_model_response(inputs, llm, tokenizer, max_new_tokens = MAX_OUTPUT_LENGT
     predictions = tokenizer.batch_decode(outputs["sequences"], skip_special_tokens = True)
 
     if return_raw:
-        return inputs["input_ids"].shape[-1], outputs
+        return outputs
 
     return predictions
 
 # Get probability of true functions 
 def get_true_prob(inputs, llm, tokenizer, true_idx, false_idx, llama2 = False):
 
-    length, model_output = get_model_response(inputs, llm, tokenizer, max_new_tokens = 1, return_raw = True)
-
+    model_output = get_model_response(inputs, llm, tokenizer, max_new_tokens = 1, return_raw = True)
+    print(model_output["sequences"])
+    predictions = tokenizer.batch_decode(model_output["sequences"], skip_special_tokens = True)
+    print(predictions)
     # Get the scores
-    # print("Min", [torch.min(x) for x in model_output["scores"]])
-    # print("Max", [torch.max(x) for x in model_output["scores"]])
-    print(len(model_output["scores"]))  
-    scores = model_output["scores"][0] # First token in response
-    print("Max", torch.max(scores))
-    print("ArgMax", torch.argmax(scores))
-    print(tokenizer.batch_decode(model_output["sequences"], skip_special_tokens = False))
-    print(scores)
+    if llama2:
+        scores = model_output["scores"][-1] # Last token in response
+    else:
+        scores = model_output["scores"][0] # First token in response
     prob = torch.concat([scores[:, true_idx].unsqueeze(-1), scores[:, false_idx].unsqueeze(-1)], dim = -1)
     print(prob)
+    print(torch.isneginf(prob))
+
+
+    prob = torch.where(torch.isneginf(prob), 1.0, prob)
+    print(prob)
+    
     a = z 
 
     prob = torch.softmax(prob, dim = -1)[:, 0]
@@ -190,7 +194,7 @@ def clean_confidence_MCQ_flan_t5(qns, ans, NL = False):
         elif a.upper() in options_template_no_paranthesis:
             all_ans.append(options_template_no_paranthesis[a.upper()])
         else:
-            all_ans.append(options_template["(A)"]) # uncertain if does not return anything
+            all_ans.append(options_template["A)"]) # uncertain if does not return anything
     
     if NL: 
         all_ans = [CONFIDENCE_SCORE_NL_MAPPING[a] for a in all_ans]
@@ -250,7 +254,7 @@ def clean_self_eval_mistral(qns, ans):
 
     for q, a in zip(qns, ans):
         a = list(set([r.replace(q, "").strip() for r in a.split("\n") if q in r]))[0]
-        a = a.replace("(A)", "").replace("(B)", "").replace(".", "").strip().lower()
+        a = a.replace("A)", "").replace("B)", "").replace(".", "").strip().lower()
 
         # We have to give it a default value
         if "true" in a and "false" in a: all_ans.append(0) 

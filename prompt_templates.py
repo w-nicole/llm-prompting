@@ -96,7 +96,7 @@ def self_evaluate_template_mistral(ques_list, pred_ans_list):
     """ 
     assert len(ques_list) == len(pred_ans_list)
     ques_pred_ans_list = list(zip(ques_list, pred_ans_list))
-    ques_ans_list_formatted = [f"Question: {q} Proposed Answer: {a} Is the proposed answer: A) True or B) False? Proposed answer:" for q, a in ques_pred_ans_list]
+    ques_ans_list_formatted = [f"Question: {q} Proposed Answer: {a} Is the proposed answer: A) True or B) False? Answer:" for q, a in ques_pred_ans_list]
 
     return ques_ans_list_formatted
 
@@ -162,7 +162,7 @@ def self_evaluate_template_llama2(ques_list, pred_ans_list):
         Template: Answer the following question as short as possible with no explanation. Question: {q} Answer:
     """
     ques_pred_ans_list = list(zip(ques_list, pred_ans_list))
-    ques_ans_list_formatted = [f"Choose only A) or B).\n Question: {q}\n Proposed Answer: {a}\n A) The proposed answer is right \n B) The proposed answer is wrong \n Answer:" for q, a in ques_pred_ans_list]
+    ques_ans_list_formatted = [f"Answer only A) or B).\n Question: {q}\n Proposed Answer: {a}\n Is the proposed answer right or wrong?\n A) The proposed answer is right\n B) The proposed answer is wrong\n Is the answer A) or B)?\n Answer: " for q, a in ques_pred_ans_list]
 
     return ques_ans_list_formatted
 

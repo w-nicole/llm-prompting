@@ -69,13 +69,13 @@ assert len(CONFIDENCE_OPTIONS) == len(CONFIDENCE_OPTIONS_NL)
 CONFIDENCE_SCORE_NL_MAPPING = {v : CONFIDENCE_OPTIONS[k] for k, v in CONFIDENCE_OPTIONS_NL.items()}
 
 # The index of true and false 
-TRUE_FALSE_IDX = {'flan-t5-small' : {"true": 19739, "false": 4168},
-                  'flan-t5-base' : {"true": 19739, "false": 4168},
-                  'flan-t5-large' : {"true": 19739, "false": 4168},
-                  'shearedllama-bling-1.3b' : {"true": 29909, "false": 29933},
-                  'shearedllama-bling-2.7b' : {"true": 29909, "false": 29933},
-                  'mistral-7b': {"true": 28741, "false": 28760},
-                  'llama2-7b': {"true": 29909, "false": 29933}}
+TRUE_FALSE_IDX = {'flan-t5-small' : {"true": 4273, "false": 150},
+                  'flan-t5-base' : {"true": 4273, "false": 150},
+                  'flan-t5-large' : {"true": 4273, "false": 150},
+                  'shearedllama-bling-1.3b' : {"true": 319, "false": 350},
+                  'shearedllama-bling-2.7b' : {"true": 319, "false": 350},
+                  'mistral-7b': {"true": 365, "false": 330},
+                  'llama2-7b': {"true": 319, "false": 350}}
 
 # Setting of parameters and creating of folders for saving of results
 random.seed(SEED)
