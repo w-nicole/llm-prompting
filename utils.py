@@ -64,6 +64,42 @@ def write_json(data, path):
     with open(path, "w", encoding = "UTF-8") as f:
         json.dump(data, f, indent = 4)
 
+# To process diverse outputs
+def unpack_qns(diverse_dataset, id_):
+
+    all_qns = []
+    start_idx = 0
+    idx_list = []
+    for i in id_:
+        new_questions = diverse_dataset[i]["GPT4_diverse_question"]
+        all_qns.extend(new_questions)
+        idx_list.append((start_idx, start_idx + len(new_questions)))
+        start_idx += len(new_questions)
+    
+    return idx_list, all_qns
+
+def get_consistency_score(idx_list, ans, scorer):
+
+    all_scores = []
+
+    for (s, e) in idx_list: 
+
+        current_ans = ans[s:e]
+        assert len(current_ans) == e-s
+
+        ref, pred = [], [] 
+        for i in range(len(current_ans)):
+            for j in range(i, len(current_ans)):
+                if i == j: continue
+                ref.append(current_ans[i])
+                pred.append(current_ans[j])
+
+        P, R, F1 = scorer.score(pred, ref)
+        std = torch.std(F1).item()
+        all_scores.append(std)
+
+    return all_scores
+
 # To turn chosen confidence option to numerical
 def parse_option(option):
 
@@ -106,27 +142,14 @@ def get_model_response(inputs, llm, tokenizer, max_new_tokens = MAX_OUTPUT_LENGT
     return predictions
 
 # Get probability of true functions 
-def get_true_prob(inputs, llm, tokenizer, true_idx, false_idx, llama2 = False):
+def get_true_prob(inputs, llm, tokenizer, true_idx, false_idx):
 
     model_output = get_model_response(inputs, llm, tokenizer, max_new_tokens = 1, return_raw = True)
-    print(model_output["sequences"])
-    predictions = tokenizer.batch_decode(model_output["sequences"], skip_special_tokens = True)
-    print(predictions)
+
     # Get the scores
-    if llama2:
-        scores = model_output["scores"][-1] # Last token in response
-    else:
-        scores = model_output["scores"][0] # First token in response
+    scores = model_output["scores"][0] # First token in response
     prob = torch.concat([scores[:, true_idx].unsqueeze(-1), scores[:, false_idx].unsqueeze(-1)], dim = -1)
-    print(prob)
-    print(torch.isneginf(prob))
-
-
-    prob = torch.where(torch.isneginf(prob), 1.0, prob)
-    print(prob)
-    
-    a = z 
-
+    prob = torch.where(torch.isneginf(prob), 1.0, prob) # For stability
     prob = torch.softmax(prob, dim = -1)[:, 0]
     prob = prob.detach().cpu().numpy().tolist()
 

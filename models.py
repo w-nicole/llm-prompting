@@ -29,7 +29,7 @@ def get_model_and_tokenizer(chosen_model):
     # Add pad token if it does not already exist 
     if tokenizer.pad_token is None: 
         tokenizer.pad_token = tokenizer.eos_token
-        tokenizer.padding_side = "left"
+    tokenizer.padding_side = "left"
         
     if chosen_model in ["flan-t5-small", "flan-t5-base", "flan-t5-large", "flan-t5-xl"]:
         llm = AutoModelForSeq2SeqLM.from_pretrained(MODEL_CHECKPOINTS[chosen_model])
