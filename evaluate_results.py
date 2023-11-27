@@ -6,6 +6,7 @@ def get_results(results):
 
     # Note we loop through different types of confidence scores 
     correct = np.array([r["pred_correct"] for r in results])
+    acc = sum(correct) / len(correct)
 
     # 1. Probability of true 
     true_prob = np.array([r["true_prob"] for r in results])
@@ -47,7 +48,8 @@ def get_results(results):
     P_abstain, R_abstain, F1_abstain, _ = precision_recall_fscore_support(correct, abstain, average = "macro")
 
     # Format the scores 
-    scores = {"ECE_true_prob": ECE_true_prob, 
+    scores = {"Accuracy": acc,
+              "ECE_true_prob": ECE_true_prob, 
               "AUROC_true_prob": AUROC_true_prob,
               "AUC_true_prob": AUC_true_prob,
               "ECE_conf_cons": ECE_conf_cons, 
