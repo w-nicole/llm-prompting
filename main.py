@@ -11,7 +11,7 @@ from metric import compute_bert_score
 from prompt_templates import get_abstain_template, get_get_answer_template, get_self_evaluate_template, \
                              get_confidence_MCQ_template, get_confidence_MCQ_NL_template, get_confidence_OE_template
 
-def get_response(dataloader, llm, tokenizer, bert_scorer):
+def get_response(diverse_dataset, dataloader, llm, tokenizer, bert_scorer):
 
     all_results = []
 
@@ -19,12 +19,26 @@ def get_response(dataloader, llm, tokenizer, bert_scorer):
 
         # Unpack the batch 
         id_, qns, ans = batch 
-        ans = list(ans)
 
-        # # 1. Check if we should abstain
-        # abstain_formatted = ABSTAIN_TEMPLATE(qns)
-        # abstain, _ = get_model_response(abstain_formatted, llm, tokenizer)
-        # abstain = get_clean_abstain_fnc(MODEL)(abstain_formatted, abstain)
+        # Note we only run this experiment if we have diverse outputs for it 
+        check = [i in diverse_dataset for i in id_]
+        if sum(check) == 0: break
+
+        # Only keep those where we have diverse outputs for 
+        id_, qns, ans = [id_[i] for i, v in enumerate(check) if v == True], [qns[i] for i, v in enumerate(check) if v == True], [ans[i] for i, v in enumerate(check) if v == True]
+        idx_list, diverse_qns = unpack_qns(diverse_dataset, id_)
+        
+        # Get consistency scores for diverse questions
+        diverse_qns_formatted = GET_ANSWER_TEMPLATE(diverse_qns)
+        pred_diverse_ans = get_model_response(diverse_qns_formatted, llm, tokenizer)
+        pred_diverse_ans = get_clean_answer_fnc(MODEL)(diverse_qns_formatted, pred_diverse_ans)
+        pred_cons = get_consistency_score(idx_list, pred_diverse_ans, bert_scorer)
+        pred_conf_cons = [1.0 - i for i in pred_cons]
+
+        # 1. Check if we should abstain
+        abstain_formatted = ABSTAIN_TEMPLATE(qns)
+        abstain = get_model_response(abstain_formatted, llm, tokenizer)
+        abstain = get_clean_abstain_fnc(MODEL)(abstain_formatted, abstain)
 
         # 2. Get the answer
         qns_formatted = GET_ANSWER_TEMPLATE(qns)
@@ -47,7 +61,7 @@ def get_response(dataloader, llm, tokenizer, bert_scorer):
 
         # 6. Get confidence score (Open-ended)
         conf_OE_formatted = CONFIDENCE_OE_TEMPLATE(qns, pred_ans)
-        pred_conf_OE, _ = get_model_response(conf_OE_formatted, llm, tokenizer)
+        pred_conf_OE = get_model_response(conf_OE_formatted, llm, tokenizer)
         pred_conf_OE = get_clean_confidence_OE_fnc(MODEL)(conf_OE_formatted, pred_conf_OE)
 
         # 7. Get confidence score (MCQ + NL)
@@ -85,6 +99,7 @@ def get_response(dataloader, llm, tokenizer, bert_scorer):
                                 "pred_correct": pred_correct[i],
                                 "self_eval": self_eval[i],
                                 "true_prob": true_prob[i],
+                                "pred_conf_cons": pred_conf_cons[i],
                                 "pred_conf_MCQ": pred_conf_MCQ[i],
                                 "pred_conf_OE": pred_conf_OE[i],
                                 "pred_conf_NL_MCQ": pred_conf_NL_MCQ[i],
@@ -106,9 +121,11 @@ if __name__ == "__main__":
 
     # Settings
     DATASET = "truthfulqa"
-    MODEL = 'shearedllama-bling-2.7b'
+    MODEL = 'flan-t5-small'
     _, DATASET_FOLDER, OUTPUT_FOLDER = get_folders(DATASET)
-    LLAMA2_CHECK = MODEL == 'llama2-7b'
+    DIVERSE_DATA_PATH = os.path.join(DATASET_FOLDER, "subset_data_w_GPT_output.json")
+    DIVERSE_DATA = read_json(DIVERSE_DATA_PATH)
+    DIVERSE_DATA = {str(r["id_"]) : r for r in DIVERSE_DATA}
 
     # Get the true false index 
     TRUE_IDX, FALSE_IDX = TRUE_FALSE_IDX[MODEL]["true"], TRUE_FALSE_IDX[MODEL]["false"]
@@ -122,14 +139,15 @@ if __name__ == "__main__":
     CONFIDENCE_OE_TEMPLATE = get_confidence_OE_template(MODEL)
 
     # Define partial functions 
-    get_true_prob_p = partial(get_true_prob, true_idx = TRUE_IDX, false_idx = FALSE_IDX, llama2 = LLAMA2_CHECK)
+    get_true_prob_p = partial(get_true_prob, true_idx = TRUE_IDX, false_idx = FALSE_IDX)
 
     # Load the model and dataloader 
     bert_scorer = get_bert_scorer()
     llm, tokenizer = get_model_and_tokenizer(MODEL)
 
-    for split in ["train", "val", "test"]:
+
+    for split in ["train"]:
         current_output_path = os.path.join(OUTPUT_FOLDER, f"{MODEL}_{split}_confidence.json")
         dataloader = get_dataloader(DATASET, os.path.join(DATASET_FOLDER, f"{split}.json"))
-        outputs = get_response(dataloader, llm, tokenizer, bert_scorer)
+        outputs = get_response(DIVERSE_DATA, dataloader, llm, tokenizer, bert_scorer)
         write_json(outputs, current_output_path)
