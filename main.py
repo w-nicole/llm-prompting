@@ -108,9 +108,6 @@ def get_response(diverse_dataset, dataloader, llm, tokenizer, bert_scorer):
                                 "pred_conf_gt_OE": pred_conf_GT_OE[i],
                                 "pred_conf_gt_NL_MCQ": pred_conf_GT_NL_MCQ[i]})
 
-        print(all_results)
-        a = z 
-
     return all_results
 
 if __name__ == "__main__":
@@ -121,7 +118,7 @@ if __name__ == "__main__":
 
     # Settings
     DATASET = "truthfulqa"
-    MODEL = 'flan-t5-small'
+    MODEL = 'llama2-7b'
     _, DATASET_FOLDER, OUTPUT_FOLDER = get_folders(DATASET)
     DIVERSE_DATA_PATH = os.path.join(DATASET_FOLDER, "subset_data_w_GPT_output.json")
     DIVERSE_DATA = read_json(DIVERSE_DATA_PATH)

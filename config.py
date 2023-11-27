@@ -8,7 +8,7 @@ import torch
 # Hyperparameters
 SEED = 0 
 
-BATCH_SIZE = 16
+BATCH_SIZE = 4
 MAX_OUTPUT_LENGTH = 80
 
 N_DIVERSE_QUES = 10 
