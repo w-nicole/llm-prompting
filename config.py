@@ -8,12 +8,13 @@ import torch
 # Hyperparameters
 SEED = 0 
 
-BATCH_SIZE = 32
-MAX_OUTPUT_LENGTH = 50
-
-CONFIDENCE_INTERVAL = 10
+BATCH_SIZE = 16
+MAX_OUTPUT_LENGTH = 80
 
 N_DIVERSE_QUES = 10 
+
+# For bert scorer 
+SCORING_THRESHOLD = 0.8
 
 # Data paths
 DATASET_RAW_FOLDER = 'datasets/raw'
@@ -33,20 +34,48 @@ BERT_SCORER_MODEL = "microsoft/deberta-xlarge-mnli"
 MODEL_CHECKPOINTS = {'flan-t5-small' : 'model_weights/flan-t5/small',
                      'flan-t5-base' : 'model_weights/flan-t5/base',
                      'flan-t5-large' : 'model_weights/flan-t5/large',
-                     'vicuna-7b': 'model_weights/vicuna/7b',
-                     'mistral-7b':'model_weights/mistral/7b', 
+                     'flan-t5-xl' : 'model_weights/flan-t5/xl',
                      'shearedllama-1.3b' :'model_weights/sheared_llama/1.3b',
                      'shearedllama-2.7b' :'model_weights/sheared_llama/2.7b',
-                     'lamma2-7b': ''}
-
+                     'shearedllama-bling-1.3b' :'model_weights/sheared_llama_bling/1.3b',
+                     'shearedllama-bling-2.7b' :'model_weights/sheared_llama_bling/2.7b',
+                     'vicuna-7b': 'model_weights/vicuna/7b',
+                     'mistral-7b':'model_weights/mistral/7b', 
+                     'llama2-7b': 'model_weights/llama2/7b'}
 # Device 
-DEVICE_IDX = 1
+DEVICE_IDX = 3
 DEVICE = torch.device(f"cuda:{DEVICE_IDX}" if torch.cuda.is_available() else "cpu")
 
 # For confidence prompting
+# Percentage as confidence
+CONFIDENCE_INTERVAL = 10
 OPTIONS = np.arange(0, 101, CONFIDENCE_INTERVAL)
 ALPHABETS = [str.upper(c) for c in ascii_lowercase][:len(OPTIONS)]
-CONFIDENCE_OPTIONS = {f"({ALPHABETS[i]})" : OPTIONS[i] for i in range(len(ALPHABETS))}
+CONFIDENCE_OPTIONS = {f"{ALPHABETS[i]})" : f"{OPTIONS[i]}" + "% to "  + f"{OPTIONS[i+1]}" + "%" for i in range(len(ALPHABETS) - 1)}
+
+# Natural language as confidence 
+CONFIDENCE_OPTIONS_NL = {"A)" : "Absolutely uncertain",
+                         "B)" : "Extremely uncertain",
+                         "C)" : "Highly uncertain",
+                         "D)" : "Uncertain",
+                         "E)" : "Unsure, leaning towards uncertain",
+                         "F)" : "Unsure, leaning towards certain",
+                         "G)" : "Certain",
+                         "H)" : "Highly certain", 
+                         "I)" : "Extremely certain",
+                         "J)" : "Absolutely certain"}
+
+assert len(CONFIDENCE_OPTIONS) == len(CONFIDENCE_OPTIONS_NL)
+CONFIDENCE_SCORE_NL_MAPPING = {v : CONFIDENCE_OPTIONS[k] for k, v in CONFIDENCE_OPTIONS_NL.items()}
+
+# The index of true and false 
+TRUE_FALSE_IDX = {'flan-t5-small' : {"true": 19739, "false": 4168},
+                  'flan-t5-base' : {"true": 19739, "false": 4168},
+                  'flan-t5-large' : {"true": 19739, "false": 4168},
+                  'shearedllama-bling-1.3b' : {"true": 29909, "false": 29933},
+                  'shearedllama-bling-2.7b' : {"true": 29909, "false": 29933},
+                  'mistral-7b': {"true": 28741, "false": 28760},
+                  'llama2-7b': {"true": 29909, "false": 29933}}
 
 # Setting of parameters and creating of folders for saving of results
 random.seed(SEED)
