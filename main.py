@@ -22,9 +22,9 @@ def get_response(dataloader, llm, tokenizer, bert_scorer):
         ans = list(ans)
 
         # # 1. Check if we should abstain
-        # abstain_formatted = ABSTAIN_TEMPLATE(qns)
-        # abstain, _ = get_model_response(abstain_formatted, llm, tokenizer)
-        # abstain = get_clean_abstain_fnc(MODEL)(abstain_formatted, abstain)
+        abstain_formatted = ABSTAIN_TEMPLATE(qns)
+        abstain = get_model_response(abstain_formatted, llm, tokenizer)
+        abstain = get_clean_abstain_fnc(MODEL)(abstain_formatted, abstain)
 
         # 2. Get the answer
         qns_formatted = GET_ANSWER_TEMPLATE(qns)
@@ -93,9 +93,6 @@ def get_response(dataloader, llm, tokenizer, bert_scorer):
                                 "pred_conf_gt_OE": pred_conf_GT_OE[i],
                                 "pred_conf_gt_NL_MCQ": pred_conf_GT_NL_MCQ[i]})
 
-        print(all_results)
-        a = z 
-
     return all_results
 
 if __name__ == "__main__":
@@ -106,7 +103,7 @@ if __name__ == "__main__":
 
     # Settings
     DATASET = "truthfulqa"
-    MODEL = 'shearedllama-bling-2.7b'
+    MODEL = 'flan-t5-small'
     _, DATASET_FOLDER, OUTPUT_FOLDER = get_folders(DATASET)
     LLAMA2_CHECK = MODEL == 'llama2-7b'
 

@@ -31,19 +31,19 @@ OUTPUT_FOLDER = 'outputs'
 
 # Model weights
 BERT_SCORER_MODEL = "microsoft/deberta-xlarge-mnli"
-MODEL_CHECKPOINTS = {'flan-t5-small' : 'model_weights/flan-t5/small',
-                     'flan-t5-base' : 'model_weights/flan-t5/base',
-                     'flan-t5-large' : 'model_weights/flan-t5/large',
-                     'flan-t5-xl' : 'model_weights/flan-t5/xl',
-                     'shearedllama-1.3b' :'model_weights/sheared_llama/1.3b',
-                     'shearedllama-2.7b' :'model_weights/sheared_llama/2.7b',
-                     'shearedllama-bling-1.3b' :'model_weights/sheared_llama_bling/1.3b',
-                     'shearedllama-bling-2.7b' :'model_weights/sheared_llama_bling/2.7b',
+MODEL_CHECKPOINTS = {'flan-t5-small' : 'model_weights/flan/flan-t5-small',
+                     'flan-t5-base' : 'model_weights/flan/flan-t5-base',
+                     'flan-t5-large' : 'model_weights/flan/flan-t5-large',
+                     'flan-t5-xl' : 'model_weights/flan/flan-t5-xl',
+                     'shearedllama-1.3b' :'model_weights/sheared_llama/v13',
+                     'shearedllama-2.7b' :'model_weights/sheared_llama/v27',
+                     'shearedllama-bling-1.3b' :'model_weights/sheared_llama_bling/v13',
+                     'shearedllama-bling-2.7b' :'model_weights/sheared_llama_bling/v27',
                      'vicuna-7b': 'model_weights/vicuna/7b',
                      'mistral-7b':'model_weights/mistral/7b', 
                      'llama2-7b': 'model_weights/llama2/7b'}
 # Device 
-DEVICE_IDX = 3
+DEVICE_IDX = 0
 DEVICE = torch.device(f"cuda:{DEVICE_IDX}" if torch.cuda.is_available() else "cpu")
 
 # For confidence prompting

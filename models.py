@@ -17,7 +17,7 @@ def clean_model_keys(model_weights):
 
 def get_bert_scorer():
 
-    return bert_score.BERTScorer(model_type = BERT_SCORER_MODEL, lang = "en", rescale_with_baseline = True)
+    return bert_score.BERTScorer(model_type = BERT_SCORER_MODEL, num_layers = 40, lang = "en", rescale_with_baseline = True)
 
 def get_model_and_tokenizer(chosen_model):
 
