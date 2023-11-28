@@ -19,16 +19,14 @@ def get_response(diverse_dataset, dataloader, llm, tokenizer, bert_scorer):
 
         # Unpack the batch 
         id_, qns, ans = batch 
-
-<<<<<<< HEAD
-        # # 1. Check if we should abstain
-=======
+        
         # Note we only run this experiment if we have diverse outputs for it 
         check = [i in diverse_dataset for i in id_]
         if sum(check) == 0: break
 
         # Only keep those where we have diverse outputs for 
         id_, qns, ans = [id_[i] for i, v in enumerate(check) if v == True], [qns[i] for i, v in enumerate(check) if v == True], [ans[i] for i, v in enumerate(check) if v == True]
+        
         idx_list, diverse_qns = unpack_qns(diverse_dataset, id_)
         
         # Get consistency scores for diverse questions
@@ -38,8 +36,8 @@ def get_response(diverse_dataset, dataloader, llm, tokenizer, bert_scorer):
         pred_cons = get_consistency_score(idx_list, pred_diverse_ans, bert_scorer)
         pred_conf_cons = [1.0 - i for i in pred_cons]
 
-        # 1. Check if we should abstain
->>>>>>> 9eafade543c7ce278ab7850c64e2d6570b3e97da
+    
+        # # 1. Check if we should abstain
         abstain_formatted = ABSTAIN_TEMPLATE(qns)
         abstain = get_model_response(abstain_formatted, llm, tokenizer)
         abstain = get_clean_abstain_fnc(MODEL)(abstain_formatted, abstain)
@@ -99,6 +97,7 @@ def get_response(diverse_dataset, dataloader, llm, tokenizer, bert_scorer):
             all_results.append({"id_": id_[i],
                                 "original_question": qns[i], 
                                 "answer": ans[i], 
+                                "pred_abstain": abstain[i],
                                 "pred_ans" : pred_ans[i],
                                 "pred_correct": pred_correct[i],
                                 "self_eval": self_eval[i],
@@ -110,7 +109,8 @@ def get_response(diverse_dataset, dataloader, llm, tokenizer, bert_scorer):
                                 "self_eval_gt": self_eval_GT[i],
                                 "pred_conf_gt_MCQ": pred_conf_GT_MCQ[i],
                                 "pred_conf_gt_OE": pred_conf_GT_OE[i],
-                                "pred_conf_gt_NL_MCQ": pred_conf_GT_NL_MCQ[i]})
+                                "pred_conf_gt_NL_MCQ": pred_conf_GT_NL_MCQ[i]
+                               })
 
     return all_results
 
@@ -122,7 +122,7 @@ if __name__ == "__main__":
 
     # Settings
     DATASET = "truthfulqa"
-    MODEL = 'flan-t5-small'
+    MODEL = 'shearedllama-bling-1.3b'
     _, DATASET_FOLDER, OUTPUT_FOLDER = get_folders(DATASET)
     DIVERSE_DATA_PATH = os.path.join(DATASET_FOLDER, "subset_data_w_GPT_output.json")
     DIVERSE_DATA = read_json(DIVERSE_DATA_PATH)

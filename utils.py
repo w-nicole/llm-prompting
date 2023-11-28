@@ -236,6 +236,7 @@ def clean_confidence_OE_flan_t5(qns, ans):
             a = float(a)
         except:
             print(a)
+            a = 0.0
         all_ans.append(a)
     return all_ans
 
@@ -394,35 +395,44 @@ def clean_self_eval_llama2(qns, ans):
 def clean_confidence_MCQ_llama2(qns, ans, NL = False):
 
     all_ans = [] 
-
     if NL:
-        options_template = CONFIDENCE_OPTIONS_NL
+        options_template = {k : v for k, v in CONFIDENCE_OPTIONS_NL.items()}
     else:
-        options_template = CONFIDENCE_OPTIONS
+        options_template = {k : v for k, v in CONFIDENCE_OPTIONS.items()}
 
     for q, a in zip(qns, ans):
         
-        a = list(set([r.replace(q, "").strip() for r in a.split("\n") if "Answer:" in r and "Proposed Answer" not in r]))
+        a = list(set([r.replace(q, "").strip() for r in a.split("\n") if q in r]))
+        if not a:
+            all_ans.append(options_template["A)"])
+            continue
+            
         a = a[0]
-        check = False
+        a = a.split(" ")[0] # We get the first answer 
+        a = a.replace(".", "")
 
-        for k, v in options_template.items():
-            if k in a:
-                a = v
-                check = True 
-                break
+        # We have to give it a default value 
+        if a in options_template.keys():
+            a = options_template[a]
         
-        if not check:
-            a = options_template["A)"] # The lowest confidence
-        
+        else:
+            check = False 
+            for k,v in options_template.items(): 
+                if a in k: 
+                    a = v
+                    check = True 
+                    break
+            
+            if not check: 
+                a = options_template["A)"]
         all_ans.append(a)
 
     if NL: 
         all_ans = [CONFIDENCE_SCORE_NL_MAPPING[a] for a in all_ans]
-
     all_ans = [parse_option(a) for a in all_ans]
 
     return all_ans
+
 
 def clean_confidence_OE_llama2(qns, ans):
     
