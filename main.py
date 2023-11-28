@@ -109,8 +109,7 @@ def get_response(diverse_dataset, dataloader, llm, tokenizer, bert_scorer):
                                 "self_eval_gt": self_eval_GT[i],
                                 "pred_conf_gt_MCQ": pred_conf_GT_MCQ[i],
                                 "pred_conf_gt_OE": pred_conf_GT_OE[i],
-                                "pred_conf_gt_NL_MCQ": pred_conf_GT_NL_MCQ[i]
-                               })
+                                "pred_conf_gt_NL_MCQ": pred_conf_GT_NL_MCQ[i]})
 
     return all_results
 

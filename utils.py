@@ -237,6 +237,7 @@ def clean_confidence_OE_flan_t5(qns, ans):
         except:
             print(a)
             a = 0.0
+            a = 0.0
         all_ans.append(a)
     return all_ans
 
