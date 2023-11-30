@@ -157,13 +157,13 @@ if __name__ == "__main__":
     device = torch.device(f"cuda:{idx}") if torch.cuda.is_available() else torch.device("cpu")
     bert_scorer = get_bert_scorer(device)
 
-    # # Load the prompt templates 
-    # ABSTAIN_TEMPLATE = get_abstain_template(args.model)
-    # GET_ANSWER_TEMPLATE = get_get_answer_template(args.model)
-    # SELF_EVALUATE_TEMPLATE = get_self_evaluate_template(args.model)
-    # CONFIDENCE_MCQ_TEMPLATE = get_confidence_MCQ_template(args.model)
-    # CONFIDENCE_MCQ_NL_TEMPLATE = get_confidence_MCQ_NL_template(args.model)
-    # CONFIDENCE_OE_TEMPLATE = get_confidence_OE_template(args.model)
+    # Load the prompt templates 
+    ABSTAIN_TEMPLATE = get_abstain_template(args.model)
+    GET_ANSWER_TEMPLATE = get_get_answer_template(args.model)
+    SELF_EVALUATE_TEMPLATE = get_self_evaluate_template(args.model)
+    CONFIDENCE_MCQ_TEMPLATE = get_confidence_MCQ_template(args.model)
+    CONFIDENCE_MCQ_NL_TEMPLATE = get_confidence_MCQ_NL_template(args.model)
+    CONFIDENCE_OE_TEMPLATE = get_confidence_OE_template(args.model)
 
     # Get the dataloader 
     dataloader = get_dataloader(args.dataset, os.path.join(args.dataset_folder, FILENAME), BATCH_SIZE)
