@@ -53,6 +53,10 @@ def get_dataset(name):
 
     return datasets[name]
 
+def get_dataloader(name, path, batch_size):
+
+    return DataLoader(get_dataset(name)(path), batch_size = batch_size, shuffle = False)
+
 def collate_fn(data):
 
     id_, qns, ans, diverse_qns = [], [], [], []

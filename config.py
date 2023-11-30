@@ -8,7 +8,7 @@ import torch
 # Hyperparameters
 SEED = 0 
 
-BATCH_SIZE = 2
+BATCH_SIZE = 1
 MAX_OUTPUT_LENGTH = 80
 
 N_DIVERSE_QUES = 10 
@@ -45,7 +45,7 @@ MODEL_CHECKPOINTS = {'flan-t5-small' : 'model_weights/flan-t5/small',
                      'mistral-7b':'model_weights/mistral/7b', 
                      'llama2-7b': 'model_weights/llama2/7b'}
 # Device 
-DEVICE_IDX = "1,2,3,4,7" # separate with comma if using multiple GPUs
+DEVICE_IDX = "1,2,3,4,6,7" # separate with comma if using multiple GPUs
 DEVICE = torch.device(f"cuda" if torch.cuda.is_available() else "cpu")
 
 # For confidence prompting

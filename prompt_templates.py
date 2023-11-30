@@ -261,8 +261,8 @@ def confidence_OE_template_llama2(ques_list, pred_ans_list):
 # def confidence_OE_template_shearedllama(ques_list, pred_ans_list):
 #     return
 
-# Diverse prompts 
-def diverse_ques_gpt4_template(ques_list):
+# GPT-3.5-turbo / GPT-4
+def diverse_ques_GPT4_template(ques_list):
 
     """
         Template: Can you ask the following question `{ques}` in {k} diverse ways?"
@@ -271,6 +271,41 @@ def diverse_ques_gpt4_template(ques_list):
     ques_list_formatted = [f"Can you ask the following question `{q}` in {N_DIVERSE_QUES} diverse ways?" for q in ques_list]
     ques_list_formatted = [{"role": "user", "content": q} for q in ques_list_formatted]
     return ques_list_formatted
+
+def abstain_template_GPT4(ques_list):
+
+    ques_list_formatted = [f"Do you know the answer to the question '{q}' answer Yes or No only." for q in ques_list]
+    ques_list_formatted = [{"role": "user", "content": q} for q in ques_list_formatted]
+
+    return ques_list_formatted
+
+def get_answer_template_GPT4(ques_list):
+
+    """
+        Template: Can you ask the following question `{ques}` in {k} diverse ways?"
+    """ 
+    ques_list = [q[0].lower() + q[1:] for q in ques_list]
+    ques_list_formatted = [f"Provide only the answer to the question with no explanations `{q}`" for q in ques_list]
+    ques_list_formatted = [{"role": "user", "content": q} for q in ques_list_formatted]
+    return ques_list_formatted
+
+def get_self_evaluate_template_GPT4(ques_list):
+
+    """
+        Template: Can you ask the following question `{ques}` in {k} diverse ways?"
+    """ 
+    ques_pred_ans_list = list(zip(ques_list, pred_ans_list))
+    ques_ans_list_formatted = [f"Is '{a}' the answer to the question '{q}'? Answer Yes no No only." for q, a in ques_pred_ans_list]
+    ques_ans_list_formatted = [{"role": "user", "content": q} for q in ques_ans_list_formatted]
+    return ques_list_formatted
+
+def confidence_OE_template_GPT4(ques_list, pred_ans_list):
+
+    ques_pred_ans_list = list(zip(ques_list, pred_ans_list))
+    ques_ans_conf_list_formatted = [f"Give a score between 0 and 100 indicating the level of confidence that '{a}' is the answer to '{q}'. A higher score indicates higher confidence and lower score indicates lower confidence." for q, a in ques_pred_ans_list]
+    ques_ans_conf_list_formatted = [{"role": "user", "content": q} for q in ques_ans_conf_list_formatted]
+    
+    return ques_ans_conf_list_formatted
 
 # Function to get the correct functions
 def get_abstain_template(model):

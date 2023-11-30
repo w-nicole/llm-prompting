@@ -10,11 +10,10 @@ import torch.multiprocessing as mp
 from torch.nn.parallel import DistributedDataParallel as DDP
 
 from dataloaders import get_DDP_dataloader
-from models import get_model_and_tokenizer, get_bert_scorer
+from models import get_model_and_tokenizer
 
 from utils import *
 from ddp_utils import *
-from metric import compute_bert_score
 from prompt_templates import get_abstain_template, get_get_answer_template, get_self_evaluate_template, \
                              get_confidence_MCQ_template, get_confidence_MCQ_NL_template, get_confidence_OE_template
 
@@ -129,6 +128,8 @@ def get_response(rank, args):
                     "pred_conf_gt_NL_MCQ": pred_conf_GT_NL_MCQ[i]}
             
             write_json(res, os.path.join(args.temp_folder, f"{idx}.json"))
+    
+    cleanup()
 
 if __name__ == "__main__":
 
