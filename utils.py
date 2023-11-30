@@ -65,17 +65,17 @@ def write_json(data, path):
         json.dump(data, f, indent = 4)
 
 # To process diverse outputs
-def unpack_qns(diverse_dataset, id_):
+def unpack_qns(diverse_qns, id_):
 
     all_qns = []
     start_idx = 0
     idx_list = []
-    for i in id_:
-        new_questions = diverse_dataset[i]["GPT4_diverse_question"]
-        all_qns.extend(new_questions)
-        idx_list.append((start_idx, start_idx + len(new_questions)))
-        start_idx += len(new_questions)
-    
+    for q in diverse_qns:
+        q = [r for r in q if r != ""]
+        all_qns.extend(q)
+        idx_list.append((start_idx, start_idx + len(q)))
+        start_idx += len(q)
+
     return idx_list, all_qns
 
 def get_consistency_score(idx_list, ans, scorer):
@@ -129,11 +129,11 @@ def format_MCQ_options(options, add_or = False):
 
     return format 
 
-def get_model_response(inputs, llm, tokenizer, max_new_tokens = MAX_OUTPUT_LENGTH, return_raw = False):
+def get_model_response(inputs, llm, tokenizer, device, max_new_tokens = MAX_OUTPUT_LENGTH, return_raw = False):
 
     inputs = tokenizer(inputs, padding = True, truncation = True, return_tensors = "pt")
-    inputs.to(DEVICE) # Move to GPU / CPU
-    outputs = llm.generate(**inputs, return_dict_in_generate = True, output_scores = True, max_new_tokens = max_new_tokens, repetition_penalty = 1.0)
+    inputs.to(device) # Move to GPU / CPU
+    outputs = llm.module.generate(**inputs, return_dict_in_generate = True, output_scores = True, max_new_tokens = max_new_tokens, repetition_penalty = 1.0)
     predictions = tokenizer.batch_decode(outputs["sequences"], skip_special_tokens = True)
 
     if return_raw:
@@ -142,9 +142,9 @@ def get_model_response(inputs, llm, tokenizer, max_new_tokens = MAX_OUTPUT_LENGT
     return predictions
 
 # Get probability of true functions 
-def get_true_prob(inputs, llm, tokenizer, true_idx, false_idx):
+def get_true_prob(inputs, llm, tokenizer, device, true_idx, false_idx):
 
-    model_output = get_model_response(inputs, llm, tokenizer, max_new_tokens = 1, return_raw = True)
+    model_output = get_model_response(inputs, llm, tokenizer, device, max_new_tokens = 1, return_raw = True)
 
     # Get the scores
     scores = model_output["scores"][0] # First token in response
@@ -300,10 +300,22 @@ def clean_confidence_MCQ_mistral(qns, ans, NL = False):
         
         a = list(set([r.replace(q, "").strip() for r in a.split("\n") if q in r]))[0]
         a = a.split(" ")[0] # We get the first answer 
+        a = a.replace(".", "")
 
         # We have to give it a default value 
         if a in options_template.keys():
             a = options_template[a]
+        
+        else:
+            check = False 
+            for k,v in options_template.items(): 
+                if a in k: 
+                    a = v
+                    check = True 
+                    break
+            
+            if not check: 
+                a = options_template["A)"]
         all_ans.append(a)
 
     if NL: 

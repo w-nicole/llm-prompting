@@ -15,9 +15,9 @@ def clean_model_keys(model_weights):
     
     return cleaned_model_weights
 
-def get_bert_scorer():
+def get_bert_scorer(device):
 
-    return bert_score.BERTScorer(model_type = BERT_SCORER_MODEL, lang = "en", rescale_with_baseline = True)
+    return bert_score.BERTScorer(model_type = BERT_SCORER_MODEL, lang = "en", rescale_with_baseline = True, device = device)
 
 def get_model_and_tokenizer(chosen_model):
 
@@ -41,14 +41,5 @@ def get_model_and_tokenizer(chosen_model):
     else:
         raise NotImplementedError()
 
-    # Move to GPU 
-    llm.to(DEVICE)
-    
     return llm, tokenizer
-
-if __name__ == "__main__":
-
-    llm, tokenizer = get_model_and_tokenizer("llama2-7b")
-    print("Managed to run successfully")
-
 

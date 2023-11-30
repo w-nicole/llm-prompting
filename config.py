@@ -8,7 +8,7 @@ import torch
 # Hyperparameters
 SEED = 0 
 
-BATCH_SIZE = 4
+BATCH_SIZE = 2
 MAX_OUTPUT_LENGTH = 80
 
 N_DIVERSE_QUES = 10 
@@ -27,6 +27,8 @@ TRUTHFUL_QA_PROCESSED_FOLDER = os.path.join(DATASET_PROCESSED_FOLDER, 'truthfulq
 TRIVIA_QA_PROCESSED_FOLDER = os.path.join(DATASET_PROCESSED_FOLDER, 'triviaqa')
 SCIQ_PROCESSED_FOLDER = os.path.join(DATASET_PROCESSED_FOLDER, 'sciq')
 
+FILENAME = "data_w_GPT4_output_1K.json"
+
 OUTPUT_FOLDER = 'outputs'
 
 # Model weights
@@ -43,8 +45,8 @@ MODEL_CHECKPOINTS = {'flan-t5-small' : 'model_weights/flan-t5/small',
                      'mistral-7b':'model_weights/mistral/7b', 
                      'llama2-7b': 'model_weights/llama2/7b'}
 # Device 
-DEVICE_IDX = 3
-DEVICE = torch.device(f"cuda:{DEVICE_IDX}" if torch.cuda.is_available() else "cpu")
+DEVICE_IDX = "1,2,3,4,7" # separate with comma if using multiple GPUs
+DEVICE = torch.device(f"cuda" if torch.cuda.is_available() else "cpu")
 
 # For confidence prompting
 # Percentage as confidence
