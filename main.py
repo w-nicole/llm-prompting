@@ -1,34 +1,25 @@
 import os 
 from config import * 
-os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"] = DEVICE_IDX
 
 import argparse 
 from tqdm import tqdm 
 from functools import partial
-import torch.multiprocessing as mp
-from torch.nn.parallel import DistributedDataParallel as DDP
 
-from dataloaders import get_DDP_dataloader
+from dataloaders import get_dataloader
 from models import get_model_and_tokenizer
 
 from utils import *
-from ddp_utils import *
 from prompt_templates import get_abstain_template, get_get_answer_template, get_self_evaluate_template, \
                              get_confidence_MCQ_template, get_confidence_MCQ_NL_template, get_confidence_OE_template
 
+@torch.no_grad()
 def get_response(rank, args):
-
-    # setup the process groups
-    setup(rank, args.world_size)
 
     # Define partial functions 
     get_true_prob_p = partial(get_true_prob, device = rank, true_idx = args.true_idx, false_idx = args.false_idx)
 
     # Get the models
     llm, tokenizer = get_model_and_tokenizer(args.model)
-    llm = llm.to(rank)
-    llm = DDP(llm, device_ids = [rank], output_device = rank)
 
     # Load the prompt templates 
     ABSTAIN_TEMPLATE = get_abstain_template(args.model)
@@ -39,7 +30,7 @@ def get_response(rank, args):
     CONFIDENCE_OE_TEMPLATE = get_confidence_OE_template(args.model)
 
     # Get the dataloader 
-    dataloader = get_DDP_dataloader(rank, args.world_size, args.dataset, os.path.join(args.dataset_folder, FILENAME), SEED)
+    dataloader = get_dataloader(args.dataset, os.path.join(args.dataset_folder, FILENAME), BATCH_SIZE)
 
     for batch in tqdm(dataloader):
 
@@ -128,8 +119,6 @@ def get_response(rank, args):
                     "pred_conf_gt_NL_MCQ": pred_conf_GT_NL_MCQ[i]}
             
             write_json(res, os.path.join(args.temp_folder, f"{idx}.json"))
-    
-    cleanup()
 
 if __name__ == "__main__":
 
@@ -158,10 +147,6 @@ if __name__ == "__main__":
     args.true_idx = true_idx 
     args.false_idx = false_idx
 
-    # Spawn multi GPU
-    world_size = torch.cuda.device_count()
-    args.world_size = world_size
-    mp.spawn(get_response, args = (args,),
-             nprocs = world_size)
-    
+    # Run 
+    get_response(None, args)
     # Clean up the records and merge into 1 file

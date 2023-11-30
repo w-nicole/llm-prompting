@@ -8,7 +8,7 @@ import torch
 # Hyperparameters
 SEED = 0 
 
-BATCH_SIZE = 1
+BATCH_SIZE = 32
 MAX_OUTPUT_LENGTH = 80
 
 N_DIVERSE_QUES = 10 
@@ -46,7 +46,8 @@ MODEL_CHECKPOINTS = {'flan-t5-small' : 'model_weights/flan-t5/small',
                      'llama2-7b': 'model_weights/llama2/7b'}
 # Device 
 DEVICE_IDX = "1,2,3,4,6,7" # separate with comma if using multiple GPUs
-DEVICE = torch.device(f"cuda" if torch.cuda.is_available() else "cpu")
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+MEMORY_ALLOCATION = {int(i) : "38GB" for i in DEVICE_IDX.split(",")}
 
 # For confidence prompting
 # Percentage as confidence

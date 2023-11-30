@@ -132,8 +132,8 @@ def format_MCQ_options(options, add_or = False):
 def get_model_response(inputs, llm, tokenizer, device, max_new_tokens = MAX_OUTPUT_LENGTH, return_raw = False):
 
     inputs = tokenizer(inputs, padding = True, truncation = True, return_tensors = "pt")
-    inputs.to(device) # Move to GPU / CPU
-    outputs = llm.module.generate(**inputs, return_dict_in_generate = True, output_scores = True, max_new_tokens = max_new_tokens, repetition_penalty = 1.0)
+    inputs.to("cuda") # Move to GPU / CPU
+    outputs = llm.generate(**inputs, return_dict_in_generate = True, output_scores = True, max_new_tokens = max_new_tokens, repetition_penalty = 1.0)
     predictions = tokenizer.batch_decode(outputs["sequences"], skip_special_tokens = True)
 
     if return_raw:

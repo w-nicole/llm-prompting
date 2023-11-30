@@ -32,12 +32,12 @@ def get_model_and_tokenizer(chosen_model):
     tokenizer.padding_side = "left"
         
     if chosen_model in ["flan-t5-small", "flan-t5-base", "flan-t5-large", "flan-t5-xl"]:
-        llm = AutoModelForSeq2SeqLM.from_pretrained(MODEL_CHECKPOINTS[chosen_model])
+        llm = AutoModelForSeq2SeqLM.from_pretrained(MODEL_CHECKPOINTS[chosen_model], device_map = "auto", max_memory = MEMORY_ALLOCATION)
     elif chosen_model in ["shearedllama-bling-1.3b", "shearedllama-bling-2.7b", "shearedllama-1.3b", "shearedllama-2.7b", "llama2-7b", "mistral-7b"]:
-        llm = AutoModelForCausalLM.from_pretrained(MODEL_CHECKPOINTS[chosen_model])
+        llm = AutoModelForCausalLM.from_pretrained(MODEL_CHECKPOINTS[chosen_model], device_map = "auto", max_memory = MEMORY_ALLOCATION)
     
     elif chosen_model in ["llama2-7b"]:
-        llm = LlamaForCausalLM.from_pretrained(MODEL_CHECKPOINTS[chosen_model])
+        llm = LlamaForCausalLM.from_pretrained(MODEL_CHECKPOINTS[chosen_model], device_map = "auto", max_memory = MEMORY_ALLOCATION)
     else:
         raise NotImplementedError()
 
