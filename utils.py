@@ -65,7 +65,7 @@ def write_json(data, path):
         json.dump(data, f, indent = 4)
 
 # To process diverse outputs
-def unpack_qns(diverse_qns, id_):
+def unpack_qns(diverse_qns):
 
     all_qns = []
     start_idx = 0
@@ -77,6 +77,16 @@ def unpack_qns(diverse_qns, id_):
         start_idx += len(q)
 
     return idx_list, all_qns
+
+def pack_qns_ans(idx_list, qns_list, ans_list):
+
+    qns_packed, ans_packed = [],[]
+    for (s, e) in idx_list:
+
+        qns_packed.append(qns_list[s:e])
+        ans_packed.append(ans_list[s:e])
+    
+    return qns_packed, ans_packed
 
 def get_consistency_score(idx_list, ans, scorer):
 
@@ -129,11 +139,14 @@ def format_MCQ_options(options, add_or = False):
 
     return format 
 
-def get_model_response(inputs, llm, tokenizer, device, max_new_tokens = MAX_OUTPUT_LENGTH, return_raw = False):
+def get_model_response(inputs, llm, tokenizer, max_new_tokens = MAX_OUTPUT_LENGTH, return_raw = False):
 
-    inputs = tokenizer(inputs, padding = True, truncation = True, return_tensors = "pt")
-    inputs.to("cuda") # Move to GPU / CPU
-    outputs = llm.generate(**inputs, return_dict_in_generate = True, output_scores = True, max_new_tokens = max_new_tokens, repetition_penalty = 1.0)
+    inputs = tokenizer(inputs, padding = True, truncation = True, return_tensors = "pt", max_length = MAX_OUTPUT_LENGTH)
+    inputs.to(llm.device) # Move to GPU / CPU
+    outputs = llm.generate(**inputs, return_dict_in_generate = True, 
+                                     output_scores = True, 
+                                     max_new_tokens = max_new_tokens, 
+                                     repetition_penalty = 1.0)
     predictions = tokenizer.batch_decode(outputs["sequences"], skip_special_tokens = True)
 
     if return_raw:
@@ -142,9 +155,9 @@ def get_model_response(inputs, llm, tokenizer, device, max_new_tokens = MAX_OUTP
     return predictions
 
 # Get probability of true functions 
-def get_true_prob(inputs, llm, tokenizer, device, true_idx, false_idx):
+def get_true_prob(inputs, llm, tokenizer, true_idx, false_idx):
 
-    model_output = get_model_response(inputs, llm, tokenizer, device, max_new_tokens = 1, return_raw = True)
+    model_output = get_model_response(inputs, llm, tokenizer, max_new_tokens = 1, return_raw = True)
 
     # Get the scores
     scores = model_output["scores"][0] # First token in response

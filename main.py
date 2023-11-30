@@ -13,24 +13,7 @@ from prompt_templates import get_abstain_template, get_get_answer_template, get_
                              get_confidence_MCQ_template, get_confidence_MCQ_NL_template, get_confidence_OE_template
 
 @torch.no_grad()
-def get_response(rank, args):
-
-    # Define partial functions 
-    get_true_prob_p = partial(get_true_prob, device = rank, true_idx = args.true_idx, false_idx = args.false_idx)
-
-    # Get the models
-    llm, tokenizer = get_model_and_tokenizer(args.model)
-
-    # Load the prompt templates 
-    ABSTAIN_TEMPLATE = get_abstain_template(args.model)
-    GET_ANSWER_TEMPLATE = get_get_answer_template(args.model)
-    SELF_EVALUATE_TEMPLATE = get_self_evaluate_template(args.model)
-    CONFIDENCE_MCQ_TEMPLATE = get_confidence_MCQ_template(args.model)
-    CONFIDENCE_MCQ_NL_TEMPLATE = get_confidence_MCQ_NL_template(args.model)
-    CONFIDENCE_OE_TEMPLATE = get_confidence_OE_template(args.model)
-
-    # Get the dataloader 
-    dataloader = get_dataloader(args.dataset, os.path.join(args.dataset_folder, FILENAME), BATCH_SIZE)
+def get_response(llm, tokenizer, dataloader, args):
 
     for batch in tqdm(dataloader):
 
@@ -38,26 +21,27 @@ def get_response(rank, args):
         id_, qns, ans, diverse_qns = batch
 
         # Merge the outputs of the diverse questions
-        idx_list, diverse_qns = unpack_qns(diverse_qns, id_)
+        idx_list, diverse_qns = unpack_qns(diverse_qns)
 
         # Get responses from all the answers
         diverse_qns_formatted = GET_ANSWER_TEMPLATE(diverse_qns)
-        pred_diverse_ans = get_model_response(diverse_qns_formatted, llm, tokenizer, rank)
+        pred_diverse_ans = get_model_response(diverse_qns_formatted, llm, tokenizer)
         pred_diverse_ans = get_clean_answer_fnc(args.model)(diverse_qns_formatted, pred_diverse_ans)
+        diverse_qns, pred_diverse_ans = pack_qns_ans(idx_list, diverse_qns, pred_diverse_ans)
 
         # 1. Check if we should abstain
         abstain_formatted = ABSTAIN_TEMPLATE(qns)
-        abstain = get_model_response(abstain_formatted, llm, tokenizer, rank)
+        abstain = get_model_response(abstain_formatted, llm, tokenizer)
         abstain = get_clean_abstain_fnc(args.model)(abstain_formatted, abstain)
 
         # 2. Get the answer
         qns_formatted = GET_ANSWER_TEMPLATE(qns)
-        pred_ans = get_model_response(qns_formatted, llm, tokenizer, rank)
+        pred_ans = get_model_response(qns_formatted, llm, tokenizer)
         pred_ans = get_clean_answer_fnc(args.model)(qns_formatted, pred_ans)
 
         # 3. Get self evaluation
         self_eval_formatted = SELF_EVALUATE_TEMPLATE(qns, pred_ans)
-        self_eval = get_model_response(self_eval_formatted, llm, tokenizer, rank)
+        self_eval = get_model_response(self_eval_formatted, llm, tokenizer)
         self_eval = get_clean_self_evaluate_fnc(args.model)(self_eval_formatted, self_eval)
 
         # 4. Get probability of true given answer
@@ -65,37 +49,37 @@ def get_response(rank, args):
 
         # 5. Get confidence score (MCQ)
         conf_MCQ_formatted = CONFIDENCE_MCQ_TEMPLATE(qns, pred_ans)
-        pred_conf_MCQ = get_model_response(conf_MCQ_formatted, llm, tokenizer, rank)
+        pred_conf_MCQ = get_model_response(conf_MCQ_formatted, llm, tokenizer)
         pred_conf_MCQ = get_clean_confidence_MCQ_fnc(args.model)(conf_MCQ_formatted, pred_conf_MCQ)
 
         # 6. Get confidence score (Open-ended)
         conf_OE_formatted = CONFIDENCE_OE_TEMPLATE(qns, pred_ans)
-        pred_conf_OE = get_model_response(conf_OE_formatted, llm, tokenizer, rank)
+        pred_conf_OE = get_model_response(conf_OE_formatted, llm, tokenizer)
         pred_conf_OE = get_clean_confidence_OE_fnc(args.model)(conf_OE_formatted, pred_conf_OE)
 
         # 7. Get confidence score (MCQ + NL)
         conf_NL_MCQ_formatted = CONFIDENCE_MCQ_NL_TEMPLATE(qns, pred_ans)
-        pred_conf_NL_MCQ = get_model_response(conf_NL_MCQ_formatted, llm, tokenizer, rank)
+        pred_conf_NL_MCQ = get_model_response(conf_NL_MCQ_formatted, llm, tokenizer)
         pred_conf_NL_MCQ = get_clean_confidence_MCQ_fnc(args.model)(conf_NL_MCQ_formatted, pred_conf_NL_MCQ, NL = True)
 
         # 8. Get self evaluation (ground truth ans)
         self_eval_GT_formatted = SELF_EVALUATE_TEMPLATE(qns, ans)
-        self_eval_GT = get_model_response(self_eval_GT_formatted, llm, tokenizer, rank)
+        self_eval_GT = get_model_response(self_eval_GT_formatted, llm, tokenizer)
         self_eval_GT = get_clean_self_evaluate_fnc(args.model)(self_eval_GT_formatted, self_eval_GT)
 
         # 9. Get confidence score (MCQ + ground truth ans)
         conf_GT_MCQ_formatted = CONFIDENCE_MCQ_TEMPLATE(qns, ans)
-        pred_conf_GT_MCQ = get_model_response(conf_GT_MCQ_formatted, llm, tokenizer, rank)
+        pred_conf_GT_MCQ = get_model_response(conf_GT_MCQ_formatted, llm, tokenizer)
         pred_conf_GT_MCQ = get_clean_confidence_MCQ_fnc(args.model)(conf_GT_MCQ_formatted, pred_conf_GT_MCQ)
 
         # 10. Get confidence score (Open-ended + ground truth ans)
         conf_GT_OE_formatted = CONFIDENCE_OE_TEMPLATE(qns, ans)
-        pred_conf_GT_OE = get_model_response(conf_GT_OE_formatted, llm, tokenizer, rank)
+        pred_conf_GT_OE = get_model_response(conf_GT_OE_formatted, llm, tokenizer)
         pred_conf_GT_OE = get_clean_confidence_OE_fnc(args.model)(conf_GT_OE_formatted, pred_conf_GT_OE)
 
         # 11. Get confidence score (MCQ + NL + ground truth ans)
         conf_GT_NL_MCQ_formatted = CONFIDENCE_MCQ_NL_TEMPLATE(qns, ans)
-        pred_conf_GT_NL_MCQ = get_model_response(conf_GT_NL_MCQ_formatted, llm, tokenizer, rank)
+        pred_conf_GT_NL_MCQ = get_model_response(conf_GT_NL_MCQ_formatted, llm, tokenizer)
         pred_conf_GT_NL_MCQ = get_clean_confidence_MCQ_fnc(args.model)(conf_GT_NL_MCQ_formatted, pred_conf_GT_NL_MCQ, NL = True)
 
         # Merge all the responses together
@@ -147,6 +131,24 @@ if __name__ == "__main__":
     args.true_idx = true_idx 
     args.false_idx = false_idx
 
-    # Run 
-    get_response(None, args)
+    # Define partial functions 
+    get_true_prob_p = partial(get_true_prob, true_idx = args.true_idx, false_idx = args.false_idx)
+
+    # Get the models
+    llm, tokenizer = get_model_and_tokenizer(args.model)
+
+    # Load the prompt templates 
+    ABSTAIN_TEMPLATE = get_abstain_template(args.model)
+    GET_ANSWER_TEMPLATE = get_get_answer_template(args.model)
+    SELF_EVALUATE_TEMPLATE = get_self_evaluate_template(args.model)
+    CONFIDENCE_MCQ_TEMPLATE = get_confidence_MCQ_template(args.model)
+    CONFIDENCE_MCQ_NL_TEMPLATE = get_confidence_MCQ_NL_template(args.model)
+    CONFIDENCE_OE_TEMPLATE = get_confidence_OE_template(args.model)
+
+    # Get the dataloader 
+    dataloader = get_dataloader(args.dataset, os.path.join(args.dataset_folder, FILENAME), BATCH_SIZE)
+
+    # Run and get response 
+    get_response(llm, tokenizer, dataloader, args)
+
     # Clean up the records and merge into 1 file

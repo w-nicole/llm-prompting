@@ -55,7 +55,7 @@ def get_dataset(name):
 
 def get_dataloader(name, path, batch_size):
 
-    return DataLoader(get_dataset(name)(path), batch_size = batch_size, shuffle = False)
+    return DataLoader(get_dataset(name)(path), batch_size = batch_size, shuffle = False, collate_fn = collate_fn)
 
 def collate_fn(data):
 
@@ -69,16 +69,3 @@ def collate_fn(data):
         diverse_qns.append(rec[3])
 
     return id_, qns, ans, diverse_qns
-
-def get_DDP_dataloader(rank, world_size, name, path, seed, pin_memory = False, num_workers = 0, shuffle = True):
-
-    dataset = get_dataset(name)(path)
-    sampler = DistributedSampler(dataset, seed = seed, num_replicas = world_size, rank = rank, shuffle = shuffle, drop_last = False)
-
-    dataloader = DataLoader(dataset, batch_size = BATCH_SIZE,
-                                     collate_fn = collate_fn,
-                                     pin_memory = pin_memory,
-                                     num_workers = num_workers,
-                                     drop_last = False, 
-                                     sampler = sampler)
-    return dataloader
