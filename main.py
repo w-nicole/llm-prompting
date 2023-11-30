@@ -6,7 +6,8 @@ from tqdm import tqdm
 from functools import partial
 
 from dataloaders import get_dataloader
-from models import get_model_and_tokenizer
+from models import get_model_and_tokenizer, get_bert_scorer
+from metric import compute_bert_score, get_pairwise_bert_score
 
 from utils import *
 from prompt_templates import get_abstain_template, get_get_answer_template, get_self_evaluate_template, \
@@ -104,6 +105,21 @@ def get_response(llm, tokenizer, dataloader, args):
             
             write_json(res, os.path.join(args.temp_folder, f"{idx}.json"))
 
+def merge_records(folder, output_file_path):
+
+    all_results = [read_json(os.path.join(folder, f)) for f in os.listdir(folder)]
+    pred_ans, ans = [r["pred_ans"] for r in all_results], [r["answer"] for r in all_results]
+    pred_ans_bertscore = compute_bert_score(bert_scorer, pred_ans, ans).detach().cpu().numpy()
+    for i, r in enumerate(all_results): r["pred_ans_bert_score"] = pred_ans_bertscore[i]
+
+    for r in tqdm(all_results):
+
+        diverse_ques = [r["pred_ans"]] + r["pred_diverse_ans"]
+        diverse_ans_bertscore = get_pairwise_bert_score(bert_scorer, diverse_ques)
+        r["pred_ans_bert_score"] = diverse_ans_bertscore
+
+    write_json(all_results, output_file_path)
+
 if __name__ == "__main__":
 
     """
@@ -115,7 +131,7 @@ if __name__ == "__main__":
 
     # Data settings 
     parser.add_argument("--dataset", type = str, default = "triviaqa", help = "The dataset")
-    parser.add_argument("--model", type = str, default = "llama2-7b", help = "LLM to use")
+    parser.add_argument("--model", type = str, default = "flan-t5-small", help = "LLM to use")
 
     # Set defaults 
     args = parser.parse_args()
@@ -124,6 +140,7 @@ if __name__ == "__main__":
     _, dataset_folder, output_folder = get_folders(args.dataset)
     args.dataset_folder = dataset_folder
     args.output_folder = output_folder
+    args.output_file_path = os.path.join(args.output_folder, f"{args.model}.json")
     args.temp_folder = os.path.join(output_folder, f"{args.model}_temp")
     if not os.path.exists(args.temp_folder):
         os.makedirs(args.temp_folder)
@@ -134,21 +151,24 @@ if __name__ == "__main__":
     # Define partial functions 
     get_true_prob_p = partial(get_true_prob, true_idx = args.true_idx, false_idx = args.false_idx)
 
-    # Get the models
-    llm, tokenizer = get_model_and_tokenizer(args.model)
+    # # Get the models
+    # llm, tokenizer = get_model_and_tokenizer(args.model)
+    idx = DEVICE_IDX.split(",")[0]
+    device = torch.device(f"cuda:{idx}") if torch.cuda.is_available() else torch.device("cpu")
+    bert_scorer = get_bert_scorer(device)
 
-    # Load the prompt templates 
-    ABSTAIN_TEMPLATE = get_abstain_template(args.model)
-    GET_ANSWER_TEMPLATE = get_get_answer_template(args.model)
-    SELF_EVALUATE_TEMPLATE = get_self_evaluate_template(args.model)
-    CONFIDENCE_MCQ_TEMPLATE = get_confidence_MCQ_template(args.model)
-    CONFIDENCE_MCQ_NL_TEMPLATE = get_confidence_MCQ_NL_template(args.model)
-    CONFIDENCE_OE_TEMPLATE = get_confidence_OE_template(args.model)
+    # # Load the prompt templates 
+    # ABSTAIN_TEMPLATE = get_abstain_template(args.model)
+    # GET_ANSWER_TEMPLATE = get_get_answer_template(args.model)
+    # SELF_EVALUATE_TEMPLATE = get_self_evaluate_template(args.model)
+    # CONFIDENCE_MCQ_TEMPLATE = get_confidence_MCQ_template(args.model)
+    # CONFIDENCE_MCQ_NL_TEMPLATE = get_confidence_MCQ_NL_template(args.model)
+    # CONFIDENCE_OE_TEMPLATE = get_confidence_OE_template(args.model)
 
     # Get the dataloader 
     dataloader = get_dataloader(args.dataset, os.path.join(args.dataset_folder, FILENAME), BATCH_SIZE)
 
     # Run and get response 
-    get_response(llm, tokenizer, dataloader, args)
-
-    # Clean up the records and merge into 1 file
+    # get_response(llm, tokenizer, dataloader, args)
+    merge_records(args.temp_folder, args.output_file_path)
+    os.removedirs(args.temp_folder)

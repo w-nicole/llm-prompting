@@ -88,28 +88,6 @@ def pack_qns_ans(idx_list, qns_list, ans_list):
     
     return qns_packed, ans_packed
 
-def get_consistency_score(idx_list, ans, scorer):
-
-    all_scores = []
-
-    for (s, e) in idx_list: 
-
-        current_ans = ans[s:e]
-        assert len(current_ans) == e-s
-
-        ref, pred = [], [] 
-        for i in range(len(current_ans)):
-            for j in range(i, len(current_ans)):
-                if i == j: continue
-                ref.append(current_ans[i])
-                pred.append(current_ans[j])
-
-        P, R, F1 = scorer.score(pred, ref)
-        std = torch.std(F1).item()
-        all_scores.append(std)
-
-    return all_scores
-
 # To turn chosen confidence option to numerical
 def parse_option(option):
 

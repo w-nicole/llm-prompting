@@ -3,9 +3,36 @@ from sklearn import metrics
 from sklearn.metrics import auc, precision_recall_fscore_support
 
 # For BERT SCORER
-def compute_bert_score(scorer, cands: list[str], refs: list[str], threshold = 0.8):
-    P, R, F1 = scorer.score(cands, refs)
-    return [1 if score >= threshold else 0 for score in F1]
+def compute_bert_score(scorer, cands: list[str], refs: list[str]):
+
+    _, _, F1 = scorer.score(cands, refs)
+    
+    return F1
+
+def get_pairwise_bert_score(scorer, ans_list):
+
+    ref, pred = [], []
+    idx = [] 
+    all_scores = np.zeros((len(ans_list), len(ans_list)))
+
+    for i in range(len(ans_list)):
+        for j in range(i, len(ans_list)):
+            ref.append(ans_list[i])
+            pred.append(ans_list[j])
+            idx.append((i,j))
+
+        F1 = compute_bert_score(scorer, pred, ref)
+        F1 = F1.detach().cpu().numpy()
+
+        for s_i, (i,j) in enumerate(idx):
+            all_scores[i, j] = F1[s_i]
+            all_scores[j, i] = F1[s_i]
+
+    return all_scores
+
+# def compute_bert_score(scorer, cands: list[str], refs: list[str], threshold = 0.8):
+#     P, R, F1 = scorer.score(cands, refs)
+#     return [1 if score >= threshold else 0 for score in F1]
 
 # Getting the ECE score
 def ECE(conf, accuracy, n_bins = 10):
