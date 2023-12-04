@@ -33,13 +33,22 @@ def get_model_and_tokenizer(chosen_model):
         
     if chosen_model in ["flan-t5-small", "flan-t5-base", "flan-t5-large", "flan-t5-xl"]:
         llm = AutoModelForSeq2SeqLM.from_pretrained(MODEL_CHECKPOINTS[chosen_model], device_map = "auto", max_memory = MEMORY_ALLOCATION)
-    elif chosen_model in ["shearedllama-bling-1.3b", "shearedllama-bling-2.7b", "shearedllama-1.3b", "shearedllama-2.7b", "llama2-7b", "mistral-7b"]:
+        
+    elif chosen_model in ["shearedllama-bling-1.3b", "shearedllama-bling-2.7b", 
+                          "shearedllama-1.3b", "shearedllama-2.7b", 
+                          "mistral-7b", "mistral-7b-instruct"]:
         llm = AutoModelForCausalLM.from_pretrained(MODEL_CHECKPOINTS[chosen_model], device_map = "auto", max_memory = MEMORY_ALLOCATION)
     
-    elif chosen_model in ["llama2-7b"]:
+    elif chosen_model in ["llama2-7b-chat", "llama2-13b-chat"]:
         llm = LlamaForCausalLM.from_pretrained(MODEL_CHECKPOINTS[chosen_model], device_map = "auto", max_memory = MEMORY_ALLOCATION)
     else:
         raise NotImplementedError()
 
     return llm, tokenizer
+
+if __name__ == "__main__":
+    
+    chosen_model = "llama2-13b-chat"
+    get_model_and_tokenizer(chosen_model)
+    print("okay loaded")
 

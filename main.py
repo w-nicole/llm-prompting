@@ -1,4 +1,4 @@
-import os 
+import os, shutil
 from config import * 
 
 import argparse 
@@ -33,7 +33,10 @@ def get_response(llm, tokenizer, dataloader, args):
         # 1. Check if we should abstain
         abstain_formatted = ABSTAIN_TEMPLATE(qns)
         abstain = get_model_response(abstain_formatted, llm, tokenizer)
-        abstain = get_clean_abstain_fnc(args.model)(abstain_formatted, abstain)
+        # abstain = get_clean_abstain_fnc(args.model)(abstain_formatted, abstain)
+
+        print(abstain)
+        a =z 
 
         # 2. Get the answer
         qns_formatted = GET_ANSWER_TEMPLATE(qns)
@@ -109,14 +112,14 @@ def merge_records(folder, output_file_path):
 
     all_results = [read_json(os.path.join(folder, f)) for f in os.listdir(folder)]
     pred_ans, ans = [r["pred_ans"] for r in all_results], [r["answer"] for r in all_results]
-    pred_ans_bertscore = compute_bert_score(bert_scorer, pred_ans, ans).detach().cpu().numpy()
+    pred_ans_bertscore = compute_bert_score(bert_scorer, pred_ans, ans).detach().cpu().numpy().tolist()
     for i, r in enumerate(all_results): r["pred_ans_bert_score"] = pred_ans_bertscore[i]
 
     for r in tqdm(all_results):
 
         diverse_ques = [r["pred_ans"]] + r["pred_diverse_ans"]
         diverse_ans_bertscore = get_pairwise_bert_score(bert_scorer, diverse_ques)
-        r["pred_ans_bert_score"] = diverse_ans_bertscore
+        r["pred_ans_bert_score"] = diverse_ans_bertscore.tolist()
 
     write_json(all_results, output_file_path)
 
@@ -130,8 +133,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "Getting testing results of trained model")
 
     # Data settings 
-    parser.add_argument("--dataset", type = str, default = "triviaqa", help = "The dataset")
-    parser.add_argument("--model", type = str, default = "flan-t5-small", help = "LLM to use")
+    parser.add_argument("--dataset", type = str, default = "truthfulqa", help = "The dataset")
+    parser.add_argument("--model", type = str, default = "mistral-7b-instruct", help = "LLM to use")
 
     # Set defaults 
     args = parser.parse_args()
@@ -152,7 +155,7 @@ if __name__ == "__main__":
     get_true_prob_p = partial(get_true_prob, true_idx = args.true_idx, false_idx = args.false_idx)
 
     # # Get the models
-    # llm, tokenizer = get_model_and_tokenizer(args.model)
+    llm, tokenizer = get_model_and_tokenizer(args.model)
     idx = DEVICE_IDX.split(",")[0]
     device = torch.device(f"cuda:{idx}") if torch.cuda.is_available() else torch.device("cpu")
     bert_scorer = get_bert_scorer(device)
@@ -169,6 +172,6 @@ if __name__ == "__main__":
     dataloader = get_dataloader(args.dataset, os.path.join(args.dataset_folder, FILENAME), BATCH_SIZE)
 
     # Run and get response 
-    # get_response(llm, tokenizer, dataloader, args)
+    get_response(llm, tokenizer, dataloader, args)
     merge_records(args.temp_folder, args.output_file_path)
-    os.removedirs(args.temp_folder)
+    shutil.rmtree(args.temp_folder)

@@ -12,6 +12,7 @@ BATCH_SIZE = 32
 MAX_OUTPUT_LENGTH = 50
 
 N_DIVERSE_QUES = 10 
+SMALL_DATASET_SIZE = 500
 
 # For bert scorer 
 SCORING_THRESHOLD = 0.8
@@ -27,7 +28,7 @@ TRUTHFUL_QA_PROCESSED_FOLDER = os.path.join(DATASET_PROCESSED_FOLDER, 'truthfulq
 TRIVIA_QA_PROCESSED_FOLDER = os.path.join(DATASET_PROCESSED_FOLDER, 'triviaqa')
 SCIQ_PROCESSED_FOLDER = os.path.join(DATASET_PROCESSED_FOLDER, 'sciq')
 
-FILENAME = "data_w_GPT4_output_1K.json"
+FILENAME = f"data_w_GPT4_output_{SMALL_DATASET_SIZE}.json"
 
 OUTPUT_FOLDER = 'outputs'
 
@@ -37,15 +38,12 @@ MODEL_CHECKPOINTS = {'flan-t5-small' : 'model_weights/flan-t5/small',
                      'flan-t5-base' : 'model_weights/flan-t5/base',
                      'flan-t5-large' : 'model_weights/flan-t5/large',
                      'flan-t5-xl' : 'model_weights/flan-t5/xl',
-                     'shearedllama-1.3b' :'model_weights/sheared_llama/1.3b',
-                     'shearedllama-2.7b' :'model_weights/sheared_llama/2.7b',
-                     'shearedllama-bling-1.3b' :'model_weights/sheared_llama_bling/1.3b',
-                     'shearedllama-bling-2.7b' :'model_weights/sheared_llama_bling/2.7b',
-                     'vicuna-7b': 'model_weights/vicuna/7b',
-                     'mistral-7b':'model_weights/mistral/7b', 
-                     'llama2-7b': 'model_weights/llama2/7b'}
+                     'mistral-7b-instruct':'model_weights/mistral/7b-instruct', 
+                     'llama2-7b-chat': 'model_weights/llama2/7b-chat',
+                     'llama2-13b-chat': 'model_weights/llama2/13b-chat'}
+
 # Device 
-DEVICE_IDX = "1,2,3,4,6,7" # separate with comma if using multiple GPUs
+DEVICE_IDX = "2,3,4,6,7" # separate with comma if using multiple GPUs
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 MEMORY_ALLOCATION = {int(i) : "38GB" for i in DEVICE_IDX.split(",")}
 
@@ -75,10 +73,13 @@ CONFIDENCE_SCORE_NL_MAPPING = {v : CONFIDENCE_OPTIONS[k] for k, v in CONFIDENCE_
 TRUE_FALSE_IDX = {'flan-t5-small' : {"true": 4273, "false": 150},
                   'flan-t5-base' : {"true": 4273, "false": 150},
                   'flan-t5-large' : {"true": 4273, "false": 150},
+                  'flan-t5-xl' : {"true": 4273, "false": 150},
                   'shearedllama-bling-1.3b' : {"true": 319, "false": 350},
                   'shearedllama-bling-2.7b' : {"true": 319, "false": 350},
                   'mistral-7b': {"true": 365, "false": 330},
-                  'llama2-7b': {"true": 319, "false": 350}}
+                  'mistral-7b-instruct': {"true": 365, "false": 330},
+                  'llama2-7b-chat': {"true": 319, "false": 350},
+                  'llama2-13b-chat': {"true": 319, "false": 350}}
 
 # Setting of parameters and creating of folders for saving of results
 random.seed(SEED)

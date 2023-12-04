@@ -237,18 +237,14 @@ def clean_abstain_mistral(qns, ans):
     all_ans = [] 
 
     for q, a in zip(qns, ans):
-        a = list(set([r.replace(q, "").strip().lower() for r in a.split("\n") if q in r]))[0]
 
-        if "yes" in a and "no" in a:
-            a = 0
-        elif "yes" in a:
-            a = 0
-        elif "no" in a:
-            a = 1
-        else:
-            a = 1
-        
-        all_ans.append(a)
+        a = [r.replace("Answer:", "").strip() for r in a.split("\n") if "Answer:" in r][0]
+        if a == "B)":
+            all_ans.append(1)
+        elif a == "A)":
+            all_ans.append(0)
+        else:                
+            raise Exception(f"Got : {a}")
 
     return all_ans
 
