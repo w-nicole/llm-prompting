@@ -133,14 +133,17 @@ def get_model_response(inputs, llm, tokenizer, max_new_tokens = MAX_OUTPUT_LENGT
     return predictions
 
 # Get probability of true functions 
-def get_true_prob(inputs, llm, tokenizer, true_idx, false_idx):
+def get_true_prob(inputs, llm, tokenizer, true_idx, false_idx, llama2 = False):
 
-    model_output = get_model_response(inputs, llm, tokenizer, max_new_tokens = 1, return_raw = True)
+    if llama2:
+        model_output = get_model_response(inputs, llm, tokenizer, max_new_tokens = 2, return_raw = True)
+    else: 
+        model_output = get_model_response(inputs, llm, tokenizer, max_new_tokens = 1, return_raw = True)
 
     # Get the scores
-    scores = model_output["scores"][0] # First token in response
+    scores = model_output["scores"][-1] # Last token in response
     prob = torch.concat([scores[:, true_idx].unsqueeze(-1), scores[:, false_idx].unsqueeze(-1)], dim = -1)
-    prob = torch.where(torch.isneginf(prob), 1.0, prob) # For stability
+    # prob = torch.where(torch.isneginf(prob), 1.0, prob) # For stability
     prob = torch.softmax(prob, dim = -1)[:, 0]
     prob = prob.detach().cpu().numpy().tolist()
 
@@ -238,14 +241,15 @@ def clean_abstain_mistral(qns, ans):
 
     for q, a in zip(qns, ans):
 
-        a = [r.replace("Answer:", "").strip() for r in a.split("\n") if "Answer:" in r][0]
-        if a == "B)":
-            all_ans.append(1)
-        elif a == "A)":
-            all_ans.append(0)
-        else:                
-            raise Exception(f"Got : {a}")
-
+        a = a.replace(q, "").strip().lower()
+        if "yes" in a and "no" in a:
+            all_ans.append(1) # Abstain if unsure 
+        elif "yes" in a:
+            all_ans.append(0) # Do not abstain if model knows the answer 
+        elif "no" in a:
+            all_ans.append(1) # Abstain if model do not know the answer
+        else:
+            raise Exception(f"Unable to parse output: {a}")
     return all_ans
 
 def clean_answer_mistral(qns, ans):
@@ -253,8 +257,7 @@ def clean_answer_mistral(qns, ans):
     all_ans = [] 
 
     for q, a in zip(qns, ans):
-        a = [r.replace(q, "").strip() for r in a.split("\n")][0]
-        a = " ".join(a.split())        
+        a = a.replace(q, "").strip()
         all_ans.append(a)
     
     return all_ans
@@ -264,20 +267,23 @@ def clean_self_eval_mistral(qns, ans):
     all_ans = [] 
 
     for q, a in zip(qns, ans):
-        a = list(set([r.replace(q, "").strip() for r in a.split("\n") if q in r]))[0]
-        a = a.replace("A)", "").replace("B)", "").replace(".", "").strip().lower()
+        a = a.replace(q, "").strip().lower() 
 
-        # We have to give it a default value
-        if "true" in a and "false" in a: all_ans.append(0) 
-        if "true" in a: all_ans.append(1)
-        if "false" in a: all_ans.append(0)
-        else: all_ans.append(0)
-    
+        if "true" in a and "false" in a: 
+            all_ans.append(0) # Not sure of the answer 
+        elif "true" in a: 
+            all_ans.append(1) # Sure that answer is right 
+        elif "false" in a:
+            all_ans.append(0) # Not sure that the answer is right 
+        else:
+            raise Exception(f"Unsure how to parse: {a}")
+
     return all_ans
 
 def clean_confidence_MCQ_mistral(qns, ans, NL = False):
 
     all_ans = [] 
+
     if NL:
         options_template = {k : v for k, v in CONFIDENCE_OPTIONS_NL.items()}
     else:
@@ -285,24 +291,17 @@ def clean_confidence_MCQ_mistral(qns, ans, NL = False):
 
     for q, a in zip(qns, ans):
         
-        a = list(set([r.replace(q, "").strip() for r in a.split("\n") if q in r]))[0]
-        a = a.split(" ")[0] # We get the first answer 
-        a = a.replace(".", "")
-
-        # We have to give it a default value 
-        if a in options_template.keys():
-            a = options_template[a]
+        check = False
+        a = a.split("Answer:")[-1].strip()
+        for _, v in options_template.items(): 
+            if v in a: 
+                a = v
+                check = True 
+                break 
         
-        else:
-            check = False 
-            for k,v in options_template.items(): 
-                if a in k: 
-                    a = v
-                    check = True 
-                    break
-            
-            if not check: 
-                a = options_template["A)"]
+        if not check:
+            raise Exception(f"Unsure how to parse: {a}")
+
         all_ans.append(a)
 
     if NL: 
@@ -317,38 +316,64 @@ def clean_confidence_OE_mistral(qns, ans):
 
     for q, a in zip(qns, ans):
         
-        a = list(set([r.replace(q, "").strip() for r in a.split("\n") if q in r]))[0]
-        a = a.split(" ")[0] # We get the first answer
+        a = a.replace(q, "").strip().split(".")[0]
         all_ans.append(a)
 
     all_ans = [parse_option(a) for a in all_ans]
     return all_ans
 
-# llama
+def clean_answer_and_confidence_MCQ_mistral(qns, ans, NL = False):
+
+    all_ans, all_scores = [], []
+
+    for q, a in zip(qns, ans):
+        
+        a = a.replace(q, "").strip()
+        a_list = a.split(".")
+        if NL: 
+            a, s = ".".join(a_list[:-2]).strip(), ".".join(a_list[-2:-1]).strip()
+        else: 
+            a, s = ".".join(a_list[:-1]).strip(), a_list[-1].strip()
+        all_ans.append(a)
+        all_scores.append(s)
+
+    all_scores = clean_confidence_MCQ_mistral(qns, all_scores, NL = NL)
+
+    return all_ans, all_scores
+
+def clean_answer_and_confidence_OE_mistral(qns, ans):
+
+    all_ans, all_scores = [], []
+
+    for q, a in zip(qns, ans):
+        
+        a = a.replace(q, "").strip()
+        idx = a.index("Confidence score:")
+        all_ans.append(a[:idx].strip())
+
+        s = a[idx:].replace("Confidence score:", "").replace(".", "").strip()
+        all_scores.append(s)
+
+    all_scores = [parse_option(s) for s in all_scores]
+
+    return all_ans, all_scores
+
+# llama2
 def clean_abstain_llama2(qns, ans):
 
     all_ans = [] 
 
     for q, a in zip(qns, ans):
 
-        a = list(set([r for r in a.split("\n") if "Answer:" in r]))
-        a = a[0] # We take the first option 
-
-        if "A)" in a: 
-            all_ans.append(0)
-        
-        elif "I can answer" in a: 
-            all_ans.append(0)
-        
-        elif "B)" in a: 
-            all_ans.append(1)
-
-        elif "I cannot answer" in a: 
-            all_ans.append(1)
-        
+        a = a.replace(q, "").strip().lower()
+        if "yes" in a and "no" in a:
+            all_ans.append(1) # Abstain if unsure 
+        elif "yes" in a:
+            all_ans.append(0) # Do not abstain if model knows the answer 
+        elif "no" in a:
+            all_ans.append(1) # Abstain if model do not know the answer
         else:
-            all_ans.append(1)
-
+            raise Exception(f"Unable to parse output: {a}")
     return all_ans
 
 def clean_answer_llama2(qns, ans):
@@ -356,11 +381,7 @@ def clean_answer_llama2(qns, ans):
     all_ans = [] 
 
     for q, a in zip(qns, ans):
-        a = list(set([r.replace(q, "").strip() for r in a.split("\n") if q in r]))
-        a = [r for r in a if "Question:" not in r]
-        a = [r for r in a if "Answer" not in r]
-        a = [re.sub(' +', ' ', r) for r in a]
-        a = " ".join(a)     
+        a = a.replace(q, "").strip()
         all_ans.append(a)
     
     return all_ans
@@ -371,60 +392,44 @@ def clean_self_eval_llama2(qns, ans):
 
     for q, a in zip(qns, ans):
 
-        a = list(set([r for r in a.split("\n") if "Answer:" in r and "Proposed Answer:" not in r]))
-        a = a[0]
+        a = a.replace(q, "").strip().split(".")[0]
 
-        if "A)" in a: 
+        if "True" in a and "False" in a:
+            all_ans.append(0) # Append false if unsure 
+        elif "True" in a: 
             all_ans.append(1)
-        
-        elif "The proposed answer is right" in a: 
-            all_ans.append(1)
-        
-        elif "B)" in a: 
+        elif "False" in a: 
             all_ans.append(0)
-
-        elif "The proposed answer is wrong" in a: 
-            all_ans.append(0)
-        
         else:
-            all_ans.append(0)
-
+            raise Exception(f"Unsure how to parse: {a}")
     return all_ans
 
 def clean_confidence_MCQ_llama2(qns, ans, NL = False):
 
     all_ans = [] 
-
+    
     if NL:
-        options_template = CONFIDENCE_OPTIONS_NL
+        options_template = {k : v for k, v in CONFIDENCE_OPTIONS_NL.items()}
     else:
-        options_template = CONFIDENCE_OPTIONS
+        options_template = {k : v for k, v in CONFIDENCE_OPTIONS.items()}
 
     for q, a in zip(qns, ans):
         
-        a = list(set([r.replace(q, "").strip() for r in a.split("\n") if "Answer:" in r and "Proposed Answer" not in r]))
         check = False
-        
-        if len(a) == 0: 
-            a = options_template["A)"]
-        
-        else:
-            a = a[0]
-
-            for k, v in options_template.items():
-                if k in a:
-                    a = v
-                    check = True 
-                    break
+        a = a.split("Score:")[-1].strip()
+        for _, v in options_template.items(): 
+            if v in a: 
+                a = v
+                check = True 
+                break 
         
         if not check:
-            a = options_template["A)"] # The lowest confidence
-        
+            raise Exception(f"Unsure how to parse: {a}")
+
         all_ans.append(a)
 
     if NL: 
         all_ans = [CONFIDENCE_SCORE_NL_MAPPING[a] for a in all_ans]
-
     all_ans = [parse_option(a) for a in all_ans]
 
     return all_ans
@@ -435,18 +440,50 @@ def clean_confidence_OE_llama2(qns, ans):
 
     for q, a in zip(qns, ans):
         
-        a = list(set([r.replace(q, "").strip() for r in a.split("\n") if "Score:" in r]))
-        a = a[0]
-        try:
-            a = a.split(" ")[1]
-        except:
-            a = "0.0"
-
+        a = a.replace(q, "").strip().split("Score:")[-1].strip()
+        a = a.replace(".", "")
         all_ans.append(a)
 
     all_ans = [parse_option(a) for a in all_ans]
 
     return all_ans
+
+def clean_answer_and_confidence_MCQ_llama2(qns, ans, NL = False):
+
+    all_ans, all_scores = [], []
+
+    for q, a in zip(qns, ans):
+        
+        a = a.replace(q, "").strip()
+        a_list = a.split(".")
+
+        if NL: 
+            a, s = ".".join(a_list[:-2]).strip(), ".".join(a_list[-2:-1]).strip()
+        else: 
+            a, s = ".".join(a_list[:-1]).strip(), a_list[-1].strip()
+        all_ans.append(a)
+        all_scores.append(s)
+
+    all_scores = clean_confidence_MCQ_llama2(qns, all_scores, NL = NL)
+
+    return all_ans, all_scores
+
+def clean_answer_and_confidence_OE_llama2(qns, ans):
+
+    all_ans, all_scores = [], []
+
+    for q, a in zip(qns, ans):
+        
+        a = a.replace(q, "").strip()
+        idx = a.index("Confidence score:")
+        all_ans.append(a[:idx].strip())
+
+        s = a[idx:].replace("Confidence score:", "").replace(".", "").strip()
+        all_scores.append(s)
+
+    all_scores = [parse_option(s) for s in all_scores]
+
+    return all_ans, all_scores
 
 # Function to get the appropriate function
 def get_clean_abstain_fnc(model):

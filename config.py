@@ -9,7 +9,7 @@ import torch
 SEED = 0 
 
 BATCH_SIZE = 32
-MAX_OUTPUT_LENGTH = 50
+MAX_OUTPUT_LENGTH = 200
 
 N_DIVERSE_QUES = 10 
 SMALL_DATASET_SIZE = 500
@@ -52,19 +52,19 @@ MEMORY_ALLOCATION = {int(i) : "38GB" for i in DEVICE_IDX.split(",")}
 CONFIDENCE_INTERVAL = 10
 OPTIONS = np.arange(0, 101, CONFIDENCE_INTERVAL)
 ALPHABETS = [str.upper(c) for c in ascii_lowercase][:len(OPTIONS)]
-CONFIDENCE_OPTIONS = {f"{ALPHABETS[i]})" : f"{OPTIONS[i]}" + "% to "  + f"{OPTIONS[i+1]}" + "%" for i in range(len(ALPHABETS) - 1)}
+CONFIDENCE_OPTIONS = {f"({ALPHABETS[i]})" : f"{OPTIONS[i]}" + "% to "  + f"{OPTIONS[i+1]}" + "%" for i in range(len(ALPHABETS) - 1)}
 
 # Natural language as confidence 
-CONFIDENCE_OPTIONS_NL = {"A)" : "Absolutely uncertain",
-                         "B)" : "Extremely uncertain",
-                         "C)" : "Highly uncertain",
-                         "D)" : "Uncertain",
-                         "E)" : "Unsure, leaning towards uncertain",
-                         "F)" : "Unsure, leaning towards certain",
-                         "G)" : "Certain",
-                         "H)" : "Highly certain", 
-                         "I)" : "Extremely certain",
-                         "J)" : "Absolutely certain"}
+CONFIDENCE_OPTIONS_NL = {"(A)" : "Absolutely uncertain",
+                         "(B)" : "Extremely uncertain",
+                         "(C)" : "Highly uncertain",
+                         "(D)" : "Uncertain",
+                         "(E)" : "Unsure, leaning towards uncertain",
+                         "(F)" : "Unsure, leaning towards certain",
+                         "(G)" : "Certain",
+                         "(H)" : "Highly certain", 
+                         "(I)" : "Extremely certain",
+                         "(J)" : "Absolutely certain"}
 
 assert len(CONFIDENCE_OPTIONS) == len(CONFIDENCE_OPTIONS_NL)
 CONFIDENCE_SCORE_NL_MAPPING = {v : CONFIDENCE_OPTIONS[k] for k, v in CONFIDENCE_OPTIONS_NL.items()}
@@ -74,12 +74,9 @@ TRUE_FALSE_IDX = {'flan-t5-small' : {"true": 4273, "false": 150},
                   'flan-t5-base' : {"true": 4273, "false": 150},
                   'flan-t5-large' : {"true": 4273, "false": 150},
                   'flan-t5-xl' : {"true": 4273, "false": 150},
-                  'shearedllama-bling-1.3b' : {"true": 319, "false": 350},
-                  'shearedllama-bling-2.7b' : {"true": 319, "false": 350},
-                  'mistral-7b': {"true": 365, "false": 330},
-                  'mistral-7b-instruct': {"true": 365, "false": 330},
-                  'llama2-7b-chat': {"true": 319, "false": 350},
-                  'llama2-13b-chat': {"true": 319, "false": 350}}
+                  'mistral-7b-instruct': {"true": 6110, "false": 8250}, # done
+                  'llama2-7b-chat': {"true": 5852, "false": 7700}, # done
+                  'llama2-13b-chat': {"true": 5852, "false": 7700}} # done
 
 # Setting of parameters and creating of folders for saving of results
 random.seed(SEED)

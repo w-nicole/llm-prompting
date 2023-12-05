@@ -96,7 +96,7 @@ def self_evaluate_template_mistral(ques_list, pred_ans_list):
     """ 
     assert len(ques_list) == len(pred_ans_list)
     ques_pred_ans_list = list(zip(ques_list, pred_ans_list))
-    ques_ans_list_formatted = [f"[INST] Answer only A) or B). Question: {q}\n Proposed Answer: {a}\n Is the proposed answer: A) True or B) False? Answer: [/INST]" for q, a in ques_pred_ans_list]
+    ques_ans_list_formatted = [f"[INST] Answer only True or False. Question: {q}\n Proposed Answer: {a}\n Is the proposed answer True or False? Answer: [/INST]" for q, a in ques_pred_ans_list]
 
     return ques_ans_list_formatted
 
@@ -105,12 +105,12 @@ def confidence_MCQ_template_mistral(ques_list, pred_ans_list):
     """
         Template:
     """ 
-    ques_pred_ans_list = list(zip(ques_list, pred_ans_list))
-    options_template = format_MCQ_options(CONFIDENCE_OPTIONS, add_or = True)
 
+    options_template = format_MCQ_options(CONFIDENCE_OPTIONS, add_or = True)
     options_template = options_template.replace("\n", " ")
+
     ques_pred_ans_list = list(zip(ques_list, pred_ans_list))
-    ques_ans_list_formatted = [f"[INST] Question: {q} Proposed Answer: {a} How likely is the answer correct? {options_template}. A higher score indicates higher confidence and lower score indicates lower confidence. Answer: [/INST]" for q, a in ques_pred_ans_list]
+    ques_ans_list_formatted = [f"[INST] Question: {q} Proposed Answer: {a} How likely is the proposed answer correct? Choose either {options_template}. A higher score indicates higher confidence and lower score indicates lower confidence. Answer: [/INST]" for q, a in ques_pred_ans_list]
 
     return ques_ans_list_formatted
 
@@ -119,12 +119,11 @@ def confidence_MCQ_NL_template_mistral(ques_list, pred_ans_list):
     """
         Template:
     """ 
-    ques_pred_ans_list = list(zip(ques_list, pred_ans_list))
-    options_template = format_MCQ_options(CONFIDENCE_OPTIONS_NL, add_or = True)
+    options_template_NL = format_MCQ_options(CONFIDENCE_OPTIONS_NL, add_or = True)
+    options_template_NL = options_template_NL.replace("\n", " ")
 
-    options_template = options_template.replace("\n", " ")
     ques_pred_ans_list = list(zip(ques_list, pred_ans_list))
-    ques_ans_list_formatted = [f"[INST] Question: {q} Proposed Answer: {a} How confident are you that the proposed answer is true: {options_template}. Choice: [/INST]" for q, a in ques_pred_ans_list]
+    ques_ans_list_formatted = [f"[INST] Question: {q} Proposed Answer: {a} How confident are you that the proposed answer is true? Choose either {options_template_NL}. Answer: [/INST]" for q, a in ques_pred_ans_list]
 
     return ques_ans_list_formatted
 
@@ -136,6 +135,30 @@ def confidence_OE_template_mistral(ques_list, pred_ans_list):
 
     return ques_ans_conf_list_formatted
 
+def get_answer_confidence_MCQ_template_mistral(ques_list):
+
+    options_template = format_MCQ_options(CONFIDENCE_OPTIONS, add_or = True)
+    options_template = options_template.replace("\n", " ")
+
+    ques_list_formatted = [f"[INST] Provide a one sentence answer to the following question with no explanation. Then choose from either {options_template} indicating the level of confidence that the proposed answer is right. A higher score indicates higher confidence and lower score indicates lower confidence. Question: {q} Answer and score: [/INST]" for q in ques_list]
+
+    return ques_list_formatted
+
+def get_answer_confidence_MCQ_NL_template_mistral(ques_list):
+
+    options_template_NL = format_MCQ_options(CONFIDENCE_OPTIONS_NL, add_or = True)
+    options_template_NL = options_template_NL.replace("\n", " ")
+
+    ques_list_formatted = [f"[INST] Provide a one sentence answer to the following question with no explanation. Then, how confident are you that the answer is right? Choose from either {options_template_NL}. Question: {q} Answer and score: [/INST]" for q in ques_list]
+
+    return ques_list_formatted
+
+def get_answer_confidence_OE_template_mistral(ques_list):
+
+    ques_list_formatted = [f"[INST] Provide a one sentence answer to the following question with no explanation. Then provide a confidence score from 0 to 100 indicating the confidence that the proposed answer is right. A higher score indicates higher confidence and lower score indicates lower confidence. Question: {q} Answer and score: [/INST]" for q in ques_list]
+
+    return ques_list_formatted
+
 # Llama2 
 def abstain_template_llama2(ques_list):
 
@@ -143,7 +166,7 @@ def abstain_template_llama2(ques_list):
         Template: Please answer the following question. {ques}
     """
 
-    ques_list_formatted = [f"Question: {q}\n A) I can answer this question\n B) I cannot answer this question\n Answer:" for q in ques_list]
+    ques_list_formatted = [f"[INST] Answer only Yes or No with no explanation. Question: {q} Do you know the answer to the question? [/INST]" for q in ques_list]
 
     return ques_list_formatted
 
@@ -152,7 +175,7 @@ def get_answer_template_llama2(ques_list):
     """
         Template: Answer the following question as short as possible with no explanation. Question: {q} Answer:
     """
-    ques_list_formatted = [f"Answer the following question with no explanation. Question: {q}\n Answer:" for q in ques_list]
+    ques_list_formatted = [f"[INST] Answer the following question with no explanation. Question: {q}\n Answer: [/INST]" for q in ques_list]
 
     return ques_list_formatted
 
@@ -162,7 +185,7 @@ def self_evaluate_template_llama2(ques_list, pred_ans_list):
         Template: Answer the following question as short as possible with no explanation. Question: {q} Answer:
     """
     ques_pred_ans_list = list(zip(ques_list, pred_ans_list))
-    ques_ans_list_formatted = [f"Question: {q}\n Answer: {a}\n Is the answer A) right or B) wrong? Answer:" for q, a in ques_pred_ans_list]
+    ques_ans_list_formatted = [f"[INST] Answer only True or False. Question: {q}\n Proposed Answer: {a}\n Is the proposed answer True or False? Answer: [/INST]" for q, a in ques_pred_ans_list]
 
     return ques_ans_list_formatted
 
@@ -172,14 +195,11 @@ def confidence_MCQ_template_llama2(ques_list, pred_ans_list):
         Template:
     """ 
     ques_pred_ans_list = list(zip(ques_list, pred_ans_list))
-    options_template = format_MCQ_options(CONFIDENCE_OPTIONS)
-    options = ""
-    for i, k in enumerate(CONFIDENCE_OPTIONS.keys()):
-        if i == len(CONFIDENCE_OPTIONS.keys()) -1: 
-            options = options + "or " + k
-        else:
-            options = options + k + ", "
-    ques_ans_list_formatted = [f"Question: {q}\n Answer: {a}\n How likely is the answer right? {options_template}.\n Please select one of the above options. Answer:" for q, a in ques_pred_ans_list]
+
+    options_template = format_MCQ_options(CONFIDENCE_OPTIONS, add_or = True)
+    options_template = options_template.replace("\n", " ")
+
+    ques_ans_list_formatted = [f"[INST] Question: {q} Proposed Answer: {a} How likely is the proposed answer correct? Choose either {options_template}. A higher score indicates higher confidence and lower score indicates lower confidence. Provide just the score without explanation. Score: [/INST]" for q, a in ques_pred_ans_list]
 
     return ques_ans_list_formatted
 
@@ -189,23 +209,47 @@ def confidence_MCQ_NL_template_llama2(ques_list, pred_ans_list):
         Template:
     """ 
     ques_pred_ans_list = list(zip(ques_list, pred_ans_list))
-    options_template = format_MCQ_options(CONFIDENCE_OPTIONS_NL)
+    options_template_NL = format_MCQ_options(CONFIDENCE_OPTIONS_NL)
     options = ""
-    for i, k in enumerate(CONFIDENCE_OPTIONS.keys()):
-        if i == len(CONFIDENCE_OPTIONS.keys()) -1: 
+    for i, k in enumerate(CONFIDENCE_OPTIONS_NL.keys()):
+        if i == len(CONFIDENCE_OPTIONS_NL.keys()) -1: 
             options = options + "or " + k
         else:
             options = options + k + ", "
-    ques_ans_list_formatted = [f"Question: {q}\n Answer: {a}\n How sure are you that the answer right? {options_template}.\n Please select one of the above options.\n Answer:" for q, a in ques_pred_ans_list]
+    ques_ans_list_formatted = [f"[INST] Question: {q} Proposed Answer: {a} How confident are you that the proposed answer is true? Choose either {options_template_NL}. A higher score indicates higher confidence and lower score indicates lower confidence. Provide just the score without explanation. Score: [/INST]" for q, a in ques_pred_ans_list]
 
     return ques_ans_list_formatted
 
 def confidence_OE_template_llama2(ques_list, pred_ans_list):
 
     ques_pred_ans_list = list(zip(ques_list, pred_ans_list))
-    ques_ans_conf_list_formatted = [f"Question: {q}\n Answer: {a}\n Give a score between 0 and 100 indicating the likelihood that the answer is right.\n Score:" for q, a in ques_pred_ans_list]
+    ques_ans_conf_list_formatted = [f"[INST] Question: {q} Proposed Answer: {a} Give a score between 0 and 100 indicating the level of confidence that the proposed answer is true. A higher score indicates higher confidence and lower score indicates lower confidence. Provide just the score without explanation. Score: [/INST]" for q, a in ques_pred_ans_list]
 
     return ques_ans_conf_list_formatted
+
+def get_answer_confidence_MCQ_template_llama2(ques_list):
+
+    options_template = format_MCQ_options(CONFIDENCE_OPTIONS, add_or = True)
+    options_template = options_template.replace("\n", " ")
+
+    ques_list_formatted = [f"[INST] Provide a one sentence answer to the following question with no explanation. Then choose from either {options_template} indicating the level of confidence that the proposed answer is right. A higher score indicates higher confidence and lower score indicates lower confidence. Question: {q} Answer and score: [/INST]" for q in ques_list]
+
+    return ques_list_formatted
+
+def get_answer_confidence_MCQ_NL_template_llama2(ques_list):
+
+    options_template_NL = format_MCQ_options(CONFIDENCE_OPTIONS_NL, add_or = True)
+    options_template_NL = options_template_NL.replace("\n", " ")
+
+    ques_list_formatted = [f"[INST] Provide a one sentence answer to the following question with no explanation. Then, how confident are you that the answer is right? Choose from either {options_template_NL}. Question: {q} Answer and score: [/INST]" for q in ques_list]
+
+    return ques_list_formatted
+
+def get_answer_confidence_OE_template_llama2(ques_list):
+
+    ques_list_formatted = [f"[INST] Provide a one sentence answer to the following question with no explanation. Then provide a confidence score from 0 to 100 indicating the confidence that the proposed answer is right. A higher score indicates higher confidence and lower score indicates lower confidence. Question: {q} Answer and score: [/INST]" for q in ques_list]
+
+    return ques_list_formatted
 
 # GPT-3.5-turbo / GPT-4
 def diverse_ques_GPT4_template(ques_list):

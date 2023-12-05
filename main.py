@@ -33,10 +33,7 @@ def get_response(llm, tokenizer, dataloader, args):
         # 1. Check if we should abstain
         abstain_formatted = ABSTAIN_TEMPLATE(qns)
         abstain = get_model_response(abstain_formatted, llm, tokenizer)
-        # abstain = get_clean_abstain_fnc(args.model)(abstain_formatted, abstain)
-
-        print(abstain)
-        a =z 
+        abstain = get_clean_abstain_fnc(args.model)(abstain_formatted, abstain)
 
         # 2. Get the answer
         qns_formatted = GET_ANSWER_TEMPLATE(qns)
@@ -49,7 +46,7 @@ def get_response(llm, tokenizer, dataloader, args):
         self_eval = get_clean_self_evaluate_fnc(args.model)(self_eval_formatted, self_eval)
 
         # 4. Get probability of true given answer
-        true_prob = get_true_prob_p(self_eval_formatted, llm, tokenizer)
+        true_prob = get_true_prob_p(self_eval_formatted, llm, tokenizer, llama2 = args.llama2_check)
 
         # 5. Get confidence score (MCQ)
         conf_MCQ_formatted = CONFIDENCE_MCQ_TEMPLATE(qns, pred_ans)
@@ -85,6 +82,12 @@ def get_response(llm, tokenizer, dataloader, args):
         conf_GT_NL_MCQ_formatted = CONFIDENCE_MCQ_NL_TEMPLATE(qns, ans)
         pred_conf_GT_NL_MCQ = get_model_response(conf_GT_NL_MCQ_formatted, llm, tokenizer)
         pred_conf_GT_NL_MCQ = get_clean_confidence_MCQ_fnc(args.model)(conf_GT_NL_MCQ_formatted, pred_conf_GT_NL_MCQ, NL = True)
+
+        # 12. Get the answer and confidence score (MCQ)
+
+        # 13. Get the answer and confidence score (MCQ + NL)
+
+        # 14. Get the answer and confidence score (Open-ended)
 
         # Merge all the responses together
         for i, idx in enumerate(id_):
@@ -150,6 +153,7 @@ if __name__ == "__main__":
     true_idx, false_idx = TRUE_FALSE_IDX[args.model]["true"], TRUE_FALSE_IDX[args.model]["false"]
     args.true_idx = true_idx 
     args.false_idx = false_idx
+    args.llama2_check = "llama2" in args.model
 
     # Define partial functions 
     get_true_prob_p = partial(get_true_prob, true_idx = args.true_idx, false_idx = args.false_idx)
