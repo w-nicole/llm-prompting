@@ -13,6 +13,7 @@ from cache import is_response_cached, cache_response, multithread_with_tqdm
 def get_response(batch, pbar):
 
     global STOP
+
     # Unpack the batch
     id_, qns, _, diverse_qns = batch
     cache_id = id_[0]
@@ -25,10 +26,12 @@ def get_response(batch, pbar):
         return
 
     # Get different prompts and responses
+    # Format the question
 
     # Get response
     try:
         response = CLIENT.chat.completions.create(model="gpt-3.5-turbo", messages=diverse_qns)
+
     except Exception as e:
         STOP = True
         print(e)

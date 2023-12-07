@@ -77,7 +77,10 @@ if __name__ == "__main__":
 
     # Settings
     RESULTS_FOLDER = "outputs"
-    
+
+
+    write_json(all_results, output_file_path)
+
     # Master dictionary to save the results 
     all_results = {d: {} for d in os.listdir(RESULTS_FOLDER)}
 

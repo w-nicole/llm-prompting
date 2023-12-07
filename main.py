@@ -1,4 +1,4 @@
-import os, shutil
+import os
 from config import * 
 
 import argparse 
@@ -11,7 +11,8 @@ from metric import compute_bert_score, get_pairwise_bert_score
 
 from utils import *
 from prompt_templates import get_abstain_template, get_get_answer_template, get_self_evaluate_template, \
-                             get_confidence_MCQ_template, get_confidence_MCQ_NL_template, get_confidence_OE_template
+                             get_confidence_MCQ_template, get_confidence_MCQ_NL_template, get_confidence_OE_template, \
+                             get_get_answer_and_confidence_MCQ_template, get_get_answer_and_confidence_MCQ_NL_template, get_get_answer_and_confidence_OE_template
 
 @torch.no_grad()
 def get_response(llm, tokenizer, dataloader, args):
@@ -83,11 +84,32 @@ def get_response(llm, tokenizer, dataloader, args):
         pred_conf_GT_NL_MCQ = get_model_response(conf_GT_NL_MCQ_formatted, llm, tokenizer)
         pred_conf_GT_NL_MCQ = get_clean_confidence_MCQ_fnc(args.model)(conf_GT_NL_MCQ_formatted, pred_conf_GT_NL_MCQ, NL = True)
 
-        # 12. Get the answer and confidence score (MCQ)
+        # Note that we can't get flan t5 to do this, skip if flan t5 
+        if args.model in ['flan-t5-large', 'flan-t5-xl']:
 
-        # 13. Get the answer and confidence score (MCQ + NL)
+            pred_ans_conf_MCQ = ["" for _ in range(len(id_))] 
+            pred_conf_MCQ_1s = ["" for _ in range(len(id_))] 
+            pred_ans_conf_NL_MCQ = ["" for _ in range(len(id_))] 
+            pred_conf_NL_MCQ_1s = ["" for _ in range(len(id_))] 
+            pred_ans_conf_OE = ["" for _ in range(len(id_))] 
+            pred_conf_OE_1s = ["" for _ in range(len(id_))] 
 
-        # 14. Get the answer and confidence score (Open-ended)
+        else: 
+
+            # 12. Get the answer and confidence score (MCQ)
+            qns_conf_MCQ_formatted = GET_ANSWER_CONFIDENCE_MCQ_TEMPLATE(qns)
+            pred_ans_conf_MCQ = get_model_response(qns_conf_MCQ_formatted, llm, tokenizer)
+            pred_ans_conf_MCQ, pred_conf_MCQ_1s = get_clean_answer_and_confidence_MCQ_fnc(args.model)(qns_conf_MCQ_formatted, pred_ans_conf_MCQ)
+
+            # 13. Get the answer and confidence score (MCQ + NL)
+            qns_conf_NL_MCQ_formatted = GET_ANSWER_CONFIDENCE_MCQ_NL_TEMPLATE(qns)
+            pred_ans_conf_NL_MCQ = get_model_response(qns_conf_NL_MCQ_formatted, llm, tokenizer)
+            pred_ans_conf_NL_MCQ, pred_conf_NL_MCQ_1s = get_clean_answer_and_confidence_MCQ_fnc(args.model)(qns_conf_NL_MCQ_formatted, pred_ans_conf_NL_MCQ, NL = True)
+
+            # 14. Get the answer and confidence score (Open-ended)
+            qns_conf_OE_formatted = GET_ANSWER_CONFIDENCE_OE_TEMPLATE(qns)
+            pred_ans_conf_OE = get_model_response(qns_conf_OE_formatted, llm, tokenizer)
+            pred_ans_conf_OE, pred_conf_OE_1s = get_clean_answer_and_confidence_OE_fnc(args.model)(qns_conf_OE_formatted, pred_ans_conf_OE)
 
         # Merge all the responses together
         for i, idx in enumerate(id_):
@@ -98,33 +120,24 @@ def get_response(llm, tokenizer, dataloader, args):
                     "answer": ans[i], 
                     "pred_abstain": abstain[i],
                     "pred_ans" : pred_ans[i],
+                    "pred_ans_conf_MCQ" : pred_ans_conf_MCQ[i],
+                    "pred_ans_conf_NL_MCQ" : pred_ans_conf_NL_MCQ[i],
+                    "pred_ans_conf_OE" : pred_ans_conf_OE[i],
                     "pred_diverse_ans" : pred_diverse_ans[i],
                     "self_eval": self_eval[i],
                     "true_prob": true_prob[i],
                     "pred_conf_MCQ": pred_conf_MCQ[i],
                     "pred_conf_OE": pred_conf_OE[i],
                     "pred_conf_NL_MCQ": pred_conf_NL_MCQ[i],
+                    "pred_conf_MCQ_1s": pred_conf_MCQ_1s[i],
+                    "pred_conf_OE_1s": pred_conf_OE_1s[i],
+                    "pred_conf_NL_MCQ_1s": pred_conf_NL_MCQ_1s[i],
                     "self_eval_gt": self_eval_GT[i],
                     "pred_conf_gt_MCQ": pred_conf_GT_MCQ[i],
                     "pred_conf_gt_OE": pred_conf_GT_OE[i],
                     "pred_conf_gt_NL_MCQ": pred_conf_GT_NL_MCQ[i]}
             
             write_json(res, os.path.join(args.temp_folder, f"{idx}.json"))
-
-def merge_records(folder, output_file_path):
-
-    all_results = [read_json(os.path.join(folder, f)) for f in os.listdir(folder)]
-    pred_ans, ans = [r["pred_ans"] for r in all_results], [r["answer"] for r in all_results]
-    pred_ans_bertscore = compute_bert_score(bert_scorer, pred_ans, ans).detach().cpu().numpy().tolist()
-    for i, r in enumerate(all_results): r["pred_ans_bert_score"] = pred_ans_bertscore[i]
-
-    for r in tqdm(all_results):
-
-        diverse_ques = [r["pred_ans"]] + r["pred_diverse_ans"]
-        diverse_ans_bertscore = get_pairwise_bert_score(bert_scorer, diverse_ques)
-        r["pred_ans_bert_score"] = diverse_ans_bertscore.tolist()
-
-    write_json(all_results, output_file_path)
 
 if __name__ == "__main__":
 
@@ -137,7 +150,7 @@ if __name__ == "__main__":
 
     # Data settings 
     parser.add_argument("--dataset", type = str, default = "truthfulqa", help = "The dataset")
-    parser.add_argument("--model", type = str, default = "mistral-7b-instruct", help = "LLM to use")
+    parser.add_argument("--model", type = str, default = "llama2-70b-chat", help = "LLM to use")
 
     # Set defaults 
     args = parser.parse_args()
@@ -160,9 +173,6 @@ if __name__ == "__main__":
 
     # # Get the models
     llm, tokenizer = get_model_and_tokenizer(args.model)
-    idx = DEVICE_IDX.split(",")[0]
-    device = torch.device(f"cuda:{idx}") if torch.cuda.is_available() else torch.device("cpu")
-    bert_scorer = get_bert_scorer(device)
 
     # Load the prompt templates 
     ABSTAIN_TEMPLATE = get_abstain_template(args.model)
@@ -171,11 +181,12 @@ if __name__ == "__main__":
     CONFIDENCE_MCQ_TEMPLATE = get_confidence_MCQ_template(args.model)
     CONFIDENCE_MCQ_NL_TEMPLATE = get_confidence_MCQ_NL_template(args.model)
     CONFIDENCE_OE_TEMPLATE = get_confidence_OE_template(args.model)
+    GET_ANSWER_CONFIDENCE_MCQ_TEMPLATE = get_get_answer_and_confidence_MCQ_template(args.model)
+    GET_ANSWER_CONFIDENCE_MCQ_NL_TEMPLATE = get_get_answer_and_confidence_MCQ_NL_template(args.model)
+    GET_ANSWER_CONFIDENCE_OE_TEMPLATE = get_get_answer_and_confidence_OE_template(args.model)
 
     # Get the dataloader 
     dataloader = get_dataloader(args.dataset, os.path.join(args.dataset_folder, FILENAME), BATCH_SIZE)
 
     # Run and get response 
     get_response(llm, tokenizer, dataloader, args)
-    merge_records(args.temp_folder, args.output_file_path)
-    shutil.rmtree(args.temp_folder)

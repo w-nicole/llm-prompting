@@ -1,6 +1,6 @@
 import os
 import re
-import copy
+import math
 import json 
 import numpy as np
 
@@ -91,16 +91,16 @@ def pack_qns_ans(idx_list, qns_list, ans_list):
 # To turn chosen confidence option to numerical
 def parse_option(option):
 
-    option = option.replace("%", "")
-    option_list = [r.strip() for r in option.split("to")]
-    if len(option_list) == 2: 
-        l, u = float(option_list[0]), float(option_list[1])
-        val = (l + u) / 2.0
-    else:
-        try:
+    try:
+        option = option.replace("%", "")
+        option_list = [r.strip() for r in option.split("to")]
+        if len(option_list) == 2: 
+            l, u = float(option_list[0]), float(option_list[1])
+            val = (l + u) / 2.0
+        else:
             val = float(option_list[0])
-        except:
-            val = 0.0
+    except:
+        val = option 
     return val
 
 # For prompting
@@ -155,15 +155,15 @@ def clean_abstain_flan_t5(qns, ans):
 
     all_ans = [] 
     for a in ans:
-        a = a.lower()
+        a = a.lower().strip()
         if "yes" in a and "no" in a: 
-            all_ans.append(1)
+            all_ans.append(1) # Abstain if unsure
         if "yes" in a: 
-            all_ans.append(0)
+            all_ans.append(0) # Do not abstain if model knows the answer
         if "no" in a:
-            all_ans.append(1)
+            all_ans.append(1) # Abstain if model do not know the answer
         else:
-            all_ans.append(1)
+            all_ans.append(a) # To check later
 
     return all_ans
 
@@ -179,13 +179,13 @@ def clean_self_eval_flan_t5(qns, ans):
     for a in ans:
         a = a.lower()
         if "yes" in a and "no" in a: 
-            all_ans.append(0)
+            all_ans.append(0) # Wrong answer if model returns both yes and no
         if "yes" in a: 
-            all_ans.append(1)
+            all_ans.append(1) # correct if model answers yes
         if "no" in a:
-            all_ans.append(0)
+            all_ans.append(0) # wrong if model answers no
         else:
-            all_ans.append(0)
+            all_ans.append(a) # For manual inspection
 
     return all_ans
 
@@ -197,24 +197,16 @@ def clean_confidence_MCQ_flan_t5(qns, ans, NL = False):
     else:
         options_template = {k : v for k, v in CONFIDENCE_OPTIONS.items()}
 
-    options_template_no_paranthesis = {k.replace("(", "").replace(")", "") : v for k, v in options_template.items()}
-
     for a in ans:
         a = a.replace("\n", "")
         a = a.strip()
         if a in options_template:
-            all_ans.append(options_template[a])
-        elif a in options_template_no_paranthesis:
-            all_ans.append(options_template_no_paranthesis[a])
-        elif a.upper() in options_template:
-            all_ans.append(options_template[a.upper()])
-        elif a.upper() in options_template_no_paranthesis:
-            all_ans.append(options_template_no_paranthesis[a.upper()])
+            v = options_template[a]
+            if NL: v = CONFIDENCE_SCORE_NL_MAPPING[v]
+            all_ans.append(v)
         else:
-            all_ans.append(options_template["A)"]) # uncertain if does not return anything
+            all_ans.append(a)
     
-    if NL: 
-        all_ans = [CONFIDENCE_SCORE_NL_MAPPING[a] for a in all_ans]
     all_ans = [parse_option(a) for a in all_ans]
 
     return all_ans
@@ -229,9 +221,10 @@ def clean_confidence_OE_flan_t5(qns, ans):
         try: 
             a = float(a)
         except:
-            print(a)
-            a = 0.0
+            a = a # Do nothing
+        
         all_ans.append(a)
+
     return all_ans
 
 # mistral
@@ -249,7 +242,7 @@ def clean_abstain_mistral(qns, ans):
         elif "no" in a:
             all_ans.append(1) # Abstain if model do not know the answer
         else:
-            raise Exception(f"Unable to parse output: {a}")
+            all_ans.append(a) # For manual inspection
     return all_ans
 
 def clean_answer_mistral(qns, ans):
@@ -276,7 +269,7 @@ def clean_self_eval_mistral(qns, ans):
         elif "false" in a:
             all_ans.append(0) # Not sure that the answer is right 
         else:
-            raise Exception(f"Unsure how to parse: {a}")
+            all_ans.append(a) # For manual inspection
 
     return all_ans
 
@@ -298,14 +291,10 @@ def clean_confidence_MCQ_mistral(qns, ans, NL = False):
                 a = v
                 check = True 
                 break 
-        
-        if not check:
-            raise Exception(f"Unsure how to parse: {a}")
-
+        if check and NL: 
+            a = CONFIDENCE_SCORE_NL_MAPPING[a]
         all_ans.append(a)
 
-    if NL: 
-        all_ans = [CONFIDENCE_SCORE_NL_MAPPING[a] for a in all_ans]
     all_ans = [parse_option(a) for a in all_ans]
 
     return all_ans
@@ -347,12 +336,18 @@ def clean_answer_and_confidence_OE_mistral(qns, ans):
 
     for q, a in zip(qns, ans):
         
-        a = a.replace(q, "").strip()
-        idx = a.index("Confidence score:")
-        all_ans.append(a[:idx].strip())
+        try:
+            a = a.replace(q, "").strip()
+            idx = a.index("Confidence score:")
 
-        s = a[idx:].replace("Confidence score:", "").replace(".", "").strip()
-        all_scores.append(s)
+            s = a[idx:].replace("Confidence score:", "").replace(".", "").strip()
+            
+            all_ans.append(a[:idx].strip())
+            all_scores.append(s)
+
+        except:
+            all_ans.append(a)
+            all_scores.append(a)
 
     all_scores = [parse_option(s) for s in all_scores]
 
@@ -373,7 +368,7 @@ def clean_abstain_llama2(qns, ans):
         elif "no" in a:
             all_ans.append(1) # Abstain if model do not know the answer
         else:
-            raise Exception(f"Unable to parse output: {a}")
+            all_ans.append(a) # For manual inspection
     return all_ans
 
 def clean_answer_llama2(qns, ans):
@@ -401,7 +396,7 @@ def clean_self_eval_llama2(qns, ans):
         elif "False" in a: 
             all_ans.append(0)
         else:
-            raise Exception(f"Unsure how to parse: {a}")
+            all_ans.append(a) # For manual inspection
     return all_ans
 
 def clean_confidence_MCQ_llama2(qns, ans, NL = False):
@@ -417,6 +412,8 @@ def clean_confidence_MCQ_llama2(qns, ans, NL = False):
         
         check = False
         a = a.split("Score:")[-1].strip()
+        a = a.replace("[/INST]", "")
+        a = " ".join(a.split())
         for _, v in options_template.items(): 
             if v in a: 
                 a = v
@@ -424,12 +421,17 @@ def clean_confidence_MCQ_llama2(qns, ans, NL = False):
                 break 
         
         if not check:
-            raise Exception(f"Unsure how to parse: {a}")
-
+            for k, v in options_template.items():
+                k = k.replace("(", "").replace(")", "").strip()
+                if k in a:
+                    a = v
+                    check = True
+                    break
+        
+        if check and NL: 
+            a = CONFIDENCE_SCORE_NL_MAPPING[a]
         all_ans.append(a)
 
-    if NL: 
-        all_ans = [CONFIDENCE_SCORE_NL_MAPPING[a] for a in all_ans]
     all_ans = [parse_option(a) for a in all_ans]
 
     return all_ans
@@ -440,7 +442,7 @@ def clean_confidence_OE_llama2(qns, ans):
 
     for q, a in zip(qns, ans):
         
-        a = a.replace(q, "").strip().split("Score:")[-1].strip()
+        a = a.replace(q, "").strip().split("Confidence Level:")[-1].strip()
         a = a.replace(".", "")
         all_ans.append(a)
 
@@ -461,6 +463,8 @@ def clean_answer_and_confidence_MCQ_llama2(qns, ans, NL = False):
             a, s = ".".join(a_list[:-2]).strip(), ".".join(a_list[-2:-1]).strip()
         else: 
             a, s = ".".join(a_list[:-1]).strip(), a_list[-1].strip()
+        
+        if a == "": a = ".".join(a_list)
         all_ans.append(a)
         all_scores.append(s)
 
@@ -475,11 +479,15 @@ def clean_answer_and_confidence_OE_llama2(qns, ans):
     for q, a in zip(qns, ans):
         
         a = a.replace(q, "").strip()
-        idx = a.index("Confidence score:")
-        all_ans.append(a[:idx].strip())
+        try:
+            idx = a.index("Confidence score:")
+            s = a[idx:].replace("Confidence score:", "").replace(".", "").strip()
+            all_ans.append(a[:idx].strip())
+            all_scores.append(s)
 
-        s = a[idx:].replace("Confidence score:", "").replace(".", "").strip()
-        all_scores.append(s)
+        except:
+            all_ans.append(a)
+            all_scores.append(a)
 
     all_scores = [parse_option(s) for s in all_scores]
 
@@ -493,8 +501,6 @@ def get_clean_abstain_fnc(model):
         return clean_abstain_mistral
     elif "llama2" in model:
         return clean_abstain_llama2
-    elif "shearedllama" in model:
-        return clean_abstain_llama2
     else: 
         NotImplementedError()    
 
@@ -505,8 +511,6 @@ def get_clean_answer_fnc(model):
         return clean_answer_mistral
     elif "llama2" in model:
         return clean_answer_llama2
-    elif "shearedllama" in model:
-        return clean_answer_llama2
     else: 
         NotImplementedError()
 
@@ -515,9 +519,7 @@ def get_clean_self_evaluate_fnc(model):
         return clean_self_eval_flan_t5
     elif "mistral" in model:
         return clean_self_eval_mistral
-    elif "llama2-7b" in model: 
-        return clean_self_eval_llama2
-    elif "shearedllama" in model:
+    elif "llama2" in model: 
         return clean_self_eval_llama2
     else: 
         NotImplementedError()
@@ -529,8 +531,6 @@ def get_clean_confidence_MCQ_fnc(model):
         return clean_confidence_MCQ_mistral
     elif "llama2" in model: 
         return clean_confidence_MCQ_llama2
-    elif "shearedllama" in model:
-        return clean_confidence_MCQ_llama2
     else: 
         NotImplementedError()
 
@@ -541,7 +541,25 @@ def get_clean_confidence_OE_fnc(model):
         return clean_confidence_OE_mistral
     elif "llama2" in model: 
         return clean_confidence_OE_llama2
-    elif "shearedllama" in model:
-        return clean_confidence_OE_llama2
+    else: 
+        NotImplementedError()
+
+def get_clean_answer_and_confidence_MCQ_fnc(model):
+    if "flan-t5" in model: 
+        raise NotImplementedError()
+    elif "mistral" in model:
+        return clean_answer_and_confidence_MCQ_mistral
+    elif "llama2" in model: 
+        return clean_answer_and_confidence_MCQ_llama2
+    else: 
+        NotImplementedError()
+
+def get_clean_answer_and_confidence_OE_fnc(model):
+    if "flan-t5" in model: 
+        raise NotImplementedError()
+    elif "mistral" in model:
+        return clean_answer_and_confidence_OE_mistral
+    elif "llama2" in model: 
+        return clean_answer_and_confidence_OE_llama2
     else: 
         NotImplementedError()

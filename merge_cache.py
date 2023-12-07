@@ -67,20 +67,20 @@ if __name__ == "__main__":
         write_json(merged_data_small, OUTPUT_SMALL_PATH)
     
     else:
-        DATASET = "truthfulqa"
-        OUTPUT_FOLDER = TRUTHFUL_QA_PROCESSED_FOLDER
+        DATASET = "sciq"
+        OUTPUT_FOLDER = SCIQ_PROCESSED_FOLDER
         OUTPUT_PATH = os.path.join(OUTPUT_FOLDER, "data_w_GPT4_output.json")
         OUTPUT_SMALL_PATH = os.path.join(OUTPUT_FOLDER, f"data_w_GPT4_output_{SMALL_DATASET_SIZE}.json")
     
         if DATASET == "truthfulqa":
-            CACHE_TRAIN = read_json(os.path.join(TRUTHFUL_QA_PROCESSED_FOLDER, "train_w_diverse_qns_GPT4.json"))
-            CACHE_VAL = read_json(os.path.join(TRUTHFUL_QA_PROCESSED_FOLDER, "val_w_diverse_qns_GPT4.json"))
-            CACHE_TEST = read_json(os.path.join(TRUTHFUL_QA_PROCESSED_FOLDER, "test_w_diverse_qns_GPT4.json"))
+            CACHE_TRAIN = read_json(os.path.join(OUTPUT_FOLDER, "train_w_diverse_qns_GPT4.json"))
+            CACHE_VAL = read_json(os.path.join(OUTPUT_FOLDER, "val_w_diverse_qns_GPT4.json"))
+            CACHE_TEST = read_json(os.path.join(OUTPUT_FOLDER, "test_w_diverse_qns_GPT4.json"))
             CACHE = CACHE_TRAIN + CACHE_VAL + CACHE_TEST
 
-            TRAIN = read_json(os.path.join(TRUTHFUL_QA_PROCESSED_FOLDER, "train.json"))
-            DEV = read_json(os.path.join(TRUTHFUL_QA_PROCESSED_FOLDER, "val.json"))
-            TEST = read_json(os.path.join(TRUTHFUL_QA_PROCESSED_FOLDER, "test.json"))
+            TRAIN = read_json(os.path.join(OUTPUT_FOLDER, "train.json"))
+            DEV = read_json(os.path.join(OUTPUT_FOLDER, "val.json"))
+            TEST = read_json(os.path.join(OUTPUT_FOLDER, "test.json"))
             DATA = TRAIN + DEV + TEST
 
             merged_data = merge_truthfulqa(DATA, CACHE)
