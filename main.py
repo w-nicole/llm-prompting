@@ -22,7 +22,9 @@ def get_response(diverse_dataset, dataloader, llm, tokenizer, bert_scorer):
         
         # Note we only run this experiment if we have diverse outputs for it 
         check = [i in diverse_dataset for i in id_]
-        if sum(check) == 0: break
+        if sum(check) == 0: 
+            print("Check is 0")
+            break
 
         # Only keep those where we have diverse outputs for 
         id_, qns, ans = [id_[i] for i, v in enumerate(check) if v == True], [qns[i] for i, v in enumerate(check) if v == True], [ans[i] for i, v in enumerate(check) if v == True]
@@ -109,7 +111,8 @@ def get_response(diverse_dataset, dataloader, llm, tokenizer, bert_scorer):
                                 "self_eval_gt": self_eval_GT[i],
                                 "pred_conf_gt_MCQ": pred_conf_GT_MCQ[i],
                                 "pred_conf_gt_OE": pred_conf_GT_OE[i],
-                                "pred_conf_gt_NL_MCQ": pred_conf_GT_NL_MCQ[i]})
+                                "pred_conf_gt_NL_MCQ": pred_conf_GT_NL_MCQ[i]
+                               })
 
     return all_results
 
@@ -120,10 +123,10 @@ if __name__ == "__main__":
     """
 
     # Settings
-    DATASET = "truthfulqa"
+    DATASET = "triviaqa"
     MODEL = 'shearedllama-bling-1.3b'
     _, DATASET_FOLDER, OUTPUT_FOLDER = get_folders(DATASET)
-    DIVERSE_DATA_PATH = os.path.join(DATASET_FOLDER, "subset_data_w_GPT_output.json")
+    DIVERSE_DATA_PATH = os.path.join(DATASET_FOLDER, "subset_data_w_GPT_output_small.json")
     DIVERSE_DATA = read_json(DIVERSE_DATA_PATH)
     DIVERSE_DATA = {str(r["id_"]) : r for r in DIVERSE_DATA}
 

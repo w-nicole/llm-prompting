@@ -237,6 +237,7 @@ def clean_confidence_OE_flan_t5(qns, ans):
         except:
             print(a)
             a = 0.0
+            a = 0.0
         all_ans.append(a)
     return all_ans
 
@@ -333,6 +334,10 @@ def clean_abstain_llama2(qns, ans):
     for q, a in zip(qns, ans):
 
         a = list(set([r for r in a.split("\n") if "Answer:" in r]))
+        if not a:
+            all_ans.append(1)
+            continue
+            
         a = a[0] # We take the first option 
 
         if "A)" in a: 
@@ -373,6 +378,10 @@ def clean_self_eval_llama2(qns, ans):
     for q, a in zip(qns, ans):
 
         a = list(set([r for r in a.split("\n") if "Answer:" in r and "Proposed Answer:" not in r]))
+        if not a:
+            all_ans.append(0)
+            continue
+            
         a = a[0]
 
         if "A)" in a: 
@@ -441,8 +450,8 @@ def clean_confidence_OE_llama2(qns, ans):
     for q, a in zip(qns, ans):
         
         a = list(set([r.replace(q, "").strip() for r in a.split("\n") if "Score:" in r]))
-        a = a[0]
         try:
+            a = a[0]
             a = a.split(" ")[1]
         except:
             a = "0.0"

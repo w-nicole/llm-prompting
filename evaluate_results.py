@@ -94,7 +94,11 @@ if __name__ == "__main__":
                 all_scores = get_results(results)
                 model = f.split("_")[0]
                 all_results[dataset][model] = all_scores
-                print(all_scores)
+                # print("PATH ", dataset, current_folder, f)
+                if '2.7' in f and 'truth' in dataset:
+                    print(f)
+                    for key in all_scores:
+                        if 'AUROC' in key:
+                            print(key, all_scores[key])
+                            
 
-        print(all_results)
-        a = z
