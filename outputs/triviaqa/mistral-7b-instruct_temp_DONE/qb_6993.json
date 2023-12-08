@@ -18,7 +18,7 @@
     "pred_ans": "Tinker Bell",
     "pred_ans_conf_MCQ": "Tinker Bell",
     "pred_ans_conf_NL_MCQ": "Tinker Bell",
-    "pred_ans_conf_OE": "The name of the fairy in 'Peter Pan' by J M Barrie is Tinker Bell.",
+    "pred_ans_conf_OE": "Tinker Bell.",
     "pred_diverse_ans": [
         "The name of the fairy character in J.M. Barrie's 'Peter Pan' is Tinker Bell.",
         "Tinker Bell is the fairy in J.M. Barrie's 'Peter Pan'.",

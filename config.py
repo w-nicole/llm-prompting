@@ -17,6 +17,9 @@ SMALL_DATASET_SIZE = 200
 # For bert scorer 
 SCORING_THRESHOLD = 0.7
 
+# For hybrid model 
+ALPHA = 0.2
+
 # Data paths
 DATASET_RAW_FOLDER = 'datasets/raw'
 TRUTHFUL_QA_RAW_FOLDER = os.path.join(DATASET_RAW_FOLDER, 'truthfulQA.csv')
@@ -43,7 +46,7 @@ MODEL_CHECKPOINTS = {'flan-t5-large' : 'model_weights/flan-t5/large',
                      'llama2-70b-chat': 'model_weights/llama2/70b-chat'}
 
 # Device 
-DEVICE_IDX = "1,2,3,4,5,6,7" # separate with comma if using multiple GPUs
+DEVICE_IDX = "0" # separate with comma if using multiple GPUs
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 MEMORY_ALLOCATION = {int(i) : "38GB" for i in DEVICE_IDX.split(",")}
 

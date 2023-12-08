@@ -15,10 +15,10 @@
     ],
     "answer": "samples",
     "pred_abstain": 0,
-    "pred_ans": "Sure! Here's the answer to your question:\n\nDescriptive statistics are useful for summarizing the characteristics of large datasets.",
+    "pred_ans": "the characteristics of large datasets.",
     "pred_ans_conf_MCQ": "data sets.",
     "pred_ans_conf_NL_MCQ": "large datasets.",
-    "pred_ans_conf_OE": "In scientific investigations, descriptive statistics are useful for summarizing the characteristics of large datasets.",
+    "pred_ans_conf_OE": "large datasets.",
     "pred_diverse_ans": [
         "Data sets.",
         "Data.",
@@ -26,10 +26,10 @@
         "Means, medians, modes, standard deviations, and ranges.",
         "Variability.",
         "Datasets.",
-        "Sure! Here's the answer to your question:\n\nDescriptive statistics offer a summary of the characteristics of a large and extensive dataset.",
-        "Sure! Here's the answer to your question:\n\nAnswer: Populations.",
+        "large and extensive dataset.",
+        "Populations.",
         "Data.",
-        "Sure! Here's the answer to your question:\n\nB. Macroscopic objects"
+        "Macroscopic objects"
     ],
     "self_eval": 1,
     "true_prob": 1.0,

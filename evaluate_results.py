@@ -13,9 +13,9 @@ def get_bert_score(folder):
 
     all_results = [read_json(os.path.join(folder, f)) for f in os.listdir(folder)]
     pred_ans, ans = [r["pred_ans"] for r in all_results], [r["answer"] for r in all_results]
-    # pred_ans_conf_MCQ = [r["pred_ans_conf_MCQ"] for r in all_results]
-    # pred_ans_conf_NL_MCQ = [r["pred_ans_conf_NL_MCQ"] for r in all_results]
-    # pred_ans_conf_OE = [r["pred_ans_conf_OE"] for r in all_results]
+    pred_ans_conf_MCQ = [r["pred_ans_conf_MCQ"] for r in all_results]
+    pred_ans_conf_NL_MCQ = [r["pred_ans_conf_NL_MCQ"] for r in all_results]
+    pred_ans_conf_OE = [r["pred_ans_conf_OE"] for r in all_results]
 
     pred_ans_bertscore = compute_bert_score(bert_scorer, pred_ans, ans)
     pred_ans_conf_MCQ_bertscore = compute_bert_score(bert_scorer, pred_ans_conf_MCQ, ans)
@@ -27,8 +27,6 @@ def get_bert_score(folder):
         r["pred_ans_conf_MCQ_bert_score"] = pred_ans_conf_MCQ_bertscore[i]
         r["pred_ans_conf_NL_MCQ_bert_score"] = pred_ans_conf_NL_MCQ_bertscore[i]
         r["pred_ans_conf_OE_bert_score"] = pred_ans_conf_OE_bertscore[i]
-
-    for r in tqdm(all_results):
 
         consistency_score = get_pairwise_bert_score(bert_scorer, r["pred_ans"], r["pred_diverse_ans"])
         consistency_score = np.mean(consistency_score)
@@ -44,13 +42,14 @@ def get_bert_score_flan_t5(folder):
 
     for i, r in tqdm(enumerate(all_results)):
 
-        consistency_score = get_pairwise_bert_score(bert_scorer, r["pred_ans"], r["pred_diverse_ans"])
-        consistency_score = np.mean(consistency_score)
-        r["pred_ans_bert_score"] = pred_ans_bertscore[i]
-        r["consistency_score"] = consistency_score
         if r["self_eval"] == "yes": r["self_eval"] = 1
         if r["self_eval_gt"] == "yes": r["self_eval_gt"] = 1
-    
+        r["pred_ans_bert_score"] = pred_ans_bertscore[i]
+        
+        consistency_score = get_pairwise_bert_score(bert_scorer, r["pred_ans"], r["pred_diverse_ans"])
+        consistency_score = np.mean(consistency_score)
+        r["consistency_score"] = consistency_score
+
     return all_results
 
 def get_results(results):
@@ -127,6 +126,35 @@ def get_results(results):
         AUROC_conf_OE_1s = AUROC(conf_OE_1s, ans_conf_OE_label)
         AUC_conf_OE_1s = AUC(conf_OE_1s, ans_conf_OE_label)
 
+    # 9. Hybrid Model (alpha * cons_conf + (1.0 - alpha) * MCQ)
+    conf_cons_MCQ_H =np.array([ALPHA * conf_cons[i] + (1.0 - ALPHA) * conf_MCQ[i] for i in range(n_total)])
+    ECE_cons_MCQ_H = ECE(conf_cons_MCQ_H, ans_label)
+    AUROC_cons_MCQ_H = AUROC(conf_cons_MCQ_H, ans_label)
+    AUC_cons_MCQ_H = AUC(conf_cons_MCQ_H, ans_label)
+
+    # 10. Hybrid Model (alpha * cons_conf + (1.0 - alpha) * MCQ + NL)
+    conf_cons_NL_MCQ_H = np.array([ALPHA * conf_cons[i] + (1.0 - ALPHA) * conf_NL_MCQ[i] for i in range(n_total)])
+    ECE_cons_NL_MCQ_H = ECE(conf_cons_NL_MCQ_H, ans_label)
+    AUROC_cons_NL_MCQ_H = AUROC(conf_cons_NL_MCQ_H, ans_label)
+    AUC_cons_NL_MCQ_H = AUC(conf_cons_NL_MCQ_H, ans_label)
+
+    # 11. Hybrid Model (alpha * cons_conf + (1.0 - alpha) * OE)
+    conf_cons_OE_H = np.array([ALPHA * conf_cons[i] + (1.0 - ALPHA) * conf_OE[i] for i in range(n_total)])
+    ECE_cons_OE_H = ECE(conf_cons_OE_H, ans_label)
+    AUROC_cons_OE_H = AUROC(conf_cons_OE_H, ans_label)
+    AUC_cons_OE_H = AUC(conf_cons_OE_H, ans_label)
+
+    print()
+    print(ECE_conf_MCQ, AUROC_conf_MCQ, AUC_conf_MCQ)
+    print(ECE_conf_cons, AUROC_conf_cons, AUC_conf_cons)
+    print(ECE_cons_MCQ_H, AUROC_cons_MCQ_H, AUC_cons_MCQ_H)
+    print(ECE_cons_NL_MCQ_H, AUROC_cons_NL_MCQ_H, AUC_cons_NL_MCQ_H)
+    print(ECE_cons_OE_H, AUROC_cons_OE_H, AUC_cons_OE_H)
+
+
+    a = z
+
+
     # Get precision, recall and F-score of various aspects 
     # 1. Check how well can LLMs evaluate answers 
     self_eval = np.array([r["self_eval"] for r in results])
@@ -180,7 +208,7 @@ if __name__ == "__main__":
 
     # Settings
     DATASET = "sciq"
-    LLM = "flan-t5-xl"
+    LLM = "llama2-7b-chat"
     CHECK_FLAN_T5 = "flan-t5" in LLM
 
     idx = 0
