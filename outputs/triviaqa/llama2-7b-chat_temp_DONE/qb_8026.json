@@ -17,11 +17,10 @@
     "pred_abstain": 0,
     "pred_ans": "Guglielmo",
     "pred_ans_conf_MCQ": "",
-    "pred_ans_conf_NL_MCQ": "Guglielmo Marconi",
-    "pred_ans_conf_OE": "Guglielmo.",
+    "pred_ans_conf_NL_MCQ": "Guglielmo",
+    "pred_ans_conf_OE": "Guglielmo",
     "pred_diverse_ans": [
         "Guglielmo",
-        "Sure! The given name of the Italian inventor Guglielmo Marconi is Guglielmo.",
         "Guglielmo",
         "Guglielmo",
         "Guglielmo",
@@ -29,7 +28,8 @@
         "Guglielmo",
         "Guglielmo",
         "Guglielmo",
-        "Sure! Marconi's first name is Guglielmo."
+        "Guglielmo",
+        "Guglielmo"
     ],
     "self_eval": 1,
     "true_prob": 1.0,

@@ -16,11 +16,11 @@
     "answer": "Copernicium",
     "pred_abstain": 0,
     "pred_ans": "Carbon (C).",
-    "pred_ans_conf_MCQ": "The chemical element with the symbol Cn is carbon",
+    "pred_ans_conf_MCQ": "carbon",
     "pred_ans_conf_NL_MCQ": "",
-    "pred_ans_conf_OE": "The chemical element with the symbol Cn is Carbon.",
+    "pred_ans_conf_OE": "Carbon",
     "pred_diverse_ans": [
-        "Sure! The chemical element represented by the symbol Cn is Carbon.",
+        "Carbon",
         "Carbon (C)",
         "Carbon (C)",
         "Carbon (C).",
@@ -29,7 +29,7 @@
         "Carbon (C)",
         "Carbon (C)",
         "Carbon (C)",
-        "Cn is the symbol for Cadmium (Cd)."
+        "Cadmium (Cd)"
     ],
     "self_eval": 1,
     "true_prob": 1.0,

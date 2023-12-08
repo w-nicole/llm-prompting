@@ -16,9 +16,9 @@
     "answer": "Albert",
     "pred_abstain": 0,
     "pred_ans": "Albert",
-    "pred_ans_conf_MCQ": "The first name of famous German scientist Einstein is Albert",
-    "pred_ans_conf_NL_MCQ": "The first name of famous German scientist Einstein is Albert",
-    "pred_ans_conf_OE": "Albert.",
+    "pred_ans_conf_MCQ": "Albert",
+    "pred_ans_conf_NL_MCQ": "Albert",
+    "pred_ans_conf_OE": "Albert",
     "pred_diverse_ans": [
         "Albert",
         "Albert",

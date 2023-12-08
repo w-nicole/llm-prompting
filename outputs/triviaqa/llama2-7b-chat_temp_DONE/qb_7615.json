@@ -16,9 +16,9 @@
     "answer": "Brazil",
     "pred_abstain": 0,
     "pred_ans": "Brazil",
-    "pred_ans_conf_MCQ": "Ernesto Geisel became President of Brazil in 1974",
+    "pred_ans_conf_MCQ": "Brazil",
     "pred_ans_conf_NL_MCQ": "",
-    "pred_ans_conf_OE": "Brazil.",
+    "pred_ans_conf_OE": "Brazil",
     "pred_diverse_ans": [
         "Brazil",
         "Brazil",
