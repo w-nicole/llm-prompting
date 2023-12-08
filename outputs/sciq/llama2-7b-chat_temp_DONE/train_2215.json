@@ -21,15 +21,15 @@
     "pred_ans_conf_OE": "Stimulus",
     "pred_diverse_ans": [
         "Stimulus",
-        "Sure! The word you are looking for is \"stimulus.\"",
+        "stimulus",
         "Stimulus",
         "Stimulus",
         "Cue",
-        "The scientific term for an item in the environment that brings about a reaction in organisms is \"stimulus.\"",
-        "Sure! The answer is: STIMULUS",
+        "stimulus",
+        "STIMULUS",
         "Stimulus",
         "Stimulus",
-        "Yes."
+        "Yes"
     ],
     "self_eval": 1,
     "true_prob": 1.0,

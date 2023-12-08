@@ -203,3 +203,4 @@ if __name__ == "__main__":
     # Get the evaluations now 
     scores = get_results(all_results)
     write_json(scores, RESULTS_OUTPUT_FILE_PATH)
+    

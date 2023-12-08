@@ -16,9 +16,9 @@
     "answer": "peptide bond",
     "pred_abstain": 0,
     "pred_ans": "Peptide bond",
-    "pred_ans_conf_MCQ": "An amide bond joining two amino acid units is called a peptide bond.",
-    "pred_ans_conf_NL_MCQ": "A peptide bond.",
-    "pred_ans_conf_OE": "Peptide bond.",
+    "pred_ans_conf_MCQ": "peptide bond",
+    "pred_ans_conf_NL_MCQ": "peptide bond",
+    "pred_ans_conf_OE": "Peptide bond",
     "pred_diverse_ans": [
         "Peptide bond",
         "Peptide bond",

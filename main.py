@@ -28,8 +28,9 @@ def get_response(llm, tokenizer, dataloader, args):
         # Get responses from all the answers
         diverse_qns_formatted = GET_ANSWER_TEMPLATE(diverse_qns)
         pred_diverse_ans = get_model_response(diverse_qns_formatted, llm, tokenizer)
-        pred_diverse_ans = get_clean_answer_fnc(args.model)(diverse_qns_formatted, pred_diverse_ans)
-        diverse_qns, pred_diverse_ans = pack_qns_ans(idx_list, diverse_qns, pred_diverse_ans)
+        pred_diverse_ans = get_clean_answer_fnc(MODEL)(diverse_qns_formatted, pred_diverse_ans)
+        pred_cons = get_consistency_score(idx_list, pred_diverse_ans, bert_scorer)
+        pred_conf_cons = [1.0 - i for i in pred_cons]
 
         # 1. Check if we should abstain
         abstain_formatted = ABSTAIN_TEMPLATE(qns)

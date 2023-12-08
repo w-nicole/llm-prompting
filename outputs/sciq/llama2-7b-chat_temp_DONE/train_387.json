@@ -18,18 +18,18 @@
     "pred_ans": "Hydrogen",
     "pred_ans_conf_MCQ": "",
     "pred_ans_conf_NL_MCQ": "",
-    "pred_ans_conf_OE": "Hydrogen.",
+    "pred_ans_conf_OE": "Hydrogen",
     "pred_diverse_ans": [
         "Hydrogen",
         "Hydrogen",
         "Oxygen",
         "Hydrogen gas",
-        "Hydrogen gas.",
-        "Hydrogen gas.",
+        "Hydrogen gas",
+        "Hydrogen gas",
         "Oxygen",
         "Hydrogen",
-        "Hydrogen.",
-        "Hydrogen."
+        "Hydrogen",
+        "Hydrogen"
     ],
     "self_eval": 1,
     "true_prob": 1.0,

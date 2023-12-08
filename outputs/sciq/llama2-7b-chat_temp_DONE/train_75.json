@@ -17,8 +17,8 @@
     "pred_abstain": 0,
     "pred_ans": "Voltage",
     "pred_ans_conf_MCQ": "voltage",
-    "pred_ans_conf_NL_MCQ": "voltage.",
-    "pred_ans_conf_OE": "voltage.",
+    "pred_ans_conf_NL_MCQ": "voltage",
+    "pred_ans_conf_OE": "voltage",
     "pred_diverse_ans": [
         "Voltage",
         "Voltage",
@@ -27,7 +27,7 @@
         "Voltage",
         "Voltage",
         "Voltage",
-        "\"voltage\" or \"volts.\"",
+        "voltage",
         "Voltage",
         "Voltage"
     ],

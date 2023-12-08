@@ -17,8 +17,8 @@
     "pred_abstain": 0,
     "pred_ans": "Ecology",
     "pred_ans_conf_MCQ": "Ecology",
-    "pred_ans_conf_NL_MCQ": "The term for the study of how living things interact with each other and with their environment is \"ecology",
-    "pred_ans_conf_OE": "Ecology.",
+    "pred_ans_conf_NL_MCQ": "ecology",
+    "pred_ans_conf_OE": "Ecology",
     "pred_diverse_ans": [
         "Ecology",
         "Ecology",

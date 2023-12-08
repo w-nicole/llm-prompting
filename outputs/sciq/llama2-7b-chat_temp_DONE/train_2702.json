@@ -17,10 +17,10 @@
     "pred_abstain": 0,
     "pred_ans": "Lipid",
     "pred_ans_conf_MCQ": "",
-    "pred_ans_conf_NL_MCQ": "A lipid",
-    "pred_ans_conf_OE": "A lipid.",
+    "pred_ans_conf_NL_MCQ": "lipid",
+    "pred_ans_conf_OE": "lipid",
     "pred_diverse_ans": [
-        "Yes.",
+        "Yes",
         "Lipid",
         "Triglyceride",
         "Lipid",
@@ -29,7 +29,7 @@
         "Triglyceride",
         "Glycerophosphocholine",
         "Yes",
-        "A triglyceride."
+        "triglyceride"
     ],
     "self_eval": 1,
     "true_prob": 1.0,

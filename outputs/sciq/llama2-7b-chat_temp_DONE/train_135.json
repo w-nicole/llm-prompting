@@ -21,14 +21,14 @@
     "pred_ans_conf_OE": "Acute Respiratory Distress Syndrome (ARDS).",
     "pred_diverse_ans": [
         "Asthma",
-        "Acute respiratory distress syndrome (ARDS)",
-        "Yes.",
+        "ARDS",
+        "Yes",
         "Pneumonia",
         "Pulmonary edema",
-        "Acute respiratory distress syndrome (ARDS).",
+        "ARDS",
         "Atelectasis",
         "Pulmonary edema",
-        "Acute respiratory distress syndrome (ARDS)",
+        "ARDS",
         "Pneumonia"
     ],
     "self_eval": 1,

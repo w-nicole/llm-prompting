@@ -16,8 +16,8 @@
     "answer": "genes",
     "pred_abstain": 0,
     "pred_ans": "DNA",
-    "pred_ans_conf_MCQ": "Every human cell has the same number of chromosomes, and each cell has thousands of them",
-    "pred_ans_conf_NL_MCQ": "Every human cell has the same DNA",
+    "pred_ans_conf_MCQ": "chromosomes",
+    "pred_ans_conf_NL_MCQ": "DNA",
     "pred_ans_conf_OE": "DNA.",
     "pred_diverse_ans": [
         "DNA",
@@ -29,7 +29,7 @@
         "DNA",
         "Water",
         "DNA",
-        "DNA."
+        "DNA"
     ],
     "self_eval": 1,
     "true_prob": 1.0,
