@@ -16,9 +16,9 @@
     "answer": "habitat",
     "pred_abstain": 0,
     "pred_ans": "Habitat",
-    "pred_ans_conf_MCQ": "The physical environment in which a species lives and to which it is adapted is called a \"habitat.\"",
-    "pred_ans_conf_NL_MCQ": "Habitat.",
-    "pred_ans_conf_OE": "The physical environment in which a species lives and to which it is adapted is called an \"ecosystem.\"",
+    "pred_ans_conf_MCQ": "habitat",
+    "pred_ans_conf_NL_MCQ": "Habitat",
+    "pred_ans_conf_OE": "ecosystem",
     "pred_diverse_ans": [
         "Desert",
         "Habitat",

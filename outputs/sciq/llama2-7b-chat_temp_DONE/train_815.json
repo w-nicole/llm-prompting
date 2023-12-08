@@ -16,9 +16,9 @@
     "answer": "ovaries",
     "pred_abstain": 0,
     "pred_ans": "Ovaries",
-    "pred_ans_conf_MCQ": "The small, egg-shaped organs that lie on either side of the uterus are called ovaries",
-    "pred_ans_conf_NL_MCQ": "The small, egg-shaped organs that lie on either side of the uterus are called ovaries.",
-    "pred_ans_conf_OE": "The small, egg-shaped organs that lie on either side of the uterus are called ovaries.",
+    "pred_ans_conf_MCQ": "ovaries",
+    "pred_ans_conf_NL_MCQ": "ovaries",
+    "pred_ans_conf_OE": "ovaries",
     "pred_diverse_ans": [
         "Ovaries",
         "Ovaries",
@@ -29,7 +29,7 @@
         "Ovaries",
         "Ovaries",
         "Ovaries",
-        "The small, oval-like organs found symmetrically on both sides of the uterus are called \"ovaries.\""
+        "ovaries"
     ],
     "self_eval": 1,
     "true_prob": 1.0,

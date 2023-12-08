@@ -21,7 +21,7 @@
     "pred_ans_conf_OE": "A suggested explanation for a phenomenon or a suggested explanation for a relationship between many phenomena is called a theory.",
     "pred_diverse_ans": [
         "Hypothesis",
-        "Causality.",
+        "Causality",
         "Hypothesis",
         "Hypothesis",
         "Hypothesis",
@@ -29,7 +29,7 @@
         "Hypothesis",
         "Hypothesis",
         "Hypothesis",
-        "Yes."
+        "Yes"
     ],
     "self_eval": 1,
     "true_prob": 1.0,

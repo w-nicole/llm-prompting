@@ -17,8 +17,8 @@
     "pred_abstain": 0,
     "pred_ans": "Stoichiometric coefficients",
     "pred_ans_conf_MCQ": "",
-    "pred_ans_conf_NL_MCQ": "Stoichiometry.",
-    "pred_ans_conf_OE": "What are used to balance chemical equations? Stoichiometry.",
+    "pred_ans_conf_NL_MCQ": "Stoichiometry",
+    "pred_ans_conf_OE": "Stoichiometry",
     "pred_diverse_ans": [
         "Stoichiometry",
         "Sure! The tools used to balance chemical equations are:\n\n1. Moles\n2. Atomic mass numbers\n3. Chemical formulas\n4. Balance symbols (e.g. +, -, =)\n5. Subscripts",
@@ -29,7 +29,7 @@
         "Chemical equations are balanced by:\n\na) Counting the number of atoms of each element on both sides of the equation\nb) Using the law of conservation of mass\nc) Counting the number of molecules of each compound on both sides of the equation\nd) Using the principle of mass balance",
         "Using the following steps:\n\n1. Count the number of atoms of each element on both sides of the equation.\n2. Identify the elements that are present in excess and write a coefficient in front of them.\n3. Identify the elements that are missing and write a coefficient in front of them.\n4. Check that the number of atoms of each element is the same on both sides of the equation.\n5. If necessary, make adjustments to the coefficients to balance the equation.\n6. Write the balanced equation with the correct coefficients.",
         "Mass balance",
-        "Mass."
+        "Mass"
     ],
     "self_eval": 1,
     "true_prob": 1.0,

@@ -17,8 +17,8 @@
     "pred_abstain": 0,
     "pred_ans": "Hemodialysis",
     "pred_ans_conf_MCQ": "",
-    "pred_ans_conf_NL_MCQ": "The medical process of removing wastes and excess water from the blood by diffusion and ultrafiltration is called dialysis.",
-    "pred_ans_conf_OE": "The medical process of removing wastes and excess water from the blood by diffusion and ultrafiltration is called dialysis.",
+    "pred_ans_conf_NL_MCQ": "dialysis",
+    "pred_ans_conf_OE": "dialysis",
     "pred_diverse_ans": [
         "Dialysis",
         "Dialysis",

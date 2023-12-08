@@ -20,16 +20,16 @@
     "pred_ans_conf_NL_MCQ": "",
     "pred_ans_conf_OE": "The average number of individuals per unit of area or volume is called density.",
     "pred_diverse_ans": [
-        "Sure! The term you are looking for is \"density.\"",
+        "density",
         "Population density",
-        "Sure! The colloquial name for the average number of beings per unit of volume or area is... \"people.\"",
+        "people",
         "The mean number of subjects across a specific area or volume is defined as the sum of the number of subjects within that area or volume divided by the total area or volume.",
         "Density",
-        "Density.",
         "Density",
         "Density",
-        "The professional term for the average number of individuals within a specific unit of space or volume is:\n\nPopulation density",
-        "The jargon for the average population density in a determined area or volume is:\n\nPopulation density (people per square kilometer or square mile)"
+        "Density",
+        "Population density",
+        "Population density"
     ],
     "self_eval": 1,
     "true_prob": 1.0,

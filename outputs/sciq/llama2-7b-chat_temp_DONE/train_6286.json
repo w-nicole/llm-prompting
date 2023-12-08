@@ -16,9 +16,9 @@
     "answer": "water",
     "pred_abstain": 0,
     "pred_ans": "Water",
-    "pred_ans_conf_MCQ": "The only substance on earth that is present in all three states of matter is water",
-    "pred_ans_conf_NL_MCQ": "The only substance on earth that is present in all three states of matter is water",
-    "pred_ans_conf_OE": "The only substance on earth that is present in all three states of matter is water.",
+    "pred_ans_conf_MCQ": "water",
+    "pred_ans_conf_NL_MCQ": "water",
+    "pred_ans_conf_OE": "water",
     "pred_diverse_ans": [
         "Yes",
         "Yes",
@@ -27,9 +27,9 @@
         "Yes",
         "Water",
         "Water",
-        "Yes.",
+        "Yes",
         "Water",
-        "Yes."
+        "Yes"
     ],
     "self_eval": 1,
     "true_prob": 1.0,

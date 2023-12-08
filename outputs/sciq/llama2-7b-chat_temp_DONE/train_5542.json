@@ -17,8 +17,8 @@
     "pred_abstain": 0,
     "pred_ans": "Anemia",
     "pred_ans_conf_MCQ": "",
-    "pred_ans_conf_NL_MCQ": "Anemia.",
-    "pred_ans_conf_OE": "Anemia.",
+    "pred_ans_conf_NL_MCQ": "Anemia",
+    "pred_ans_conf_OE": "Anemia",
     "pred_diverse_ans": [
         "Anemia",
         "Anemia",
