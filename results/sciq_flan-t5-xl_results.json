@@ -1,0 +1,40 @@
+{
+    "Accuracy_ans": 62.0,
+    "Accuracy_ans_conf_MCQ": "",
+    "Accuracy_ans_conf_NL_MCQ": "",
+    "Accuracy_ans_conf_OE": "",
+    "ECE_true_prob": 0.353,
+    "AUROC_true_prob": 0.698,
+    "AUC_true_prob": 0.708,
+    "ECE_conf_cons": 0.248,
+    "AUROC_conf_cons": 0.748,
+    "AUC_conf_cons": 0.739,
+    "ECE_conf_MCQ": 0.234,
+    "AUROC_conf_MCQ": 0.635,
+    "AUC_conf_MCQ": 0.657,
+    "ECE_conf_OE": 0.045,
+    "AUROC_conf_OE": 0.604,
+    "AUC_conf_OE": 0.68,
+    "ECE_conf_NL_MCQ": 0.094,
+    "AUROC_conf_NL_MCQ": 0.718,
+    "AUC_conf_NL_MCQ": 0.698,
+    "ECE_conf_MCQ_1s": "",
+    "AUROC_conf_MCQ_1s": "",
+    "AUC_conf_MCQ_1s": "",
+    "ECE_conf_OE_1s": "",
+    "AUROC_conf_OE_1s": "",
+    "AUC_conf_OE_1s": "",
+    "ECE_conf_NL_MCQ_1s": "",
+    "AUROC_conf_NL_MCQ_1s": "",
+    "AUC_conf_NL_MCQ_1s": "",
+    "P_R_F1_self_eval": [
+        0.5217096336499322,
+        0.5203735144312394,
+        0.5195982094115078
+    ],
+    "P_R_F1_abstain": [
+        0.5663265306122449,
+        0.5055178268251274,
+        0.2991727941176471
+    ]
+}

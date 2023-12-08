@@ -1,0 +1,40 @@
+{
+    "Accuracy_ans": 53.75,
+    "Accuracy_ans_conf_MCQ": 14.375,
+    "Accuracy_ans_conf_NL_MCQ": 17.5,
+    "Accuracy_ans_conf_OE": 30.0,
+    "ECE_true_prob": 0.438,
+    "AUROC_true_prob": 0.541,
+    "AUC_true_prob": 0.548,
+    "ECE_conf_cons": 0.31,
+    "AUROC_conf_cons": 0.777,
+    "AUC_conf_cons": 0.692,
+    "ECE_conf_MCQ": 0.378,
+    "AUROC_conf_MCQ": 0.486,
+    "AUC_conf_MCQ": 0.493,
+    "ECE_conf_OE": 0.335,
+    "AUROC_conf_OE": 0.597,
+    "AUC_conf_OE": 0.59,
+    "ECE_conf_NL_MCQ": 0.2,
+    "AUROC_conf_NL_MCQ": 0.495,
+    "AUC_conf_NL_MCQ": 0.52,
+    "ECE_conf_MCQ_1s": 0.181,
+    "AUROC_conf_MCQ_1s": 0.605,
+    "AUC_conf_MCQ_1s": 0.181,
+    "ECE_conf_OE_1s": 0.54,
+    "AUROC_conf_OE_1s": 0.523,
+    "AUC_conf_OE_1s": 0.313,
+    "ECE_conf_NL_MCQ_1s": 0.21,
+    "AUROC_conf_NL_MCQ_1s": 0.595,
+    "AUC_conf_NL_MCQ_1s": 0.221,
+    "P_R_F1_self_eval": [
+        0.606060606060606,
+        0.5153991200502828,
+        0.39999999999999997
+    ],
+    "P_R_F1_abstain": [
+        0.770440251572327,
+        0.5067567567567568,
+        0.36435374149659866
+    ]
+}
