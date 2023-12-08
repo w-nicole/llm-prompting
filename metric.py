@@ -5,6 +5,10 @@ from sklearn.metrics import auc, precision_recall_fscore_support
 # For BERT SCORER
 def compute_bert_score(scorer, cands: list[str], refs: list[str]):
 
+    # Let's standardize the casing 
+    cands = [str(s).lower() for s in cands]
+    refs = [str(s).lower() for s in refs]
+    
     _, _, F1 = scorer.score(cands, refs)
     F1 = F1.detach().cpu().numpy().tolist()
 

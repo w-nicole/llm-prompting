@@ -1,4 +1,3 @@
-
 import os
 from config import * 
 from pprint import pprint
@@ -15,6 +14,13 @@ def get_bert_score(folder):
     pred_ans, ans = [r["pred_ans"] for r in all_results], [r["answer"] for r in all_results]
     pred_ans_conf_MCQ = [r["pred_ans_conf_MCQ"] for r in all_results]
     pred_ans_conf_NL_MCQ = [r["pred_ans_conf_NL_MCQ"] for r in all_results]
+
+    for i, r in enumerate(all_results):
+        try:
+            r["pred_ans_conf_OE"]
+        except:
+            print(r["id_"])
+
     pred_ans_conf_OE = [r["pred_ans_conf_OE"] for r in all_results]
 
     pred_ans_bertscore = compute_bert_score(bert_scorer, pred_ans, ans)
@@ -44,6 +50,7 @@ def get_bert_score_flan_t5(folder):
 
         if r["self_eval"] == "yes": r["self_eval"] = 1
         if r["self_eval_gt"] == "yes": r["self_eval_gt"] = 1
+        if r["pred_abstain"] == "yes": r["pred_abstain"] = 0 # Do not abstain if the model knows the answer
         r["pred_ans_bert_score"] = pred_ans_bertscore[i]
         
         consistency_score = get_pairwise_bert_score(bert_scorer, r["pred_ans"], r["pred_diverse_ans"])
@@ -96,35 +103,12 @@ def get_results(results):
     ECE_conf_NL_MCQ = ECE(conf_NL_MCQ, ans_label)
     AUROC_conf_NL_MCQ = AUROC(conf_NL_MCQ, ans_label)
     AUC_conf_NL_MCQ = AUC(conf_NL_MCQ, ans_label)
-
+        
     # 5. Confidence (OE)
     conf_OE = np.array([r["pred_conf_OE"] / 100 for r in results])
     ECE_conf_OE = ECE(conf_OE, ans_label)
     AUROC_conf_OE = AUROC(conf_OE, ans_label)
     AUC_conf_OE = AUC(conf_OE, ans_label)
-
-    ECE_conf_MCQ_1s, AUROC_conf_MCQ_1s, AUC_conf_MCQ_1s = "", "", ""
-    ECE_conf_NL_MCQ_1s, AUROC_conf_NL_MCQ_1s, AUC_conf_NL_MCQ_1s = "", "", ""
-    ECE_conf_OE_1s, AUROC_conf_OE_1s, AUC_conf_OE_1s = "", "", ""
-
-    if not CHECK_FLAN_T5:
-        # 6. Confidence (MCQ, 1S)
-        conf_MCQ_1s = np.array([r["pred_conf_MCQ_1s"] / 100 for r in results])
-        ECE_conf_MCQ_1s = ECE(conf_MCQ_1s, ans_conf_MCQ_label)
-        AUROC_conf_MCQ_1s = AUROC(conf_MCQ_1s, ans_conf_MCQ_label)
-        AUC_conf_MCQ_1s = AUC(conf_MCQ_1s, ans_conf_MCQ_label)
-
-        # 7. Confidence (MCQ + NL, 1S)
-        conf_NL_MCQ_1s = np.array([r["pred_conf_NL_MCQ_1s"] / 100 for r in results])
-        ECE_conf_NL_MCQ_1s = ECE(conf_NL_MCQ_1s, ans_conf_NL_MCQ_label)
-        AUROC_conf_NL_MCQ_1s = AUROC(conf_NL_MCQ_1s, ans_conf_NL_MCQ_label)
-        AUC_conf_NL_MCQ_1s = AUC(conf_NL_MCQ_1s, ans_conf_NL_MCQ_label)
-
-        # 8. Confidence (OE, 1S)
-        conf_OE_1s = np.array([r["pred_conf_OE_1s"] / 100 for r in results])
-        ECE_conf_OE_1s = ECE(conf_OE_1s, ans_conf_OE_label)
-        AUROC_conf_OE_1s = AUROC(conf_OE_1s, ans_conf_OE_label)
-        AUC_conf_OE_1s = AUC(conf_OE_1s, ans_conf_OE_label)
 
     # 9. Hybrid Model (alpha * cons_conf + (1.0 - alpha) * MCQ)
     conf_cons_MCQ_H =np.array([ALPHA * conf_cons[i] + (1.0 - ALPHA) * conf_MCQ[i] for i in range(n_total)])
@@ -144,16 +128,51 @@ def get_results(results):
     AUROC_cons_OE_H = AUROC(conf_cons_OE_H, ans_label)
     AUC_cons_OE_H = AUC(conf_cons_OE_H, ans_label)
 
-    print()
-    print(ECE_conf_MCQ, AUROC_conf_MCQ, AUC_conf_MCQ)
-    print(ECE_conf_cons, AUROC_conf_cons, AUC_conf_cons)
-    print(ECE_cons_MCQ_H, AUROC_cons_MCQ_H, AUC_cons_MCQ_H)
-    print(ECE_cons_NL_MCQ_H, AUROC_cons_NL_MCQ_H, AUC_cons_NL_MCQ_H)
-    print(ECE_cons_OE_H, AUROC_cons_OE_H, AUC_cons_OE_H)
+    ECE_conf_MCQ_1s, AUROC_conf_MCQ_1s, AUC_conf_MCQ_1s = "", "", ""
+    ECE_conf_NL_MCQ_1s, AUROC_conf_NL_MCQ_1s, AUC_conf_NL_MCQ_1s = "", "", ""
+    ECE_conf_OE_1s, AUROC_conf_OE_1s, AUC_conf_OE_1s = "", "", ""
 
+    ECE_cons_MCQ_1s_H, AUROC_cons_MCQ_1s_H, AUC_cons_MCQ_1s_H = "", "", ""
+    ECE_cons_NL_MCQ_1s_H, AUROC_cons_NL_MCQ_1s_H, AUC_cons_NL_MCQ_1s_H = "", "", ""
+    ECE_cons_OE_1s_H, AUROC_cons_OE_1s_H, AUC_cons_OE_1s_H = "", "", ""
 
-    a = z
+    if not CHECK_FLAN_T5:
 
+        # 6. Confidence (MCQ, 1S)
+        conf_MCQ_1s = np.array([r["pred_conf_MCQ_1s"] / 100 for r in results])
+        ECE_conf_MCQ_1s = ECE(conf_MCQ_1s, ans_conf_MCQ_label)
+        AUROC_conf_MCQ_1s = AUROC(conf_MCQ_1s, ans_conf_MCQ_label)
+        AUC_conf_MCQ_1s = AUC(conf_MCQ_1s, ans_conf_MCQ_label)
+
+        # 7. Confidence (MCQ + NL, 1S)
+        conf_NL_MCQ_1s = np.array([r["pred_conf_NL_MCQ_1s"] / 100 for r in results])
+        ECE_conf_NL_MCQ_1s = ECE(conf_NL_MCQ_1s, ans_conf_NL_MCQ_label)
+        AUROC_conf_NL_MCQ_1s = AUROC(conf_NL_MCQ_1s, ans_conf_NL_MCQ_label)
+        AUC_conf_NL_MCQ_1s = AUC(conf_NL_MCQ_1s, ans_conf_NL_MCQ_label)
+
+        # 8. Confidence (OE, 1S)
+        conf_OE_1s = np.array([r["pred_conf_OE_1s"] / 100 for r in results])
+        ECE_conf_OE_1s = ECE(conf_OE_1s, ans_conf_OE_label)
+        AUROC_conf_OE_1s = AUROC(conf_OE_1s, ans_conf_OE_label)
+        AUC_conf_OE_1s = AUC(conf_OE_1s, ans_conf_OE_label)
+
+        # 9. Hybrid Model (alpha * cons_conf + (1.0 - alpha) * MCQ)
+        conf_cons_MCQ_1s_H =np.array([ALPHA * conf_cons[i] + (1.0 - ALPHA) * conf_MCQ_1s[i] for i in range(n_total)])
+        ECE_cons_MCQ_1s_H = ECE(conf_cons_MCQ_1s_H, ans_conf_MCQ_label)
+        AUROC_cons_MCQ_1s_H = AUROC(conf_cons_MCQ_1s_H, ans_conf_MCQ_label)
+        AUC_cons_MCQ_1s_H = AUC(conf_cons_MCQ_1s_H, ans_conf_MCQ_label)
+
+        # 10. Hybrid Model (alpha * cons_conf + (1.0 - alpha) * MCQ + NL)
+        conf_cons_NL_MCQ_1s_H = np.array([ALPHA * conf_cons[i] + (1.0 - ALPHA) * conf_NL_MCQ_1s[i] for i in range(n_total)])
+        ECE_cons_NL_MCQ_1s_H = ECE(conf_cons_NL_MCQ_1s_H, ans_conf_NL_MCQ_label)
+        AUROC_cons_NL_MCQ_1s_H = AUROC(conf_cons_NL_MCQ_1s_H, ans_conf_NL_MCQ_label)
+        AUC_cons_NL_MCQ_1s_H = AUC(conf_cons_NL_MCQ_1s_H, ans_conf_NL_MCQ_label)
+
+        # 11. Hybrid Model (alpha * cons_conf + (1.0 - alpha) * OE)
+        conf_cons_OE_1s_H = np.array([ALPHA * conf_cons[i] + (1.0 - ALPHA) * conf_OE_1s[i] for i in range(n_total)])
+        ECE_cons_OE_1s_H = ECE(conf_cons_OE_1s_H, ans_conf_OE_label)
+        AUROC_cons_OE_1s_H = AUROC(conf_cons_OE_1s_H, ans_conf_OE_label)
+        AUC_cons_OE_1s_H = AUC(conf_cons_OE_1s_H, ans_conf_OE_label)
 
     # Get precision, recall and F-score of various aspects 
     # 1. Check how well can LLMs evaluate answers 
@@ -195,6 +214,16 @@ def get_results(results):
               "AUROC_conf_NL_MCQ_1s": AUROC_conf_NL_MCQ_1s,
               "AUC_conf_NL_MCQ_1s": AUC_conf_NL_MCQ_1s,
 
+              "ECE_cons_MCQ_1s_H": ECE_cons_MCQ_1s_H, 
+              "AUROC_cons_MCQ_1s_H": AUROC_cons_MCQ_1s_H,
+              "AUC_cons_MCQ_1s_H": AUC_cons_MCQ_1s_H,
+              "ECE_cons_OE_1s_H": ECE_cons_OE_1s_H, 
+              "AUROC_cons_OE_1s_H": AUROC_cons_OE_1s_H,
+              "AUC_cons_OE_1s_H": AUC_cons_OE_1s_H,
+              "ECE_cons_NL_MCQ_1s_H": ECE_cons_NL_MCQ_1s_H, 
+              "AUROC_cons_NL_MCQ_1s_H": AUROC_cons_NL_MCQ_1s_H,
+              "AUC_cons_NL_MCQ_1s_H": AUC_cons_NL_MCQ_1s_H,
+
               "P_R_F1_self_eval": [P_self_eval, R_self_eval, F1_self_eval],
               "P_R_F1_abstain": [P_abstain, R_abstain, F1_abstain]}
 
@@ -207,8 +236,8 @@ if __name__ == "__main__":
     """
 
     # Settings
-    DATASET = "sciq"
-    LLM = "llama2-7b-chat"
+    DATASET = "truthfulqa"
+    LLM = "flan-t5-xl"
     CHECK_FLAN_T5 = "flan-t5" in LLM
 
     idx = 0
@@ -219,7 +248,6 @@ if __name__ == "__main__":
     RECORDS_FOLDER = os.path.join(OUTPUT_FOLDER, DATASET, f"{LLM}_temp_DONE")
     OUTPUT_FILE_PATH = os.path.join(RESULTS_FOLDER, f"{DATASET}_{LLM}_cleaned.json")
     RESULTS_OUTPUT_FILE_PATH = os.path.join(RESULTS_FOLDER, f"{DATASET}_{LLM}_results.json")
-    # all_results = read_json(OUTPUT_FILE_PATH)
 
     # Get the bert score
     if CHECK_FLAN_T5:

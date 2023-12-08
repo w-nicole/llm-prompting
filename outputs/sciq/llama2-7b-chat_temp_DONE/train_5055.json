@@ -18,6 +18,7 @@
     "pred_ans": "Peristalsis",
     "pred_ans_conf_MCQ": "muscular contractions",
     "pred_ans_conf_NL_MCQ": "muscles",
+    "pred_ans_conf_OE": "muscular contractions",
     "pred_diverse_ans": [
         "Peristalsis",
         "Muscles",

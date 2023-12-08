@@ -34,13 +34,13 @@
     "self_eval": 1,
     "true_prob": 1.0,
     "pred_conf_MCQ": 5.0,
-    "pred_conf_OE": "| Confidence Score | Proposed Answer |\n| --- | --- |\n| 90 | Carl Froch and George Groves |",
+    "pred_conf_OE": 90.0,
     "pred_conf_NL_MCQ": 35.0,
     "pred_conf_MCQ_1s": 5.0,
-    "pred_conf_OE_1s": "80\n\nExplanation: Based on my research, Carl Froch and George Groves were indeed the two British boxers involved in a brawl at a news conference in Munich in February 2012 However, please note that the accuracy of this answer is not guaranteed and there is always a possibility of errors or changes in circumstances",
+    "pred_conf_OE_1s": 80.0,
     "pred_conf_NL_MCQ_1s": 35.0,
     "self_eval_gt": 1,
     "pred_conf_gt_MCQ": 5.0,
-    "pred_conf_gt_OE": "| Proposed Answer | Confidence Score |\n| --- | --- |\n| Derek Chisora and David Haye | 90 |",
+    "pred_conf_gt_OE": 90.0,
     "pred_conf_gt_NL_MCQ": 35.0
 }

@@ -14,7 +14,7 @@
         "Thermophobia is the irrational fear of which particular thing or situation?"
     ],
     "answer": "Heat",
-    "pred_abstain": "yes",
+    "pred_abstain": 0,
     "pred_ans": "heat",
     "pred_ans_conf_MCQ": "",
     "pred_ans_conf_NL_MCQ": "",

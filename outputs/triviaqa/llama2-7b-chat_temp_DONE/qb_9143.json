@@ -34,13 +34,13 @@
     "self_eval": 0,
     "true_prob": 0.16607648134231567,
     "pred_conf_MCQ": 35.0,
-    "pred_conf_OE": "Confidence score: 0",
+    "pred_conf_OE": 0.0,
     "pred_conf_NL_MCQ": 35.0,
     "pred_conf_MCQ_1s": 45.0,
     "pred_conf_OE_1s": 80.0,
     "pred_conf_NL_MCQ_1s": 35.0,
     "self_eval_gt": 0,
     "pred_conf_gt_MCQ": 15.0,
-    "pred_conf_gt_OE": "Based on my research, the English resort of Blackpool lies on the Irish Sea Therefore, my confidence score is 100",
+    "pred_conf_gt_OE": 100.0,
     "pred_conf_gt_NL_MCQ": 35.0
 }

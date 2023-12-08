@@ -34,13 +34,13 @@
     "self_eval": 0,
     "true_prob": 0.0,
     "pred_conf_MCQ": 5.0,
-    "pred_conf_OE": "Sure! Here's the answer to your question:\n\nAnswer: Alan Hansen\n\nConfidence score: 0\n\nThe proposed answer is incorrect Alan Hansen is a former footballer and manager, but he did not co-write the UK television series \"Hazell\"",
+    "pred_conf_OE": 0.0,
     "pred_conf_NL_MCQ": 75.0,
     "pred_conf_MCQ_1s": 65.0,
     "pred_conf_OE_1s": 80.0,
     "pred_conf_NL_MCQ_1s": 65.0,
     "self_eval_gt": 0,
     "pred_conf_gt_MCQ": 45.0,
-    "pred_conf_gt_OE": "Sure! Here's my confidence score:\n\nScore: 80",
+    "pred_conf_gt_OE": 80.0,
     "pred_conf_gt_NL_MCQ": 35.0
 }

@@ -34,13 +34,13 @@
     "self_eval": 1,
     "true_prob": 1.0,
     "pred_conf_MCQ": 5.0,
-    "pred_conf_OE": "Sure! Here's my confidence score:\n\nScore: 95",
+    "pred_conf_OE": 95.0,
     "pred_conf_NL_MCQ": 75.0,
     "pred_conf_MCQ_1s": 85.0,
     "pred_conf_OE_1s": 95.0,
     "pred_conf_NL_MCQ_1s": 45.0,
     "self_eval_gt": 1,
     "pred_conf_gt_MCQ": 45.0,
-    "pred_conf_gt_OE": "Sure, I can help you with that!\n\nBased on my knowledge, the proposed answer \"Flying Scotsman\" is a correct answer I would give a confidence score of 95 out of 100 The Flying Scotsman was a famous steam locomotive that was built in 1923 and was known for its high speed and reliability on the London to Edinburgh service It was designed by Sir Nigel Gresley and was one of the most iconic locomotives of the British Railway system",
+    "pred_conf_gt_OE": 95.0,
     "pred_conf_gt_NL_MCQ": 75.0
 }

@@ -14,7 +14,7 @@
         "The late singer, LaDonna Adrian Gaines, was widely recognized by what other name?"
     ],
     "answer": "Donna Summer",
-    "pred_abstain": "yes",
+    "pred_abstain": 0,
     "pred_ans": "madonna",
     "pred_ans_conf_MCQ": "",
     "pred_ans_conf_NL_MCQ": "",

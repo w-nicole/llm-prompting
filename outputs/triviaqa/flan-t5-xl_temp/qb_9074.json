@@ -14,7 +14,7 @@
         "What marked the end of Elizabeth Taylor's film career?"
     ],
     "answer": "The Flintstones",
-    "pred_abstain": "yes",
+    "pred_abstain": 0,
     "pred_ans": "i do nt know how to say goodbye",
     "pred_ans_conf_MCQ": "",
     "pred_ans_conf_NL_MCQ": "",

@@ -34,13 +34,13 @@
     "self_eval": 1,
     "true_prob": 1.0,
     "pred_conf_MCQ": 15.0,
-    "pred_conf_OE": "Based on my research, the answer to your question is:\n\nConfidence Score: 100\n\nVE Day, also known as Victory in Europe Day, was celebrated on May 8, 1945, marking the end of World War II in Europe",
+    "pred_conf_OE": 100.0,
     "pred_conf_NL_MCQ": 35.0,
     "pred_conf_MCQ_1s": 5.0,
     "pred_conf_OE_1s": 95.0,
     "pred_conf_NL_MCQ_1s": 85.0,
     "self_eval_gt": 1,
     "pred_conf_gt_MCQ": 15.0,
-    "pred_conf_gt_OE": "Based on historical records, VE Day (Victory in Europe Day) was celebrated on May 8, 1945 Therefore, I have a confidence score of 100 that the proposed answer is true",
+    "pred_conf_gt_OE": 100.0,
     "pred_conf_gt_NL_MCQ": 35.0
 }

@@ -16,7 +16,7 @@
     "answer": "Terry and Julie",
     "pred_abstain": 0,
     "pred_ans": "The names of the two people who meet at Waterloo Station every Friday night in the song \"Waterloo Sunset\" by The Kinks are:\n\nRay and Julie",
-    "pred_ans_conf_MCQ": "[INST] Provide a one sentence answer to the following question with no explanation. Then choose from either (A) 0% to 10% (B) 10% to 20% (C) 20% to 30% (D) 30% to 40% (E) 40% to 50% (F) 50% to 60% (G) 60% to 70% (H) 70% to 80% (I) 80% to 90% or (J) 90% to 100% indicating the level of confidence that the proposed answer is right. A higher score indicates higher confidence and lower score indicates lower confidence",
+    "pred_ans_conf_MCQ": "",
     "pred_ans_conf_NL_MCQ": "The answer is: The two people are named Roger and Rachel",
     "pred_ans_conf_OE": "Answer: The two people who meet at Waterloo Station every Friday night in The Kinks' song \"Waterloo Sunset\" are named Roger and Rachel.",
     "pred_diverse_ans": [
@@ -34,13 +34,13 @@
     "self_eval": 1,
     "true_prob": 1.0,
     "pred_conf_MCQ": 5.0,
-    "pred_conf_OE": "| Name | Confidence Score |\n| --- | --- |\n| Ray and Julie | 100 |",
+    "pred_conf_OE": 100.0,
     "pred_conf_NL_MCQ": 5.0,
     "pred_conf_MCQ_1s": 5.0,
     "pred_conf_OE_1s": 80.0,
     "pred_conf_NL_MCQ_1s": 35.0,
     "self_eval_gt": 1,
     "pred_conf_gt_MCQ": 5.0,
-    "pred_conf_gt_OE": "Based on my analysis of the lyrics of the song \"Waterloo Sunset\" by The Kinks, I have a 95 confidence score that the two people who meet at Waterloo Station every Friday night are named Terry and Julie",
+    "pred_conf_gt_OE": 95.0,
     "pred_conf_gt_NL_MCQ": 35.0
 }

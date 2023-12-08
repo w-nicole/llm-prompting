@@ -33,7 +33,7 @@
     ],
     "self_eval": 0,
     "true_prob": 0.9992859959602356,
-    "pred_conf_MCQ": "B",
+    "pred_conf_MCQ": 15.0,
     "pred_conf_OE": 0.0,
     "pred_conf_NL_MCQ": 35.0,
     "pred_conf_MCQ_1s": "",

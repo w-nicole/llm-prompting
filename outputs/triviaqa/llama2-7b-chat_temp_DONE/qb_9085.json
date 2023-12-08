@@ -16,7 +16,7 @@
     "answer": "Smaug",
     "pred_abstain": 0,
     "pred_ans": "Smaug",
-    "pred_ans_conf_MCQ": "The name of the dragon in the 1937 novel 'The Hobbit' is Smaug. (A) 0% to 10%",
+    "pred_ans_conf_MCQ": "The name of the dragon in the 1937 novel 'The Hobbit' is Smaug.",
     "pred_ans_conf_NL_MCQ": "The name of the dragon in the 1937 novel 'The Hobbit' is Smaug",
     "pred_ans_conf_OE": "Sure, here's the answer and confidence score for the question:\n\nAnswer: Smaug",
     "pred_diverse_ans": [
@@ -34,13 +34,13 @@
     "self_eval": 1,
     "true_prob": 1.0,
     "pred_conf_MCQ": 35.0,
-    "pred_conf_OE": "Sure! Based on my knowledge of JRR Tolkien's \"The Hobbit,\" I believe that the dragon's name is Smaug Therefore, my confidence score for this answer is 100",
+    "pred_conf_OE": 100.0,
     "pred_conf_NL_MCQ": 35.0,
-    "pred_conf_MCQ_1s": "",
-    "pred_conf_OE_1s": "90\n\nExplanation: Smaug is the dragon that Bilbo and Gandalf encounter in the 1937 novel \"The Hobbit\" by JRR Tolkien He is a powerful and evil dragon who guards the treasure hoard of the dwarves and plays a central role in the story",
+    "pred_conf_MCQ_1s": 5.0,
+    "pred_conf_OE_1s": 90.0,
     "pred_conf_NL_MCQ_1s": 35.0,
     "self_eval_gt": 1,
     "pred_conf_gt_MCQ": 15.0,
-    "pred_conf_gt_OE": "Based on my knowledge, the dragon in the 1937 novel \"The Hobbit\" is indeed Smaug Therefore, I would give a confidence score of 100",
+    "pred_conf_gt_OE": 100.0,
     "pred_conf_gt_NL_MCQ": 35.0
 }
