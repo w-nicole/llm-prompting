@@ -16,7 +16,7 @@
     "answer": "South Korea",
     "pred_abstain": 0,
     "pred_ans": "South Korea",
-    "pred_ans_conf_MCQ": "Jirisan National Park lies in South Korea. (J) 90% to 100%",
+    "pred_ans_conf_MCQ": "South Korea.",
     "pred_ans_conf_NL_MCQ": "Sure! Here is the one sentence answer to the question:\n\nJirisan National Park lies in South Korea",
     "pred_ans_conf_OE": "Sure! Here is the answer to the question:\n\nJirisan National Park lies in South Korea.",
     "pred_diverse_ans": [
@@ -34,13 +34,13 @@
     "self_eval": 1,
     "true_prob": 1.0,
     "pred_conf_MCQ": 15.0,
-    "pred_conf_OE": "Based on my research, I have a 95 confidence that Jirisan National Park lies in South Korea Therefore, I would give a score of 95",
+    "pred_conf_OE": 95.0,
     "pred_conf_NL_MCQ": 35.0,
-    "pred_conf_MCQ_1s": "",
+    "pred_conf_MCQ_1s": 95.0,
     "pred_conf_OE_1s": 95.0,
     "pred_conf_NL_MCQ_1s": 35.0,
     "self_eval_gt": 1,
     "pred_conf_gt_MCQ": 15.0,
-    "pred_conf_gt_OE": "Based on my research, I have a high level of confidence that Jirisan National Park lies in South Korea, so I would give a score of 90",
+    "pred_conf_gt_OE": 90.0,
     "pred_conf_gt_NL_MCQ": 35.0
 }

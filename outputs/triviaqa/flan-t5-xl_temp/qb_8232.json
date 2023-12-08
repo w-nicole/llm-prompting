@@ -14,7 +14,7 @@
         "What was the pseudonym of the infamous convicted felon Henri Charri\u00e8re?"
     ],
     "answer": "Papillon",
-    "pred_abstain": "yes",
+    "pred_abstain": 0,
     "pred_ans": "henry ford",
     "pred_ans_conf_MCQ": "",
     "pred_ans_conf_NL_MCQ": "",
@@ -31,7 +31,7 @@
         "jack ripper",
         "jack rippers"
     ],
-    "self_eval": "yes",
+    "self_eval": 1,
     "true_prob": 0.9687851667404175,
     "pred_conf_MCQ": 15.0,
     "pred_conf_OE": 0.0,

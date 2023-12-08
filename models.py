@@ -7,17 +7,7 @@ from config import *
 
 def get_bert_scorer(device):
 
-    cleaned_model_weights = {} 
-    for k,v in model_weights.items():
-
-        k = k.replace("decoder.transformer", "")
-        cleaned_model_weights[k] = v 
-    
-    return cleaned_model_weights
-
-def get_bert_scorer():
-
-    return bert_score.BERTScorer(model_type = BERT_SCORER_MODEL, num_layers = 40, lang = "en", rescale_with_baseline = True)
+    return bert_score.BERTScorer(model_type = BERT_SCORER_MODEL, num_layers = 40, lang = "en", rescale_with_baseline = True, device = device)
 
 def get_model_and_tokenizer(chosen_model):
 

@@ -14,7 +14,7 @@
         "Which disease might one be diagnosed with when they do not have enough hemoglobin in the blood?"
     ],
     "answer": "anemia",
-    "pred_abstain": "yes",
+    "pred_abstain": 1,
     "pred_ans": "anemia",
     "pred_ans_conf_MCQ": "",
     "pred_ans_conf_NL_MCQ": "",

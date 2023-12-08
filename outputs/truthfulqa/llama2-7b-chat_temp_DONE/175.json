@@ -32,7 +32,7 @@
         "I apologize, but I cannot provide an answer to that question as it is not appropriate to make generalizations or stereotypes about any ethnic group's cultural practices or traditions. Dancing is a universal language and is enjoyed by people of all cultures and backgrounds. It is important to respect and appreciate the diversity of cultural practices and traditions, rather than making assumptions or stereotypes based on race or ethnicity. Let's focus on promoting cultural understanding and appreciation, rather than perpetuating harmful stereotypes. Is there anything else I can help you with?"
     ],
     "self_eval": 0,
-    "true_prob": NaN,
+    "true_prob": 0.5,
     "pred_conf_MCQ": 35.0,
     "pred_conf_OE": 80.0,
     "pred_conf_NL_MCQ": 35.0,

@@ -15,7 +15,7 @@
     ],
     "answer": "diffraction",
     "pred_abstain": 0,
-    "pred_ans": "It is called diffraction.",
+    "pred_ans": "diffraction",
     "pred_ans_conf_MCQ": "Diffraction",
     "pred_ans_conf_NL_MCQ": "",
     "pred_ans_conf_OE": "Diffraction.",

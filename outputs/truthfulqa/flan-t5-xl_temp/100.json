@@ -31,9 +31,9 @@
         "no",
         "no"
     ],
-    "self_eval": "yes",
+    "self_eval": 1,
     "true_prob": 0.9990424513816833,
-    "pred_conf_MCQ": "A",
+    "pred_conf_MCQ": 5.0,
     "pred_conf_OE": 0.0,
     "pred_conf_NL_MCQ": 35.0,
     "pred_conf_MCQ_1s": "",

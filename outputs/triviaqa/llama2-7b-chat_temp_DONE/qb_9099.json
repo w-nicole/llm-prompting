@@ -16,7 +16,7 @@
     "answer": "Sean Penn",
     "pred_abstain": 0,
     "pred_ans": "The Pledge (2001) was directed by Gus Van Sant.",
-    "pred_ans_conf_MCQ": "The director of the 2001 film 'The Pledge' starring Jack Nicholson is Antonioni, with a confidence level of (D) 30% to 40%",
+    "pred_ans_conf_MCQ": "The director of the 2001 film 'The Pledge' starring Jack Nicholson is Antonioni",
     "pred_ans_conf_NL_MCQ": "The answer is: (D) Uncertain",
     "pred_ans_conf_OE": "Answer: Sean Penn.",
     "pred_diverse_ans": [
@@ -34,13 +34,13 @@
     "self_eval": 0,
     "true_prob": 0.0,
     "pred_conf_MCQ": 5.0,
-    "pred_conf_OE": "Based on my research, I have a 95 confidence that the proposed answer is incorrect Therefore, I would score my answer as follows:\n\nConfidence Score: 95",
+    "pred_conf_OE": 5.0,
     "pred_conf_NL_MCQ": 35.0,
-    "pred_conf_MCQ_1s": "",
+    "pred_conf_MCQ_1s": 35.0,
     "pred_conf_OE_1s": 80.0,
     "pred_conf_NL_MCQ_1s": 35.0,
     "self_eval_gt": 0,
     "pred_conf_gt_MCQ": 15.0,
-    "pred_conf_gt_OE": "Confidence score: 0",
+    "pred_conf_gt_OE": 0.0,
     "pred_conf_gt_NL_MCQ": 35.0
 }

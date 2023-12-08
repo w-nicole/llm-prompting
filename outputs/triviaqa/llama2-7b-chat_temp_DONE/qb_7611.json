@@ -35,6 +35,7 @@
     "true_prob": 1.0,
     "pred_conf_MCQ": 5.0,
     "pred_conf_OE": 80.0,
+    "pred_conf_NL_MCQ": 45.0,
     "pred_conf_MCQ_1s": 15.0,
     "pred_conf_OE_1s": 80.0,
     "pred_conf_NL_MCQ_1s": 35.0,

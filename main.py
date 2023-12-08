@@ -6,8 +6,7 @@ from tqdm import tqdm
 from functools import partial
 
 from dataloaders import get_dataloader
-from models import get_model_and_tokenizer, get_bert_scorer
-from metric import compute_bert_score, get_pairwise_bert_score
+from models import get_model_and_tokenizer
 
 from utils import *
 from prompt_templates import get_abstain_template, get_get_answer_template, get_self_evaluate_template, \

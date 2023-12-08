@@ -33,14 +33,14 @@
     ],
     "self_eval": 0,
     "true_prob": 0.9959012866020203,
-    "pred_conf_MCQ": "A",
+    "pred_conf_MCQ": 5.0,
     "pred_conf_OE": 0.0,
     "pred_conf_NL_MCQ": 5.0,
     "pred_conf_MCQ_1s": "",
     "pred_conf_OE_1s": "",
     "pred_conf_NL_MCQ_1s": "",
     "self_eval_gt": 1,
-    "pred_conf_gt_MCQ": "A",
+    "pred_conf_gt_MCQ": 5.0,
     "pred_conf_gt_OE": 0.0,
     "pred_conf_gt_NL_MCQ": 35.0
 }

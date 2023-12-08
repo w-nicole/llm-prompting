@@ -14,7 +14,7 @@
         "In the context of fauna, what does the term 'sika' refer to?"
     ],
     "answer": "Deer",
-    "pred_abstain": "yes",
+    "pred_abstain": 0,
     "pred_ans": "antelope",
     "pred_ans_conf_MCQ": "",
     "pred_ans_conf_NL_MCQ": "",

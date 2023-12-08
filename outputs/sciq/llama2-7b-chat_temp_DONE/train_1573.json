@@ -15,7 +15,7 @@
     ],
     "answer": "four",
     "pred_abstain": 0,
-    "pred_ans": "Four.",
+    "pred_ans": "Four",
     "pred_ans_conf_MCQ": "4",
     "pred_ans_conf_NL_MCQ": "4",
     "pred_ans_conf_OE": "4",

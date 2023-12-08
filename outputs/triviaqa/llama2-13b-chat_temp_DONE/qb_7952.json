@@ -34,13 +34,13 @@
     "self_eval": 1,
     "true_prob": 1.0,
     "pred_conf_MCQ": 35.0,
-    "pred_conf_OE": "Sure! Based on my knowledge, I would give a confidence score of 95 for the proposed answer that Eddie Fisher, Michael Todd, and John Warner were all married to Debbie Reynolds",
+    "pred_conf_OE": 95.0,
     "pred_conf_NL_MCQ": 75.0,
     "pred_conf_MCQ_1s": 95.0,
     "pred_conf_OE_1s": 95.0,
     "pred_conf_NL_MCQ_1s": 45.0,
     "self_eval_gt": 1,
     "pred_conf_gt_MCQ": 45.0,
-    "pred_conf_gt_OE": "Sure! Here's my confidence score for the proposed answer:\n\nScore: 95",
+    "pred_conf_gt_OE": 95.0,
     "pred_conf_gt_NL_MCQ": 75.0
 }

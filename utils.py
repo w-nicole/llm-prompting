@@ -221,14 +221,8 @@ def clean_confidence_OE_flan_t5(qns, ans):
         try: 
             a = float(a)
         except:
-<<<<<<< HEAD
             print(a)
             a = 0.0
-            a = 0.0
-=======
-            a = a # Do nothing
-        
->>>>>>> 7a1e03aead6488963e5649bace855742f564e48e
         all_ans.append(a)
 
     return all_ans
@@ -366,27 +360,6 @@ def clean_abstain_llama2(qns, ans):
 
     for q, a in zip(qns, ans):
 
-<<<<<<< HEAD
-        a = list(set([r for r in a.split("\n") if "Answer:" in r]))
-        if not a:
-            all_ans.append(1)
-            continue
-            
-        a = a[0] # We take the first option 
-
-        if "A)" in a: 
-            all_ans.append(0)
-        
-        elif "I can answer" in a: 
-            all_ans.append(0)
-        
-        elif "B)" in a: 
-            all_ans.append(1)
-
-        elif "I cannot answer" in a: 
-            all_ans.append(1)
-        
-=======
         a = a.replace(q, "").strip().lower()
         if "yes" in a and "no" in a:
             all_ans.append(1) # Abstain if unsure 
@@ -394,7 +367,6 @@ def clean_abstain_llama2(qns, ans):
             all_ans.append(0) # Do not abstain if model knows the answer 
         elif "no" in a:
             all_ans.append(1) # Abstain if model do not know the answer
->>>>>>> 7a1e03aead6488963e5649bace855742f564e48e
         else:
             all_ans.append(a) # For manual inspection
     return all_ans
@@ -415,16 +387,7 @@ def clean_self_eval_llama2(qns, ans):
 
     for q, a in zip(qns, ans):
 
-<<<<<<< HEAD
-        a = list(set([r for r in a.split("\n") if "Answer:" in r and "Proposed Answer:" not in r]))
-        if not a:
-            all_ans.append(0)
-            continue
-            
-        a = a[0]
-=======
         a = a.replace(q, "").strip().split(".")[0]
->>>>>>> 7a1e03aead6488963e5649bace855742f564e48e
 
         if "True" in a and "False" in a:
             all_ans.append(0) # Append false if unsure 
@@ -439,10 +402,7 @@ def clean_self_eval_llama2(qns, ans):
 def clean_confidence_MCQ_llama2(qns, ans, NL = False):
 
     all_ans = [] 
-<<<<<<< HEAD
-=======
     
->>>>>>> 7a1e03aead6488963e5649bace855742f564e48e
     if NL:
         options_template = {k : v for k, v in CONFIDENCE_OPTIONS_NL.items()}
     else:
@@ -450,35 +410,6 @@ def clean_confidence_MCQ_llama2(qns, ans, NL = False):
 
     for q, a in zip(qns, ans):
         
-<<<<<<< HEAD
-        a = list(set([r.replace(q, "").strip() for r in a.split("\n") if q in r]))
-        if not a:
-            all_ans.append(options_template["A)"])
-            continue
-            
-        a = a[0]
-        a = a.split(" ")[0] # We get the first answer 
-        a = a.replace(".", "")
-
-        # We have to give it a default value 
-        if a in options_template.keys():
-            a = options_template[a]
-        
-        else:
-            check = False 
-            for k,v in options_template.items(): 
-                if a in k: 
-                    a = v
-                    check = True 
-                    break
-            
-            if not check: 
-                a = options_template["A)"]
-        all_ans.append(a)
-
-    if NL: 
-        all_ans = [CONFIDENCE_SCORE_NL_MAPPING[a] for a in all_ans]
-=======
         check = False
         a = a.split("Score:")[-1].strip()
         a = a.replace("[/INST]", "")
@@ -501,7 +432,6 @@ def clean_confidence_MCQ_llama2(qns, ans, NL = False):
             a = CONFIDENCE_SCORE_NL_MAPPING[a]
         all_ans.append(a)
 
->>>>>>> 7a1e03aead6488963e5649bace855742f564e48e
     all_ans = [parse_option(a) for a in all_ans]
 
     return all_ans
@@ -513,18 +443,8 @@ def clean_confidence_OE_llama2(qns, ans):
 
     for q, a in zip(qns, ans):
         
-<<<<<<< HEAD
-        a = list(set([r.replace(q, "").strip() for r in a.split("\n") if "Score:" in r]))
-        try:
-            a = a[0]
-            a = a.split(" ")[1]
-        except:
-            a = "0.0"
-
-=======
         a = a.replace(q, "").strip().split("Confidence Level:")[-1].strip()
         a = a.replace(".", "")
->>>>>>> 7a1e03aead6488963e5649bace855742f564e48e
         all_ans.append(a)
 
     all_ans = [parse_option(a) for a in all_ans]
