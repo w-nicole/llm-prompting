@@ -3,12 +3,13 @@ import json
 import pandas as pd
 
 import torch
-from torch.utils.data import DataLoader
+from torch.utils.data import Dataset, DataLoader
+from torch.utils.data.distributed import DistributedSampler
 
 from config import *
 from utils import read_json
 
-class TruthfulQADataset(torch.utils.data.Dataset):
+class TruthfulQADataset(Dataset):
     
     def __init__(self, path):
         self.data = read_json(path)
@@ -17,9 +18,9 @@ class TruthfulQADataset(torch.utils.data.Dataset):
         return len(self.data)
         
     def __getitem__(self, idx):
-        return str(self.data[idx]['id_']), self.data[idx]['Question'], self.data[idx]['Best Answer']
+        return str(self.data[idx]['id_']), self.data[idx]['Question'], self.data[idx]['Best Answer'], self.data[idx]["diverse_questions"]
         
-class SciQDataset(torch.utils.data.Dataset):
+class SciQDataset(Dataset):
     
     def __init__(self, path):
         self.data = read_json(path)
@@ -28,9 +29,9 @@ class SciQDataset(torch.utils.data.Dataset):
         return len(self.data)
         
     def __getitem__(self, idx):
-        return self.data[idx]['id_'], self.data[idx]['question'], self.data[idx]['correct_answer']
+        return self.data[idx]['id_'], self.data[idx]['question'], self.data[idx]['correct_answer'], self.data[idx]["diverse_questions"]
 
-class TriviaQADataset(torch.utils.data.Dataset):
+class TriviaQADataset(Dataset):
     
     def __init__(self, path):
         self.data = read_json(path)
@@ -39,9 +40,9 @@ class TriviaQADataset(torch.utils.data.Dataset):
         return len(self.data)
         
     def __getitem__(self, idx):
-        return self.data[idx]["id_"], self.data[idx]['Question'], self.data[idx]['Answer']['Value']
+        return self.data[idx]["id_"], self.data[idx]['Question'], self.data[idx]['Answer']['Value'], self.data[idx]["diverse_questions"]
         
-def get_dataloader(name, path, batch_size = BATCH_SIZE):
+def get_dataset(name):
 
     datasets = {"truthfulqa": TruthfulQADataset, 
                "sciq": SciQDataset, 
@@ -49,5 +50,22 @@ def get_dataloader(name, path, batch_size = BATCH_SIZE):
     
     if name not in datasets.keys():
         raise Exception(f"{name} not supported. Please check implementation.")
-    
-    return DataLoader(datasets[name](path), batch_size = batch_size, shuffle = False)
+
+    return datasets[name]
+
+def get_dataloader(name, path, batch_size):
+
+    return DataLoader(get_dataset(name)(path), batch_size = batch_size, shuffle = False, collate_fn = collate_fn)
+
+def collate_fn(data):
+
+    id_, qns, ans, diverse_qns = [], [], [], []
+
+    for rec in data:
+        
+        id_.append(rec[0])
+        qns.append(rec[1]) 
+        ans.append(rec[2])
+        diverse_qns.append(rec[3])
+
+    return id_, qns, ans, diverse_qns

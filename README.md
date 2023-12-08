@@ -62,4 +62,6 @@ We consider the following models:
 
 ### Steps
 ```python process_datasets.py```
-```python prompting_for_diverse_questions.py```
+```python main.py```
+- Manual data cleaning step - 
+```python run_BERT_score.py```

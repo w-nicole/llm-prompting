@@ -7,7 +7,7 @@ from dataloaders import get_dataloader
 
 from config import * 
 from utils import write_json
-from prompt_templates import diverse_ques_gpt4_template
+from prompt_templates import diverse_ques_GPT4_template
 from cache import is_response_cached, cache_response, multithread_with_tqdm
 
 stop = False
@@ -24,7 +24,7 @@ def get_response_from_gpt35(batch, pbar):
         return
 
     # Format the question
-    diverse_qns = diverse_ques_gpt4_template(qns)
+    diverse_qns = diverse_ques_GPT4_template(qns)
 
     # Get response
     try:

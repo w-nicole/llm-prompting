@@ -5,7 +5,7 @@ from transformers import AutoModelForSeq2SeqLM, AutoModelForCausalLM, AutoTokeni
 
 from config import * 
 
-def clean_model_keys(model_weights):
+def get_bert_scorer(device):
 
     cleaned_model_weights = {} 
     for k,v in model_weights.items():
@@ -21,7 +21,7 @@ def get_bert_scorer():
 
 def get_model_and_tokenizer(chosen_model):
 
-    if chosen_model in ["llama2-7b"]:
+    if chosen_model in ["llama2-7b-chat", "llama2-13b-chat", "llama2-70b-chat"]:
         tokenizer = LlamaTokenizer.from_pretrained(MODEL_CHECKPOINTS[chosen_model])
     else:
         tokenizer = AutoTokenizer.from_pretrained(MODEL_CHECKPOINTS[chosen_model])
@@ -31,24 +31,16 @@ def get_model_and_tokenizer(chosen_model):
         tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "left"
         
-    if chosen_model in ["flan-t5-small", "flan-t5-base", "flan-t5-large", "flan-t5-xl"]:
-        llm = AutoModelForSeq2SeqLM.from_pretrained(MODEL_CHECKPOINTS[chosen_model])
-    elif chosen_model in ["shearedllama-bling-1.3b", "shearedllama-bling-2.7b", "shearedllama-1.3b", "shearedllama-2.7b", "llama2-7b", "mistral-7b"]:
-        llm = AutoModelForCausalLM.from_pretrained(MODEL_CHECKPOINTS[chosen_model])
+    if chosen_model in ["flan-t5-large", "flan-t5-xl"]:
+        llm = AutoModelForSeq2SeqLM.from_pretrained(MODEL_CHECKPOINTS[chosen_model], device_map = "auto", max_memory = MEMORY_ALLOCATION)
+        
+    elif chosen_model in ["mistral-7b", "mistral-7b-instruct"]:
+        llm = AutoModelForCausalLM.from_pretrained(MODEL_CHECKPOINTS[chosen_model], device_map = "auto", max_memory = MEMORY_ALLOCATION)
     
-    elif chosen_model in ["llama2-7b"]:
-        llm = LlamaForCausalLM.from_pretrained(MODEL_CHECKPOINTS[chosen_model])
+    elif chosen_model in ["llama2-7b-chat", "llama2-13b-chat", "llama2-70b-chat"]:
+        llm = LlamaForCausalLM.from_pretrained(MODEL_CHECKPOINTS[chosen_model], device_map = "auto", max_memory = MEMORY_ALLOCATION)
     else:
         raise NotImplementedError()
 
-    # Move to GPU 
-    llm.to(DEVICE)
-    
     return llm, tokenizer
-
-if __name__ == "__main__":
-
-    llm, tokenizer = get_model_and_tokenizer("llama2-7b")
-    print("Managed to run successfully")
-
 

@@ -3,9 +3,25 @@ from sklearn import metrics
 from sklearn.metrics import auc, precision_recall_fscore_support
 
 # For BERT SCORER
-def compute_bert_score(scorer, cands: list[str], refs: list[str], threshold = 0.8):
-    P, R, F1 = scorer.score(cands, refs)
-    return [1 if score >= threshold else 0 for score in F1]
+def compute_bert_score(scorer, cands: list[str], refs: list[str]):
+
+    _, _, F1 = scorer.score(cands, refs)
+    F1 = F1.detach().cpu().numpy().tolist()
+
+    # To make sure that it's between 0.0 and 1.0
+    F1 = [max(a, 0.0) for a in F1]
+    F1 = [min(a, 1.0) for a in F1]
+    
+    return F1
+
+def get_pairwise_bert_score(scorer, ans, diverse_ans_list):
+
+    ref = [ans for _ in range(len(diverse_ans_list))]
+    pred = diverse_ans_list
+
+    F1 = compute_bert_score(scorer, pred, ref)
+
+    return F1
 
 # Getting the ECE score
 def ECE(conf, accuracy, n_bins = 10):
@@ -27,7 +43,7 @@ def ECE(conf, accuracy, n_bins = 10):
             avg_confidence_in_bin = conf[in_bin].mean()
             ece += np.abs(avg_confidence_in_bin - accuracy_in_bin) * prob_in_bin
 
-    return ece[0]
+    return round(ece[0], 3)
 
 # Getting the AUROC
 def AUROC(conf, accuracy):
@@ -35,7 +51,7 @@ def AUROC(conf, accuracy):
     fpr, tpr, thresholds = metrics.roc_curve(accuracy, conf, pos_label = 1)
     score = metrics.auc(fpr, tpr)
 
-    return score
+    return round(score, 3)
 
 # Getting the AUC 
 def AUC(conf, accuracy, n_bins = 10):
@@ -55,4 +71,4 @@ def AUC(conf, accuracy, n_bins = 10):
         score = sum(score) / total
         A.append(score)
 
-    return auc(np.linspace(0, 1, n_bins), A)
+    return round(auc(np.linspace(0, 1, n_bins), A), 3)
