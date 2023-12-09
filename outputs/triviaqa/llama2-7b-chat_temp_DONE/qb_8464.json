@@ -16,7 +16,7 @@
     "answer": "Oliver Stone",
     "pred_abstain": 0,
     "pred_ans": "Oliver Stone",
-    "pred_ans_conf_MCQ": "The director of the 1994 film \"Natural Born Killers\" is Oliver Stone",
+    "pred_ans_conf_MCQ": "Oliver Stone",
     "pred_ans_conf_NL_MCQ": "",
     "pred_ans_conf_OE": "Oliver Stone",
     "pred_diverse_ans": [
@@ -25,7 +25,7 @@
         "Oliver Stone",
         "Oliver Stone",
         "Woody Allen",
-        "Sure! The director who worked on \"Natural Born Killers\" in the year 1994 is Oliver Stone.",
+        "Oliver Stone",
         "Oliver Stone",
         "Oliver Stone",
         "Oliver Stone",

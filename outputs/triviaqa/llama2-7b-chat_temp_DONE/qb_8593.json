@@ -16,9 +16,9 @@
     "answer": "Glasgow",
     "pred_abstain": 0,
     "pred_ans": "Liverpool",
-    "pred_ans_conf_MCQ": "The British city that was European Capital of Culture in 1990 is Liverpool",
+    "pred_ans_conf_MCQ": "Liverpool",
     "pred_ans_conf_NL_MCQ": "Liverpool",
-    "pred_ans_conf_OE": "Liverpool.",
+    "pred_ans_conf_OE": "Liverpool",
     "pred_diverse_ans": [
         "Liverpool",
         "Liverpool",

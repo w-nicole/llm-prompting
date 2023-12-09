@@ -18,7 +18,7 @@
     "pred_ans": "Stegosaurus",
     "pred_ans_conf_MCQ": "",
     "pred_ans_conf_NL_MCQ": "",
-    "pred_ans_conf_OE": "Stegosaurus.",
+    "pred_ans_conf_OE": "Stegosaurus",
     "pred_diverse_ans": [
         "Stegosaurus",
         "Stegosaurus",
@@ -28,7 +28,7 @@
         "Stegosaurus",
         "Stegosaurus",
         "Stegosaurus",
-        "Sure! The dinosaur you are describing is a Stegosaurus.",
+        "Stegosaurus",
         "Stegosaurus"
     ],
     "self_eval": 1,

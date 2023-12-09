@@ -16,9 +16,9 @@
     "answer": "Chile",
     "pred_abstain": 0,
     "pred_ans": "Chile",
-    "pred_ans_conf_MCQ": "Robinson Crusoe Island lies off the coast of Chile.",
-    "pred_ans_conf_NL_MCQ": "Robinson Crusoe Island lies off the coast of Chile",
-    "pred_ans_conf_OE": "Robinson Crusoe Island lies off the coast of Chile.",
+    "pred_ans_conf_MCQ": "Chile",
+    "pred_ans_conf_NL_MCQ": "Chile",
+    "pred_ans_conf_OE": "Chile",
     "pred_diverse_ans": [
         "Chile",
         "Chile",
@@ -29,7 +29,7 @@
         "Chile",
         "Chile",
         "Chile",
-        "Robinson Crusoe Island is located off the coast of Chile."
+        "Chile"
     ],
     "self_eval": 0,
     "true_prob": 0.5087023377418518,
