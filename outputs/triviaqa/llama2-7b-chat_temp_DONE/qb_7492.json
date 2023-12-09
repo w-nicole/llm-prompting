@@ -16,9 +16,9 @@
     "answer": "East Sussex",
     "pred_abstain": 0,
     "pred_ans": "Devon",
-    "pred_ans_conf_MCQ": "The Banoffee Pie was invented at the Hungry Monk restaurant in Devon, England.",
-    "pred_ans_conf_NL_MCQ": "The Banoffee Pie was invented at the Hungry Monk restaurant in Devon",
-    "pred_ans_conf_OE": "Answer: Devon.",
+    "pred_ans_conf_MCQ": "Devon",
+    "pred_ans_conf_NL_MCQ": "Devon",
+    "pred_ans_conf_OE": "Devon",
     "pred_diverse_ans": [
         "Devon",
         "Devon",
@@ -29,7 +29,7 @@
         "Devon",
         "Devon",
         "Devon",
-        "Sure! The Hungry Monk restaurant is located in Devon, England."
+        "Devon"
     ],
     "self_eval": 1,
     "true_prob": 1.0,

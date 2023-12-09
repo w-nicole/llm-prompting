@@ -144,6 +144,12 @@ def get_results(results):
         AUROC_conf_MCQ_1s = AUROC(conf_MCQ_1s, ans_conf_MCQ_label)
         AUC_conf_MCQ_1s = AUC(conf_MCQ_1s, ans_conf_MCQ_label)
 
+        # for r in results:
+        #     try: 
+        #         r["pred_conf_NL_MCQ_1s"] / 100 
+        #     except:
+        #         print(r["id_"])
+        # a = z 
         # 7. Confidence (MCQ + NL, 1S)
         conf_NL_MCQ_1s = np.array([r["pred_conf_NL_MCQ_1s"] / 100 for r in results])
         ECE_conf_NL_MCQ_1s = ECE(conf_NL_MCQ_1s, ans_conf_NL_MCQ_label)
@@ -236,8 +242,8 @@ if __name__ == "__main__":
     """
 
     # Settings
-    DATASET = "truthfulqa"
-    LLM = "flan-t5-xl"
+    DATASET = "triviaqa"
+    LLM = "llama2-7b-chat"
     CHECK_FLAN_T5 = "flan-t5" in LLM
 
     idx = 0

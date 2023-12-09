@@ -149,7 +149,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "Getting testing results of trained model")
 
     # Data settings 
-    parser.add_argument("--dataset", type = str, default = "truthfulqa", help = "The dataset")
+    parser.add_argument("--dataset", type = str, default = "triviaqa", help = "The dataset")
     parser.add_argument("--model", type = str, default = "llama2-70b-chat", help = "LLM to use")
 
     # Set defaults 

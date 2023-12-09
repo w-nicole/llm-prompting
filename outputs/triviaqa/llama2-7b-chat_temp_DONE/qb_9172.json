@@ -16,9 +16,9 @@
     "answer": "Swansea",
     "pred_abstain": 0,
     "pred_ans": "London",
-    "pred_ans_conf_MCQ": "The British city known as \"Copperopolis\" is London",
+    "pred_ans_conf_MCQ": "London",
     "pred_ans_conf_NL_MCQ": "",
-    "pred_ans_conf_OE": "London.",
+    "pred_ans_conf_OE": "London",
     "pred_diverse_ans": [
         "London",
         "Cardiff",

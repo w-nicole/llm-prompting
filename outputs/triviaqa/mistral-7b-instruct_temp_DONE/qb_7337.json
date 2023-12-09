@@ -17,8 +17,8 @@
     "pred_abstain": 0,
     "pred_ans": "Alaska",
     "pred_ans_conf_MCQ": "Alaska",
-    "pred_ans_conf_NL_MCQ": "The oil tanker Exxon Valdes ran aground off the coast of Alaska in 1989",
-    "pred_ans_conf_OE": "The oil tanker Exxon Valdes ran aground off the coast of Alaska in 1989.",
+    "pred_ans_conf_NL_MCQ": "Alaska",
+    "pred_ans_conf_OE": "Alaska",
     "pred_diverse_ans": [
         "Alaska",
         "Alaska",
@@ -29,7 +29,7 @@
         "Alaska",
         "Alaska",
         "Alaska",
-        "Yes, the U.S. state near the site where the Exxon Valdes oil tanker ran aground causing an oil spill is Alaska."
+        "Alaska"
     ],
     "self_eval": 1,
     "true_prob": 0.9877410531044006,

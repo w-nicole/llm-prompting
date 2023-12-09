@@ -20,16 +20,16 @@
     "pred_ans_conf_NL_MCQ": "Tinker Bell",
     "pred_ans_conf_OE": "Tinker Bell.",
     "pred_diverse_ans": [
-        "The name of the fairy character in J.M. Barrie's 'Peter Pan' is Tinker Bell.",
-        "Tinker Bell is the fairy in J.M. Barrie's 'Peter Pan'.",
+        "Tinker Bell.",
+        "Tinker Bell",
         "Tinker Bell",
         "Tinker Bell.",
-        "The fairy character in 'Peter Pan' written by J.M. Barrie is named Tinker Bell.",
-        "Tinker Bell plays the role of a fairy in the play 'Peter Pan' written by J.M. Barrie.",
-        "The name of the fairy in 'Peter Pan' by J.M. Barrie is Tinker Bell.",
+        "Tinker Bell.",
+        "Tinker Bell.",
+        "Tinker Bell.",
         "Tinker Bell",
         "Tinker Bell",
-        "The fairy character featured in J.M. Barrie's 'Peter Pan' is named Tinker Bell."
+        "Tinker Bell."
     ],
     "self_eval": 1,
     "true_prob": 0.9829655289649963,

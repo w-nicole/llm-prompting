@@ -16,9 +16,9 @@
     "answer": "Tinker Bell",
     "pred_abstain": 0,
     "pred_ans": "Tinker Bell",
-    "pred_ans_conf_MCQ": "The name of the fairy in the play 'Peter Pan' by JM Barrie is Tinker Bell",
+    "pred_ans_conf_MCQ": "Tinker Bell",
     "pred_ans_conf_NL_MCQ": "The name of the fairy in the play 'Peter Pan' by J.M",
-    "pred_ans_conf_OE": "Tinker Bell.",
+    "pred_ans_conf_OE": "Tinker Bell",
     "pred_diverse_ans": [
         "Tinker Bell",
         "Tinker Bell",

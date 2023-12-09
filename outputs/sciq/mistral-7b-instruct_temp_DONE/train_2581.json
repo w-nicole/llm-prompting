@@ -20,16 +20,16 @@
     "pred_ans_conf_NL_MCQ": "When coal is burned",
     "pred_ans_conf_OE": "When coal is burned.",
     "pred_diverse_ans": [
-        "Coal releases the majority of its energy when it is burned at high temperatures in a process called combustion.",
-        "Coal typically discharges its maximum energy when it is burned at high temperatures in a power plant.",
-        "The energy emission from coal is at its peak when it is burning.",
-        "The maximum release of energy from coal is usually experienced during combustion, which occurs when coal is burned in the presence of oxygen.",
-        "Coal tends to give off its highest energy when it is burning at its hottest temperature, which is typically around 2000 degrees Fahrenheit.",
+        "combustion.",
+        "when it is burned at high temperatures in a power plant.",
+        "when it is burning.",
+        "experienced during combustion, which occurs when coal is burned in the presence of oxygen.",
+        "when it is burning at its hottest temperature, which is typically around 2000 degrees Fahrenheit.",
         "When coal is burned.",
-        "The majority of energy emission from coal occurs during combustion.",
+        " combustion.",
         "When coal is burned.",
         "Coal usually emits its peak energy during combustion, which occurs when it is heated to high temperatures in the presence of oxygen.",
-        "The most substantial energy release from coal is during combustion, which occurs when coal is burned in the presence of oxygen."
+        " during combustion, which occurs when coal is burned in the presence of oxygen."
     ],
     "self_eval": 1,
     "true_prob": 0.9527384638786316,

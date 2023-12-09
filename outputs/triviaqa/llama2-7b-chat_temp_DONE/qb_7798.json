@@ -16,9 +16,9 @@
     "answer": "Lauren Bacall",
     "pred_abstain": 0,
     "pred_ans": "Lauren Bacall",
-    "pred_ans_conf_MCQ": "Humphrey Bogart married Lauren Bacall in 1945",
-    "pred_ans_conf_NL_MCQ": "Humphrey Bogart married Lauren Bacall in 1945",
-    "pred_ans_conf_OE": "Answer: Lauren Bacall.",
+    "pred_ans_conf_MCQ": "Lauren Bacall",
+    "pred_ans_conf_NL_MCQ": "Lauren Bacall",
+    "pred_ans_conf_OE": "Lauren Bacall",
     "pred_diverse_ans": [
         "Lauren Bacall",
         "Lauren Bacall",

@@ -16,9 +16,9 @@
     "answer": "Arsenal FC",
     "pred_abstain": 0,
     "pred_ans": "Leeds United",
-    "pred_ans_conf_MCQ": "The football team that won the English FA Cup in 1971 was Aston Villa",
+    "pred_ans_conf_MCQ": "Aston Villa",
     "pred_ans_conf_NL_MCQ": "The answer is: (D) Uncertain.\n\nConfidence level: (D) Uncertain",
-    "pred_ans_conf_OE": "Arsenal.",
+    "pred_ans_conf_OE": "Arsenal",
     "pred_diverse_ans": [
         "Manchester United",
         "Yes, I do know which team won the English FA Cup in the year 2022.",

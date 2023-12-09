@@ -17,8 +17,8 @@
     "pred_abstain": 0,
     "pred_ans": "Neo",
     "pred_ans_conf_MCQ": "",
-    "pred_ans_conf_NL_MCQ": "Neo.",
-    "pred_ans_conf_OE": "Neo.",
+    "pred_ans_conf_NL_MCQ": "Neo",
+    "pred_ans_conf_OE": "Neo",
     "pred_diverse_ans": [
         "Keanu Reeves",
         "Neo",

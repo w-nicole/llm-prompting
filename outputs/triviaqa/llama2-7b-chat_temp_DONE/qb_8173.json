@@ -18,15 +18,15 @@
     "pred_ans": "Friends",
     "pred_ans_conf_MCQ": "",
     "pred_ans_conf_NL_MCQ": "",
-    "pred_ans_conf_OE": "Friends.",
+    "pred_ans_conf_OE": "Friends",
     "pred_diverse_ans": [
         "Friends",
         "Friends",
-        "Sure! The name of the US series where Joey, Chandler, and Ross make regular appearances is \"Friends.\"",
         "Friends",
         "Friends",
         "Friends",
-        "Sure! The US television series that features Joey, Chandler, and Ross as its characters is \"Friends.\"",
+        "Friends",
+        "Friends",
         "Friends",
         "Friends",
         "Friends"

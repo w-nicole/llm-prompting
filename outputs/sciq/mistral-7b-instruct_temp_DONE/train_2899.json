@@ -20,16 +20,16 @@
     "pred_ans_conf_NL_MCQ": "Minerals",
     "pred_ans_conf_OE": "Minerals",
     "pred_diverse_ans": [
-        "Non-living materials that can be classified based on the similarity of crystal structures are minerals.",
-        "Crystals are grouped according to the likeness of their crystal structures.",
-        "Yes, minerals are non-living materials that are categorized based on the similarity of their crystalline structures.",
-        "The similarity of crystal structures is a method for categorizing minerals.",
-        "Non-living materials that can be sorted by using the similar attributes of their crystal structures are minerals.",
+        "minerals",
+        "minerals",
+        "minerals",
+        "minerals",
+        "minerals",
         "Minerals.",
-        "Crystal structures are used to categorize non-living materials such as minerals and crystalline solids.",
+        "minerals and crystalline solids.",
         "Crystallography is used to classify inanimate materials based on their crystal structures.",
         "Minerals.",
-        "The resemblance in crystal structures is used to group minerals."
+        "minerals"
     ],
     "self_eval": 1,
     "true_prob": 0.9654083847999573,

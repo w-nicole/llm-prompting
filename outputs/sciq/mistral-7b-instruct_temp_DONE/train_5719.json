@@ -23,13 +23,13 @@
         "Peptide bond.",
         "Peptide bond.",
         "Peptide bond",
-        "Yes, an amide bond linking two amino acid units is referred to as a peptide bond.",
+        "Peptide bond",
         "Peptide bond",
         "Peptide bond.",
-        "An amide bond connecting two units of amino acids is named through the use of the chemical formula -CONH-, where N represents the nitrogen atom and H represents the hydrogen atom.",
+        "An amide bond",
         "Peptide bond.",
-        "Yes, the name for an amide bond that associates two amino acid units is a peptide bond.",
-        "An amide bond is a type of chemical bond that connects two units of amino acids in a protein molecule."
+        "Peptide bond",
+        "An amide bond"
     ],
     "self_eval": 1,
     "true_prob": 0.9734205007553101,

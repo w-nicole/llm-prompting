@@ -22,14 +22,14 @@
     "pred_diverse_ans": [
         "Friction.",
         "No, there is no force that always counteracts the direction of motion.",
-        "The force that persistently opposes the direction of an object in motion is called friction.",
-        "The term for the force that is always contrary to the direction of motion is friction.",
+        "friction",
+        "friction",
         "Friction.",
-        "The force that consistently resists the direction of motion is called friction.",
+        "friction",
         "Friction.",
-        "Yes, the force that continually opposes a moving object's direction is called friction.",
+        "friction",
         "No, there is no force that is constantly inhibiting the direction of motion.",
-        "The specific force that counteracts motion direction at all times is called the force of friction."
+        "friction"
     ],
     "self_eval": 1,
     "true_prob": 0.7994475364685059,

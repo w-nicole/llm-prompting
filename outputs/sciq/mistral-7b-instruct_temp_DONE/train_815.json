@@ -22,14 +22,14 @@
     "pred_diverse_ans": [
         "Fallopian tubes.",
         "Ovaries.",
-        "Yes, the small, egg-shaped organs residing on each side of the uterus are called ovaries.",
+        "Ovaries",
         "Fallopian tubes",
         "Ovaries.",
-        "The designation given to the petite, egg-contoured organs that are situated on the lateral sides of the uterus is fallopian tubes.",
+        "Fallopian tubes",
         "Ovaries",
-        "The small, shape of an egg organs that are placed on the opposing sides of the uterus are called fallopian tubes.",
+        "Fallopian tubes",
         "Ovaries.",
-        "The particular name for the small, oval-like organs found symmetrically on both sides of the uterus are fallopian tubes."
+        "Fallopian tubes"
     ],
     "self_eval": 1,
     "true_prob": 0.9805481433868408,

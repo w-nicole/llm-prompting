@@ -17,8 +17,8 @@
     "pred_abstain": 0,
     "pred_ans": "Jack Nicholson",
     "pred_ans_conf_MCQ": "",
-    "pred_ans_conf_NL_MCQ": "Jack Nicholson played the role of J J Gittes in the 1974 film 'Chinatown",
-    "pred_ans_conf_OE": "Jack Nicholson played the role of J J Gittes in the 1974 film 'Chinatown'.",
+    "pred_ans_conf_NL_MCQ": "Jack Nicholson",
+    "pred_ans_conf_OE": "Jack Nicholson",
     "pred_diverse_ans": [
         "Jack Nicholson",
         "Jack Nicholson",
@@ -29,7 +29,7 @@
         "Roman Polanski",
         "Jack Nicholson",
         "Jack Nicholson",
-        "Sure! The actor who was cast as J.J. Gittes in the movie \"Chinatown\" is Jack Nicholson."
+        "Jack Nicholson"
     ],
     "self_eval": 1,
     "true_prob": 1.0,

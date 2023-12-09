@@ -17,10 +17,10 @@
     "pred_abstain": 0,
     "pred_ans": "The name of the surface weather condition in a snow-covered area in which no object casts a shadow, and only dark objects can be seen is \"solar eclipse.\"",
     "pred_ans_conf_MCQ": "Solar eclipse",
-    "pred_ans_conf_NL_MCQ": "The name of the surface weather condition is \"snow blindness",
-    "pred_ans_conf_OE": "The name of the surface weather condition is \"snow blindness.\"",
+    "pred_ans_conf_NL_MCQ": "snow blindness",
+    "pred_ans_conf_OE": "snow blindness",
     "pred_diverse_ans": [
-        "The term for this weather condition is \"flat light.\"",
+        "\"flat light.\"",
         "The meteorological phenomenon you are referring to is called a \"solar eclipse.\"",
         "This situation is called \"snow blindness.\"",
         "The label for this weather situation is \"whiteout.\"",

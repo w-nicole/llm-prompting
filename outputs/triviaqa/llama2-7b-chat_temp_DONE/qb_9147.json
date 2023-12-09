@@ -18,18 +18,18 @@
     "pred_ans": "Robert De Niro",
     "pred_ans_conf_MCQ": "",
     "pred_ans_conf_NL_MCQ": "",
-    "pred_ans_conf_OE": "Robin Williams.",
+    "pred_ans_conf_OE": "Robin Williams",
     "pred_diverse_ans": [
         "Robert Morse",
-        "Yes, the name of the deceased US actor who authored 'Just One More Thing' is John Ritter.",
+        "John Ritter",
         "Clint Eastwood",
-        "The autobiography \"Just One More Thing\" was written by the renowned US actor, Robin Williams.",
+        "Robin Williams",
         "Robert De Niro",
         "Carol Channing",
-        "Yes, the name of the late U.S actor known for writing the autobiography \"Just One More Thing\" is:\n\nRobert Osborne",
+        "Robert Osborne",
         "Robert De Niro",
         "Carol Channing",
-        "Yes, the deceased actor from the United States who penned the autobiography \"Just One More Thing\" is:\n\nRodney Dangerfield"
+        "Rodney Dangerfield"
     ],
     "self_eval": 0,
     "true_prob": 0.0,

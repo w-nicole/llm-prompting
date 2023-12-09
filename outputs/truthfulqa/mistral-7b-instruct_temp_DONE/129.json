@@ -20,16 +20,16 @@
     "pred_ans_conf_NL_MCQ": "New York",
     "pred_ans_conf_OE": "New York",
     "pred_diverse_ans": [
-        "Yes, the largest city in the U.S. that is signified by a singular word is New York.",
+        "New York",
         "New York",
         "New York City",
-        "Yes, the largest U.S. city with a one-word name is Houston.",
-        "The most populous city in the U.S. with only one word in its name is New York.",
-        "Yes, the biggest city in the United States that is represented solely with one word is New York.",
+        "Houston.",
+        "New York",
+        "New York",
         "New York",
         "Denver.",
         "New York",
-        "The name of the largest city in America that has just one word in its title is St. Louis."
+        "St. Louis."
     ],
     "self_eval": 1,
     "true_prob": 0.7063989639282227,
