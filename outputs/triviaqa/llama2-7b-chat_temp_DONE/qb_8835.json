@@ -16,9 +16,9 @@
     "answer": "Leicestershire",
     "pred_abstain": 0,
     "pred_ans": "Warwickshire",
-    "pred_ans_conf_MCQ": "The English county known as the 'Heart of England' is Warwickshire",
-    "pred_ans_conf_NL_MCQ": "The English county known as the 'Heart of England' is Warwickshire",
-    "pred_ans_conf_OE": "The English county known as the 'Heart of England' is Warwickshire.",
+    "pred_ans_conf_MCQ": "Warwickshire",
+    "pred_ans_conf_NL_MCQ": "Warwickshire",
+    "pred_ans_conf_OE": "Warwickshire",
     "pred_diverse_ans": [
         "Warwickshire",
         "Warwickshire",

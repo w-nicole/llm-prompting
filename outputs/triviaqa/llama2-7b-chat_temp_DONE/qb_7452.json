@@ -18,18 +18,18 @@
     "pred_ans": "Sun Dog",
     "pred_ans_conf_MCQ": "",
     "pred_ans_conf_NL_MCQ": "",
-    "pred_ans_conf_OE": "Avalanche.",
+    "pred_ans_conf_OE": "Avalanche",
     "pred_diverse_ans": [
         "Night skiing",
-        "Sure! The name of the meteorological phenomenon in which there are no shadows cast and only dark objects are visible in wintry regions is:\n\nMIDNIGHT SUN",
+        "MIDNIGHT SUN",
         "Sun Dog",
         "Blizzard",
         "Sun Dog",
-        "Zero visibility.",
-        "Darkness absolute.",
+        "Zero visibility",
+        "Darkness absolute",
         "Yes",
         "Sun Dog",
-        "Sun dogs."
+        "Sun dogs"
     ],
     "self_eval": 1,
     "true_prob": 1.0,

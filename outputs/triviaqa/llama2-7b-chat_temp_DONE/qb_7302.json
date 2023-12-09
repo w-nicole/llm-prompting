@@ -17,8 +17,8 @@
     "pred_abstain": 0,
     "pred_ans": "Peru",
     "pred_ans_conf_MCQ": "",
-    "pred_ans_conf_NL_MCQ": "Juan Velasco Alvarado became President of the Revolutionary Government in October 1968 in Peru.",
-    "pred_ans_conf_OE": "Juan Velasco Alvarado became President of the Revolutionary Government in Peru in October 1968.",
+    "pred_ans_conf_NL_MCQ": "Peru",
+    "pred_ans_conf_OE": "Peru",
     "pred_diverse_ans": [
         "Peru",
         "Peru",

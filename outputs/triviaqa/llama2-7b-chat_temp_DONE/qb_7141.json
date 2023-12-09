@@ -15,10 +15,10 @@
     ],
     "answer": "Shylock",
     "pred_abstain": 0,
-    "pred_ans": "Jessica's father is Antonio.",
-    "pred_ans_conf_MCQ": "Jessica's father in 'The Merchant of Venice' is Shylock",
-    "pred_ans_conf_NL_MCQ": "In the Shakespeare play 'The Merchant of Venice', Jessica's father is Antonio",
-    "pred_ans_conf_OE": "Answer: Jessica's father is Antonio.",
+    "pred_ans": "Antonio",
+    "pred_ans_conf_MCQ": "Shylock",
+    "pred_ans_conf_NL_MCQ": "Antonio",
+    "pred_ans_conf_OE": "Antonio",
     "pred_diverse_ans": [
         "Antonio",
         "Jessica's parent is Portia.",
@@ -29,7 +29,7 @@
         "Portia",
         "Antonio",
         "Antonio",
-        "Jessica's progenitor is Shylock."
+        "Shylock"
     ],
     "self_eval": 0,
     "true_prob": 0.0,

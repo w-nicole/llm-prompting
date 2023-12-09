@@ -16,9 +16,9 @@
     "answer": "Wyoming",
     "pred_abstain": 0,
     "pred_ans": "Wyoming",
-    "pred_ans_conf_MCQ": "Yellowstone National Park is located primarily in Wyoming",
-    "pred_ans_conf_NL_MCQ": "Yellowstone National Park is located primarily in Wyoming",
-    "pred_ans_conf_OE": "Yellowstone National Park is located primarily in Wyoming, with small portions in Montana and Idaho.",
+    "pred_ans_conf_MCQ": "Wyoming",
+    "pred_ans_conf_NL_MCQ": "Wyoming",
+    "pred_ans_conf_OE": "Wyoming",
     "pred_diverse_ans": [
         "Wyoming",
         "Wyoming",
