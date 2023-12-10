@@ -16,7 +16,7 @@
     "answer": "Edmond",
     "pred_abstain": 0,
     "pred_ans": "Halley",
-    "pred_ans_conf_MCQ": "Halley, after who the famous comet is named, is a male name",
+    "pred_ans_conf_MCQ": "Halley",
     "pred_ans_conf_NL_MCQ": "Halley",
     "pred_ans_conf_OE": "Halley",
     "pred_diverse_ans": [
@@ -24,10 +24,10 @@
         "Edwin",
         "No, I do not know Halley's first name.",
         "Halley's comet is named after Sir Isaac Halley.",
-        "Halley's first name is Edwin.",
+        "Edwin.",
         "Halley's first name is not specified in the question.",
-        "The famous Halley's comet is named after Sir Isaac Newton.",
-        "The character famous for Halley's comet is named Halley.",
+        "Sir Isaac Newton.",
+        "Halley.",
         "No, I cannot help as there is no information provided about the person named Halley.",
         "No, the first name of the individual is not specified."
     ],
