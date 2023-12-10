@@ -46,7 +46,7 @@ MODEL_CHECKPOINTS = {'flan-t5-large' : 'model_weights/flan-t5/large',
                      'llama2-70b-chat': 'model_weights/llama2/70b-chat'}
 
 # Device 
-DEVICE_IDX = "0" # separate with comma if using multiple GPUs
+DEVICE_IDX = "1,2,3,4,5,6,7" # separate with comma if using multiple GPUs
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 MEMORY_ALLOCATION = {int(i) : "38GB" for i in DEVICE_IDX.split(",")}
 

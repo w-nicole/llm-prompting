@@ -16,9 +16,9 @@
     "answer": "Virginia Woolf",
     "pred_abstain": 1,
     "pred_ans": "Virginia Woolf",
-    "pred_ans_conf_MCQ": "Virginia Woolf wrote the 1928 novel \u2018Orlando: A Biography\u2019",
+    "pred_ans_conf_MCQ": "Virginia Woolf",
     "pred_ans_conf_NL_MCQ": "Virginia Woolf",
-    "pred_ans_conf_OE": "Virginia Woolf wrote the 1928 novel \u2018Orlando: A Biography\u2019.",
+    "pred_ans_conf_OE": "Virginia Woolf",
     "pred_diverse_ans": [
         "Virginia Woolf.",
         "Virginia Woolf",

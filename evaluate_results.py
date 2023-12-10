@@ -243,7 +243,7 @@ if __name__ == "__main__":
 
     # Settings
     DATASET = "triviaqa"
-    LLM = "llama2-7b-chat"
+    LLM = "mistral-7b-instruct"
     CHECK_FLAN_T5 = "flan-t5" in LLM
 
     idx = 0
