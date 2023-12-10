@@ -15,9 +15,9 @@
     ],
     "answer": "mass",
     "pred_abstain": 1,
-    "pred_ans": "True.",
+    "pred_ans": "True",
     "pred_ans_conf_MCQ": "",
-    "pred_ans_conf_NL_MCQ": "the period of a simple pendulum is only affected by its length and the acceleration due to gravity, and that it is completely independent of other factors such as the amplitude of the swing or the air resistance.",
+    "pred_ans_conf_NL_MCQ": "the period of a simple pendulum is only affected by its length and the acceleration due to gravity, and that it is completely independent of other factors such as the amplitude of the swing or the air resistance",
     "pred_ans_conf_OE": "No.While the length of the pendulum and the acceleration due to gravity do affect the period of a simple pendulum, other factors such as air resistance and the pendulum's amplitude can also have a significant impact on the period.",
     "pred_diverse_ans": [
         "No.",
