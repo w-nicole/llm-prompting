@@ -17,7 +17,7 @@
     "pred_abstain": 1,
     "pred_ans": "Winston Churchill",
     "pred_ans_conf_MCQ": "Winston Churchill",
-    "pred_ans_conf_NL_MCQ": "The painting entitled \u2018The View if Tinherir\u2019 is a work by Winston Churchill",
+    "pred_ans_conf_NL_MCQ": "Winston Churchill",
     "pred_ans_conf_OE": "Winston Churchill.",
     "pred_diverse_ans": [
         "Winston Churchill",

@@ -1,7 +1,7 @@
 import os
 from config import * 
 from pprint import pprint
-from utils import read_json, write_json
+from utils import read_json, write_json, get_samples
 
 from tqdm import tqdm 
 
@@ -35,8 +35,14 @@ def get_bert_score(folder):
         r["pred_ans_conf_OE_bert_score"] = pred_ans_conf_OE_bertscore[i]
 
         consistency_score = get_pairwise_bert_score(bert_scorer, r["pred_ans"], r["pred_diverse_ans"])
-        consistency_score = np.mean(consistency_score)
-        r["consistency_score"] = consistency_score
+        r["consistency_score"] = np.mean(consistency_score)
+
+        # Let us sample some of the scores and see how the results change 
+        choices_3 = get_samples(len(consistency_score), 3, 10)
+        choices_7 = get_samples(len(consistency_score), 7, 10)
+
+        r["consistency_score_3"] = np.mean([np.mean([consistency_score[i] for i in s]) for s in choices_3])
+        r["consistency_score_7"] = np.mean([np.mean([consistency_score[i] for i in s]) for s in choices_7])
     
     return all_results
 
@@ -54,9 +60,15 @@ def get_bert_score_flan_t5(folder):
         r["pred_ans_bert_score"] = pred_ans_bertscore[i]
         
         consistency_score = get_pairwise_bert_score(bert_scorer, r["pred_ans"], r["pred_diverse_ans"])
-        consistency_score = np.mean(consistency_score)
-        r["consistency_score"] = consistency_score
+        r["consistency_score"] = np.mean(consistency_score)
 
+        # Let us sample some of the scores and see how the results change 
+        choices_3 = get_samples(len(consistency_score), 3, 10)
+        choices_7 = get_samples(len(consistency_score), 7, 10)
+
+        r["consistency_score_3"] = np.mean([np.mean([consistency_score[i] for i in s]) for s in choices_3])
+        r["consistency_score_7"] = np.mean([np.mean([consistency_score[i] for i in s]) for s in choices_7])
+    
     return all_results
 
 def get_results(results):
@@ -91,6 +103,16 @@ def get_results(results):
     ECE_conf_cons = ECE(conf_cons, ans_label)
     AUROC_conf_cons = AUROC(conf_cons, ans_label)
     AUC_conf_cons = AUC(conf_cons, ans_label)
+
+    conf_cons_3 = np.array([r["consistency_score_3"] for r in results])
+    ECE_conf_cons_3 = ECE(conf_cons_3, ans_label)
+    AUROC_conf_cons_3 = AUROC(conf_cons_3, ans_label)
+    AUC_conf_cons_3 = AUC(conf_cons_3, ans_label)
+
+    conf_cons_7 = np.array([r["consistency_score_7"] for r in results])
+    ECE_conf_cons_7 = ECE(conf_cons_7, ans_label)
+    AUROC_conf_cons_7 = AUROC(conf_cons_7, ans_label)
+    AUC_conf_cons_7 = AUC(conf_cons_7, ans_label)
 
     # 3. Confidence (MCQ)
     conf_MCQ = np.array([r["pred_conf_MCQ"] / 100 for r in results])
@@ -183,11 +205,11 @@ def get_results(results):
     # Get precision, recall and F-score of various aspects 
     # 1. Check how well can LLMs evaluate answers 
     self_eval = np.array([r["self_eval"] for r in results])
-    P_self_eval, R_self_eval, F1_self_eval, _ = precision_recall_fscore_support(ans_label, self_eval, average = "macro")
+    P_self_eval, R_self_eval, F1_self_eval, _ = precision_recall_fscore_support(ans_label, self_eval, average = "binary")
 
     # 2. Check how well can LLMs decide when to answer and when not to 
     abstain = np.array([1 - r["pred_abstain"] for r in results])
-    P_abstain, R_abstain, F1_abstain, _ = precision_recall_fscore_support(ans_label, abstain, average = "macro")
+    P_abstain, R_abstain, F1_abstain, _ = precision_recall_fscore_support(ans_label, abstain, average = "binary")
 
     # Format the scores 
     scores = {"Accuracy_ans": ans_acc,
@@ -197,9 +219,19 @@ def get_results(results):
               "ECE_true_prob": ECE_true_prob, 
               "AUROC_true_prob": AUROC_true_prob,
               "AUC_true_prob": AUC_true_prob,
+
               "ECE_conf_cons": ECE_conf_cons, 
               "AUROC_conf_cons": AUROC_conf_cons,
               "AUC_conf_cons": AUC_conf_cons,
+              
+              "ECE_conf_cons_3": ECE_conf_cons_3, 
+              "AUROC_conf_cons_3": AUROC_conf_cons_3,
+              "AUC_conf_cons_3": AUC_conf_cons_3,
+                            
+              "ECE_conf_cons_7": ECE_conf_cons_7, 
+              "AUROC_conf_cons_7": AUROC_conf_cons_7,
+              "AUC_conf_cons_7": AUC_conf_cons_7,
+              
               "ECE_conf_MCQ": ECE_conf_MCQ, 
               "AUROC_conf_MCQ": AUROC_conf_MCQ,
               "AUC_conf_MCQ": AUC_conf_MCQ,
@@ -220,15 +252,17 @@ def get_results(results):
               "AUROC_conf_NL_MCQ_1s": AUROC_conf_NL_MCQ_1s,
               "AUC_conf_NL_MCQ_1s": AUC_conf_NL_MCQ_1s,
 
-              "ECE_cons_MCQ_1s_H": ECE_cons_MCQ_1s_H, 
-              "AUROC_cons_MCQ_1s_H": AUROC_cons_MCQ_1s_H,
-              "AUC_cons_MCQ_1s_H": AUC_cons_MCQ_1s_H,
-              "ECE_cons_OE_1s_H": ECE_cons_OE_1s_H, 
-              "AUROC_cons_OE_1s_H": AUROC_cons_OE_1s_H,
-              "AUC_cons_OE_1s_H": AUC_cons_OE_1s_H,
-              "ECE_cons_NL_MCQ_1s_H": ECE_cons_NL_MCQ_1s_H, 
-              "AUROC_cons_NL_MCQ_1s_H": AUROC_cons_NL_MCQ_1s_H,
-              "AUC_cons_NL_MCQ_1s_H": AUC_cons_NL_MCQ_1s_H,
+              "ECE_cons_MCQ_H": ECE_cons_MCQ_H, 
+              "AUROC_cons_MCQ_1s_H": AUROC_cons_MCQ_H,
+              "AUC_cons_MCQ_1s_H": AUC_cons_MCQ_H,
+
+              "ECE_cons_OE_H": ECE_cons_OE_H, 
+              "AUROC_cons_OE_H": AUROC_cons_OE_H,
+              "AUC_cons_OE_H": AUC_cons_OE_H,
+              
+              "ECE_cons_NL_MCQ_H": ECE_cons_NL_MCQ_H, 
+              "AUROC_cons_NL_MCQ_H": AUROC_cons_NL_MCQ_H,
+              "AUC_cons_NL_MCQ_H": AUC_cons_NL_MCQ_H,
 
               "P_R_F1_self_eval": [P_self_eval, R_self_eval, F1_self_eval],
               "P_R_F1_abstain": [P_abstain, R_abstain, F1_abstain]}
@@ -243,7 +277,9 @@ if __name__ == "__main__":
 
     # Settings
     DATASET = "triviaqa"
-    LLM = "mistral-7b-instruct"
+    # DATASET = "sciq"
+    # DATASET = "truthfulqa"
+    LLM = "flan-t5-xl"
     CHECK_FLAN_T5 = "flan-t5" in LLM
 
     idx = 0

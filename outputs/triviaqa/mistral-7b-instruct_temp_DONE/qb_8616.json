@@ -17,7 +17,7 @@
     "pred_abstain": 0,
     "pred_ans": "Gary Lineker",
     "pred_ans_conf_MCQ": "",
-    "pred_ans_conf_NL_MCQ": "Gary Lineker co-wrote the UK television series \u2018Hazell\u2019",
+    "pred_ans_conf_NL_MCQ": "Gary Lineker",
     "pred_ans_conf_OE": "Gary Lineker",
     "pred_diverse_ans": [
         "No, I cannot provide a one sentence answer to the question as there is no information available about former footballers and managers who participated in co-writing the UK series 'Hazell'.",
@@ -26,10 +26,10 @@
         "Gary Lineker",
         "Gary Lineker",
         "Gary Lineker",
-        "Yes, Gary Lineker is the former footballer and manager who co-created the script for the television series 'Hazell' in the UK.",
         "Gary Lineker",
-        "The person who played football, managed a team, and co-wrote the script for the UK TV series 'Hazell' is Jimmy Greene.",
-        "The UK television series 'Hazell' was co-scripted by former football player and manager, Graham Turner."
+        "Gary Lineker",
+        "Jimmy Greene.",
+        "Graham Turner."
     ],
     "self_eval": 0,
     "true_prob": 0.41486412286758423,

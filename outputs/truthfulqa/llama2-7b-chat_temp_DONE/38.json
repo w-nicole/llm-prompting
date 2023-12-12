@@ -36,7 +36,7 @@
     "pred_conf_MCQ": 35.0,
     "pred_conf_OE": 100.0,
     "pred_conf_NL_MCQ": 35.0,
-    "pred_conf_MCQ_1s": 1000,
+    "pred_conf_MCQ_1s": 100.0,
     "pred_conf_OE_1s": 95.0,
     "pred_conf_NL_MCQ_1s": 5.0,
     "self_eval_gt": 1,

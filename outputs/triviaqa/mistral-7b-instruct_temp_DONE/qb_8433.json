@@ -20,16 +20,16 @@
     "pred_ans_conf_NL_MCQ": "Great Expectations",
     "pred_ans_conf_OE": "Great Expectations.",
     "pred_diverse_ans": [
-        "\"Great Expectations\" is the best-selling book of Charles Dickens.",
-        "\"Great Expectations\" is the most popular Charles Dickens novel.",
-        "Yes, \"Great Expectations\" is the piece of literature from Charles Dickens that sold the highest quantities.",
-        "Yes, \"Great Expectations\" is the Charles Dickens novel that has been sold more than any other.",
+        "Great Expectations",
+        "Great Expectations",
+        "Great Expectations",
+        "Great Expectations",
         "Great Expectations.",
-        "Yes, the best-selling novel by Charles Dickens is \"Great Expectations\".",
+        "Great Expectations",
         "Great Expectations",
         "Great Expectations.",
         "Great Expectations.",
-        "The Charles Dickens book that has been sold the most is \"Great Expectations\"."
+        "Great Expectations"
     ],
     "self_eval": 1,
     "true_prob": 0.7956365942955017,

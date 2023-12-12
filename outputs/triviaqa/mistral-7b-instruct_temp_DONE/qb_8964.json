@@ -20,16 +20,16 @@
     "pred_ans_conf_NL_MCQ": "Mango",
     "pred_ans_conf_OE": "Mango.",
     "pred_diverse_ans": [
-        "Yes, all of these are varieties of mango.",
-        "Ataulfo, Haden, Francis, and Keitt represent varieties of tomatoes.",
-        "These varieties belong to the Mango fruit.",
-        "Ataulfo, Haden, Francis, and Keitt are all related to the fruit tomato.",
-        "Yes, Ataulfo, Haden, Francis, and Keitt are varieties of mango.",
+        "mango",
+        "tomatoes.",
+        "mango",
+        "tomato.",
+        "mango",
         "Yes, I am familiar with the fruit types Ataulfo, Haden, Francis, and Keitt.",
         "Tomatoes.",
-        "The specific fruit that includes Ataulfo, Haden, Francis, and Keitt as its varieties is avocado.",
+        "avocado.",
         "Mango",
-        "The common fruit among Ataulfo, Haden, Francis, and Keitt is avocado."
+        "avocado."
     ],
     "self_eval": 1,
     "true_prob": 0.9609452486038208,

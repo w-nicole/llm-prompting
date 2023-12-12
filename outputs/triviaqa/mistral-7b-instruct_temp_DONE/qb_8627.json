@@ -15,10 +15,10 @@
     ],
     "answer": "Mozart",
     "pred_abstain": 0,
-    "pred_ans": "The first one-act comic opera 'Bastien und Bastienne' was composed by Wolfgang Amadeus Mozart at the age of 12.",
+    "pred_ans": "Wolfgang Amadeus Mozart",
     "pred_ans_conf_MCQ": "",
-    "pred_ans_conf_NL_MCQ": "The one-act comic opera \u2018Bastien und Bastienne\u2019 was the first by which composer aged 12 is Wolfgang Amadeus Mozart",
-    "pred_ans_conf_OE": "The one-act comic opera \u2018Bastien und Bastienne\u2019 was the first by which composer aged 12 is Wolfgang Amadeus Mozart.",
+    "pred_ans_conf_NL_MCQ": "Wolfgang Amadeus Mozart",
+    "pred_ans_conf_OE": "Wolfgang Amadeus Mozart",
     "pred_diverse_ans": [
         "The composer who wrote the one-act comic opera 'Bastien und Bastienne' at the age of 17 was Wolfgang Amadeus Mozart.",
         "Wolfgang Amadeus Mozart",

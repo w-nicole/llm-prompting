@@ -9,6 +9,12 @@
     "ECE_conf_cons": 0.419,
     "AUROC_conf_cons": 0.663,
     "AUC_conf_cons": 0.005,
+    "ECE_conf_cons_3": 0.419,
+    "AUROC_conf_cons_3": 0.724,
+    "AUC_conf_cons_3": 0.006,
+    "ECE_conf_cons_7": 0.422,
+    "AUROC_conf_cons_7": 0.668,
+    "AUC_conf_cons_7": 0.005,
     "ECE_conf_MCQ": 0.523,
     "AUROC_conf_MCQ": 0.284,
     "AUC_conf_MCQ": 0.001,
@@ -27,23 +33,23 @@
     "ECE_conf_NL_MCQ_1s": "",
     "AUROC_conf_NL_MCQ_1s": "",
     "AUC_conf_NL_MCQ_1s": "",
-    "ECE_cons_MCQ_1s_H": "",
-    "AUROC_cons_MCQ_1s_H": "",
-    "AUC_cons_MCQ_1s_H": "",
-    "ECE_cons_OE_1s_H": "",
-    "AUROC_cons_OE_1s_H": "",
-    "AUC_cons_OE_1s_H": "",
-    "ECE_cons_NL_MCQ_1s_H": "",
-    "AUROC_cons_NL_MCQ_1s_H": "",
-    "AUC_cons_NL_MCQ_1s_H": "",
+    "ECE_cons_MCQ_H": 0.502,
+    "AUROC_cons_MCQ_1s_H": 0.377,
+    "AUC_cons_MCQ_1s_H": 0.002,
+    "ECE_cons_OE_H": 0.184,
+    "AUROC_cons_OE_H": 0.603,
+    "AUC_cons_OE_H": 0.005,
+    "ECE_cons_NL_MCQ_H": 0.46,
+    "AUROC_cons_NL_MCQ_H": 0.814,
+    "AUC_cons_NL_MCQ_H": 0.009,
     "P_R_F1_self_eval": [
-        0.5053763440860215,
-        0.7688442211055276,
-        0.3603115004867195
+        0.010752688172043012,
+        1.0,
+        0.021276595744680854
     ],
     "P_R_F1_abstain": [
-        0.4973544973544973,
-        0.4723618090452261,
-        0.4845360824742268
+        0.0,
+        0.0,
+        0.0
     ]
 }

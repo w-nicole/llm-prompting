@@ -8,6 +8,18 @@ import torch
 
 from config import *
 
+def get_samples(total_size, sample_size, n_samples):
+
+    chosen_samples = []
+    while len(chosen_samples) < n_samples:
+
+        choice = np.random.choice(list(range(total_size)), size = sample_size, replace = False)
+        choice = sorted(choice)
+        if choice not in chosen_samples:
+            chosen_samples.append(choice)
+    
+    return chosen_samples
+
 # To get the respective folders
 def get_folders(dataset_name):
 

@@ -18,6 +18,7 @@
     "pred_ans": "Diffraction",
     "pred_ans_conf_MCQ": "Diffraction",
     "pred_ans_conf_NL_MCQ": "Diffraction",
+    "pred_ans_conf_OE": "Diffraction",
     "pred_diverse_ans": [
         "diffraction",
         "Branching",
