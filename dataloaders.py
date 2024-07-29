@@ -41,12 +41,27 @@ class TriviaQADataset(Dataset):
         
     def __getitem__(self, idx):
         return self.data[idx]["id_"], self.data[idx]['Question'], self.data[idx]['Answer']['Value'], self.data[idx]["diverse_questions"]
+    
+
+class PopQADataset(Dataset):
+    def __init__(self, path):
+        self.data = read_json(path)
+        
+    def __len__(self):
+        return len(self.data)
+        
+    def __getitem__(self, idx):
+        return self.data[idx]["id_"], self.data[idx]['question'], self.data[idx]['possible_answers'], self.data[idx]["diverse_questions"]
+
         
 def get_dataset(name):
 
-    datasets = {"truthfulqa": TruthfulQADataset, 
-               "sciq": SciQDataset, 
-               "triviaqa": TriviaQADataset}
+    datasets = {
+        "truthfulqa": TruthfulQADataset, 
+        "sciq": SciQDataset, 
+        "triviaqa": TriviaQADataset,
+        "popqa": PopQADataset
+        }
     
     if name not in datasets.keys():
         raise Exception(f"{name} not supported. Please check implementation.")

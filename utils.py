@@ -29,6 +29,8 @@ def get_folders(dataset_name):
         return SCIQ_RAW_FOLDER, SCIQ_PROCESSED_FOLDER, SCIQ_OUTPUT_FOLDER
     elif dataset_name == "triviaqa":
         return TRIVIA_QA_RAW_FOLDER, TRIVIA_QA_PROCESSED_FOLDER, TRIVIA_QA_OUTPUT_FOLDER
+    elif dataset_name == 'popqa':
+        return POPQA_RAW_FOLDER, POPQA_PROCESSED_FOLDER, POPQA_OUTPUT_FOLDER
     else: 
         raise NotImplementedError()
 

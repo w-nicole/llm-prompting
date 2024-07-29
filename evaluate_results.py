@@ -1,4 +1,4 @@
-import os
+import os, argparse
 from config import * 
 from pprint import pprint
 from utils import read_json, write_json, get_samples
@@ -275,11 +275,17 @@ if __name__ == "__main__":
         This set of code gather all the results obtained
     """
 
+    # Parser
+    parser = argparse.ArgumentParser(description = "")
+
+    # Data settings 
+    parser.add_argument("--dataset", type = str, default = "triviaqa", help = "The dataset")
+    parser.add_argument("--llm", type = str, default = "llama2-70b-chat", help = "LLM to use")
+    args = parser.parse_args()
+
     # Settings
-    DATASET = "triviaqa"
-    # DATASET = "sciq"
-    # DATASET = "truthfulqa"
-    LLM = "flan-t5-xl"
+    DATASET = args.dataset
+    LLM = args.llm
     CHECK_FLAN_T5 = "flan-t5" in LLM
 
     idx = 0

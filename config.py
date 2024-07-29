@@ -25,28 +25,39 @@ DATASET_RAW_FOLDER = 'datasets/raw'
 TRUTHFUL_QA_RAW_FOLDER = os.path.join(DATASET_RAW_FOLDER, 'truthfulQA.csv')
 TRIVIA_QA_RAW_FOLDER = os.path.join(DATASET_RAW_FOLDER, 'triviaqa', 'triviaqa-unfiltered')
 SCIQ_RAW_FOLDER = os.path.join(DATASET_RAW_FOLDER, 'sciq', 'SciQ dataset-2 3')
+POPQA_RAW_FOLDER = os.path.join(DATASET_RAW_FOLDER, 'popQA.csv')
 
 DATASET_PROCESSED_FOLDER = 'datasets/processed'
 TRUTHFUL_QA_PROCESSED_FOLDER = os.path.join(DATASET_PROCESSED_FOLDER, 'truthfulqa')
 TRIVIA_QA_PROCESSED_FOLDER = os.path.join(DATASET_PROCESSED_FOLDER, 'triviaqa')
 SCIQ_PROCESSED_FOLDER = os.path.join(DATASET_PROCESSED_FOLDER, 'sciq')
+POPQA_PROCESSED_FOLDER = os.path.join(DATASET_PROCESSED_FOLDER, 'popQA')
 
-FILENAME = f"data_w_GPT4_output_{SMALL_DATASET_SIZE}.json"
+# FILENAME = f"data_w_GPT4_output_{SMALL_DATASET_SIZE}.json"
+FILENAME = 'data.json'
 
 OUTPUT_FOLDER = 'outputs'
 RESULTS_FOLDER = 'results'
 
 # Model weights
 BERT_SCORER_MODEL = "microsoft/deberta-xlarge-mnli"
-MODEL_CHECKPOINTS = {'flan-t5-large' : 'model_weights/flan-t5/large',
-                     'flan-t5-xl' : 'model_weights/flan-t5/xl',
-                     'mistral-7b-instruct':'model_weights/mistral/7b-instruct', 
+
+MODEL_CHECKPOINTS = {'flan-t5-large' : "google/flan-t5-large",
+                     'flan-t5-xl' : "google/flan-t5-xl",
+                     'mistral-7b-instruct':"mistralai/mathstral-7B-v0.1", 
                      'llama2-7b-chat': 'model_weights/llama2/7b-chat',
                      'llama2-13b-chat': 'model_weights/llama2/13b-chat',
                      'llama2-70b-chat': 'model_weights/llama2/70b-chat'}
 
+# MODEL_CHECKPOINTS = {'flan-t5-large' : 'model_weights/flan-t5/large',
+#                      'flan-t5-xl' : 'model_weights/flan-t5/xl',
+#                      'mistral-7b-instruct':'model_weights/mistral/7b-instruct', 
+#                      'llama2-7b-chat': 'model_weights/llama2/7b-chat',
+#                      'llama2-13b-chat': 'model_weights/llama2/13b-chat',
+#                      'llama2-70b-chat': 'model_weights/llama2/70b-chat'}
+
 # Device 
-DEVICE_IDX = "1,2,3,4,5,6,7" # separate with comma if using multiple GPUs
+DEVICE_IDX = "0,1" # separate with comma if using multiple GPUs
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 MEMORY_ALLOCATION = {int(i) : "38GB" for i in DEVICE_IDX.split(",")}
 
@@ -89,6 +100,8 @@ if not os.path.exists(OUTPUT_FOLDER): os.makedirs(OUTPUT_FOLDER)
 TRUTHFUL_QA_OUTPUT_FOLDER = os.path.join(OUTPUT_FOLDER, 'truthfulqa')
 TRIVIA_QA_OUTPUT_FOLDER = os.path.join(OUTPUT_FOLDER, 'triviaqa')
 SCIQ_OUTPUT_FOLDER = os.path.join(OUTPUT_FOLDER, 'sciq')
+POPQA_OUTPUT_FOLDER = os.path.join(OUTPUT_FOLDER, 'popqa')
+
 
 if not os.path.exists(TRUTHFUL_QA_OUTPUT_FOLDER): os.makedirs(TRUTHFUL_QA_OUTPUT_FOLDER)
 if not os.path.exists(TRIVIA_QA_OUTPUT_FOLDER): os.makedirs(TRIVIA_QA_OUTPUT_FOLDER)
